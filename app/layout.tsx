@@ -3,6 +3,7 @@ import { Economica, Great_Vibes } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
+import SessionProvider from '@/components/providers/SessionProvider'
 
 // Main font - Economica (matches your slides)
 const economica = Economica({
@@ -34,11 +35,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${economica.variable} ${scriptFont.variable} font-sans antialiased bg-cream`}>
-        <Header />
-        <main className="min-h-screen">
-          {children}
-        </main>
-        <Footer />
+        <SessionProvider>
+          <Header />
+          <main className="min-h-screen">
+            {children}
+          </main>
+          <Footer />
+        </SessionProvider>
       </body>
     </html>
   )

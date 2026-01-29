@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
+import { prisma } from '@/lib/db/prisma'
+import { sendOrderConfirmationEmail } from '@/lib/email/send'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-12-18.acacia',
@@ -27,36 +29,92 @@ export async function POST(req: NextRequest) {
   switch (event.type) {
     case 'checkout.session.completed':
       const session = event.data.object as Stripe.Checkout.Session
+      const orderId = session.metadata?.orderId
 
-      // Payment was successful
-      console.log('Payment successful:', session.id)
-      console.log('Customer email:', session.customer_details?.email)
-      console.log('Amount paid:', session.amount_total)
+      if (!orderId) {
+        console.error('No orderId in session metadata')
+        break
+      }
 
-      // Here you would:
-      // 1. Save the order to your database
-      // 2. Send confirmation email
-      // 3. Update inventory
-      // 4. For workshops: send workshop details
+      try {
+        // 1. Update order status and add payment/shipping info
+        const order = await prisma.order.update({
+          where: { id: orderId },
+          data: {
+            status: 'processing',
+            paymentStatus: 'paid',
+            stripeSessionId: session.id,
+            stripePaymentIntentId: session.payment_intent as string,
+            customerEmail: session.customer_details?.email || '',
+            customerName: session.customer_details?.name || '',
+            customerPhone: session.customer_details?.phone || null,
+            // Save shipping address inline for guest orders
+            shippingName: session.shipping_details?.name || null,
+            shippingLine1: session.shipping_details?.address?.line1 || null,
+            shippingLine2: session.shipping_details?.address?.line2 || null,
+            shippingCity: session.shipping_details?.address?.city || null,
+            shippingState: session.shipping_details?.address?.state || null,
+            shippingPostal: session.shipping_details?.address?.postal_code || null,
+            shippingCountry: session.shipping_details?.address?.country || null,
+            shippingPhone: session.shipping_details?.phone || null,
+            completedAt: new Date(),
+          },
+          include: { items: true },
+        })
 
-      // Get the cart items from metadata
-      const cartItems = session.metadata?.cartItems
-        ? JSON.parse(session.metadata.cartItems)
-        : []
+        console.log('✅ Order updated:', order.orderNumber)
 
-      console.log('Cart items:', cartItems)
+        // 2. Create workshop registrations and update spots
+        for (const item of order.items) {
+          if (item.workshopDateId) {
+            // Create registration if user is logged in
+            if (order.userId) {
+              await prisma.workshopRegistration.create({
+                data: {
+                  userId: order.userId,
+                  workshopDateId: item.workshopDateId,
+                  orderId: order.id,
+                  status: 'registered',
+                },
+              })
+              console.log('✅ Workshop registration created')
+            }
 
-      // TODO: Implement order fulfillment logic
-      // Example:
-      // await saveOrder({
-      //   stripeSessionId: session.id,
-      //   customerEmail: session.customer_details?.email,
-      //   items: cartItems,
-      //   total: session.amount_total,
-      //   shippingAddress: session.shipping_details?.address,
-      // })
-      //
-      // await sendConfirmationEmail(session.customer_details?.email, orderDetails)
+            // Decrement workshop spots
+            await prisma.workshopDate.update({
+              where: { id: item.workshopDateId },
+              data: {
+                spotsAvailable: {
+                  decrement: item.quantity,
+                },
+              },
+            })
+            console.log('✅ Workshop spots decremented')
+          }
+        }
+
+        // 3. Update product inventory
+        for (const item of order.items) {
+          if (item.productId) {
+            await prisma.product.update({
+              where: { id: item.productId },
+              data: {
+                stockQuantity: {
+                  decrement: item.quantity,
+                },
+              },
+            })
+            console.log('✅ Product inventory updated')
+          }
+        }
+
+        // 4. Send confirmation email
+        await sendOrderConfirmationEmail(order)
+
+        console.log('✅ Order fulfillment completed for:', order.orderNumber)
+      } catch (error) {
+        console.error('❌ Error processing order:', error)
+      }
 
       break
 

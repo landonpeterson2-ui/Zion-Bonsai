@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import Cart from '@/components/cart/CartIcon'
+import AuthButton from '@/components/auth/AuthButton'
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -36,6 +37,7 @@ export default function Header() {
             <Link href="/about" className="text-gray-700 hover:text-coral transition-colors">
               About
             </Link>
+            <AuthButton />
             <Cart />
           </div>
 
@@ -65,6 +67,9 @@ export default function Header() {
             <Link href="/about" className="block text-gray-700 hover:text-coral transition-colors">
               About
             </Link>
+            <div className="pt-4 border-t border-gray-200">
+              <AuthButton />
+            </div>
           </div>
         )}
       </nav>
