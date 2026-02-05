@@ -1,49 +1,52 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
-import Cart from '@/components/cart/CartIcon'
-import AuthButton from '@/components/auth/AuthButton'
+import { ShopifyCart } from '@/components/shopify'
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <header className="bg-white shadow-sm sticky top-0 z-50">
-      <nav className="container-custom py-4">
+    <header className="bg-sage shadow-sm sticky top-0 z-50">
+      <nav className="container-custom py-2">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="w-12 h-12 bg-coral rounded-full flex items-center justify-center">
-              <span className="text-white font-bold text-xl">ZB</span>
-            </div>
-            <div className="hidden sm:block">
-              <div className="text-2xl font-bold text-gray-900">ZION</div>
-              <div className="text-sm font-script text-coral -mt-1">bonsai</div>
-            </div>
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/ZB Logo.PNG"
+              alt="Zion Bonsai"
+              width={80}
+              height={80}
+              className="h-16 w-auto"
+              priority
+            />
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link href="/shop" className="text-gray-700 hover:text-coral transition-colors">
+            {/* <Link href="/shop" className="text-white hover:text-cream font-semibold transition-colors">
               Shop
-            </Link>
-            <Link href="/workshops" className="text-gray-700 hover:text-coral transition-colors">
+            </Link> */}
+            <Link href="/workshops" className="text-white hover:text-cream font-semibold transition-colors">
               Workshops
             </Link>
-            <Link href="/care-guide" className="text-gray-700 hover:text-coral transition-colors">
+            <Link href="/gallery" className="text-white hover:text-cream font-semibold transition-colors">
+              Gallery
+            </Link>
+            <Link href="/care-guide" className="text-white hover:text-cream font-semibold transition-colors">
               Care Guide
             </Link>
-            <Link href="/about" className="text-gray-700 hover:text-coral transition-colors">
+            <Link href="/about" className="text-white hover:text-cream font-semibold transition-colors">
               About
             </Link>
-            <AuthButton />
-            <Cart />
+            <ShopifyCart />
           </div>
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2"
+            className="md:hidden p-2 text-white"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             <svg className="w-6 h-6" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
@@ -54,22 +57,22 @@ export default function Header() {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden mt-4 pb-4 space-y-4">
-            <Link href="/shop" className="block text-gray-700 hover:text-coral transition-colors">
+          <div className="md:hidden mt-4 pb-4 space-y-4 border-t border-sage-600 pt-4">
+            {/* <Link href="/shop" className="block text-white hover:text-cream font-semibold transition-colors">
               Shop
-            </Link>
-            <Link href="/workshops" className="block text-gray-700 hover:text-coral transition-colors">
+            </Link> */}
+            <Link href="/workshops" className="block text-white hover:text-cream font-semibold transition-colors">
               Workshops
             </Link>
-            <Link href="/care-guide" className="block text-gray-700 hover:text-coral transition-colors">
+            <Link href="/gallery" className="block text-white hover:text-cream font-semibold transition-colors">
+              Gallery
+            </Link>
+            <Link href="/care-guide" className="block text-white hover:text-cream font-semibold transition-colors">
               Care Guide
             </Link>
-            <Link href="/about" className="block text-gray-700 hover:text-coral transition-colors">
+            <Link href="/about" className="block text-white hover:text-cream font-semibold transition-colors">
               About
             </Link>
-            <div className="pt-4 border-t border-gray-200">
-              <AuthButton />
-            </div>
           </div>
         )}
       </nav>

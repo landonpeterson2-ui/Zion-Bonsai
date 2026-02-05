@@ -48,7 +48,7 @@ export default function ShopByStage() {
           {stages.map((stage) => (
             <Link
               key={stage.slug}
-              href={`/shop/${stage.slug}`}
+              href="/shop"
               className="card group"
             >
               <div className="p-6">

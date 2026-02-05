@@ -58,7 +58,7 @@ export default function WorkshopPreview() {
                   <p className="text-lg font-semibold text-sage">{workshop.price}</p>
                 </div>
                 <Link
-                  href={`/workshops/${workshop.slug}`}
+                  href="/workshops"
                   className="block w-full text-center btn-outline"
                 >
                   Learn More

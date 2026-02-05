@@ -16,97 +16,92 @@ export default function AboutPage() {
       {/* Mission */}
       <div className="max-w-4xl mx-auto mb-16">
         <div className="card p-8">
-          <h2 className="text-3xl font-semibold text-gray-900 mb-6">Our Mission</h2>
+          <h2 className="text-3xl font-semibold text-gray-900 mb-6">Our Story</h2>
           <p className="text-lg text-gray-700 mb-4">
-            We believe that nurturing bonsai nurtures the soul. In our fast-paced,
-            digitally-connected world, we offer something different: a chance to slow down,
-            create with your hands, and connect with nature and community.
+            It started during COVID. My husband fell down a bonsai rabbit hole on YouTube — the kind where you look up one video and suddenly it's 2am and you're watching someone wire a juniper in Japan.
           </p>
           <p className="text-lg text-gray-700 mb-4">
-            Specializing in Portulacaria afra (Dwarf Jade), we provide plants at every stage
-            of their journey - because we believe everyone should have the opportunity to
-            experience the meditative art of bonsai, regardless of their experience level.
+            In 2021, he ordered his first tree from Little Jade Bonsai. It was a succulent variety, something forgiving enough to grow indoors without needing a degree in horticulture. One plant turned into two. Two turned into a small collection taking over our living room.
           </p>
-          <p className="text-lg text-gray-700">
-            Our workshops combine ancient techniques with modern wellness practices, creating
-            spaces for mindfulness, creativity, and genuine human connection.
+          <p className="text-lg text-gray-700 mb-4">
+            Then our second son was born in 2022, and life got beautifully chaotic. In the middle of sleepless nights and toddler meltdowns, I'd watch him tend to these little trees. Shaping them, pruning them, turning them into tiny pieces of living art. It was the most calming thing in our house.
           </p>
-        </div>
-      </div>
+          <p className="text-lg text-gray-700 mb-4">
+            Eventually, I started joining in. I loved the creative side — making something beautiful without needing to know all the "rules" or spend years studying ancient techniques. He learned the traditional art. I just wanted to make things that felt good.
+          </p>
+          <p className="text-lg text-gray-700 mb-6">
+            And that's when it clicked: what if other people could experience this too?
+          </p>
 
-      {/* The Problem & Solution */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-        <div className="bg-olive-dark text-cream rounded-lg p-8">
-          <h3 className="text-2xl font-semibold mb-4">The Problem</h3>
-          <ul className="space-y-3">
-            <li className="flex items-start gap-3">
-              <span className="text-coral text-xl">•</span>
-              <span>Constant digital connectivity</span>
+          <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-3">Why Zion Bonsai Exists</h3>
+          <p className="text-lg text-gray-700 mb-4">
+            Here in Central Utah, we don't have a lot of spaces where you can unplug, work with your hands, and create something living. We're surrounded by beautiful outdoor recreation, but when it comes to creative, hands-on experiences? The options are pretty limited.
+          </p>
+          <p className="text-lg text-gray-700 mb-4">
+            Zion Bonsai fills that gap. We're building a space where you can step away from screens, connect with people in your community, and leave with a piece of living art you made yourself. No intimidating jargon. No pressure to be perfect. Just soil, tools, good company, and a tree that's yours to grow.
+          </p>
+          <p className="text-lg text-gray-700 mb-6">
+            We focus on beginner-friendly varieties — especially succulents and indoor-tolerant species — because we believe bonsai shouldn't require a greenhouse or years of study to get started. You can do this in your living room. You can do this with zero experience. And honestly? That's the whole point.
+          </p>
+
+          <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-3">What Makes Us Different?</h3>
+          <ul className="space-y-4 mb-6">
+            <li>
+              <span className="font-semibold text-coral">We're beginner-focused, not expert-obsessed.</span>
+              <p className="text-lg text-gray-700 mt-1">You won't find complicated terminology or gatekeeping here. We break things down so anyone can follow along, ask questions, and actually enjoy the process.</p>
             </li>
-            <li className="flex items-start gap-3">
-              <span className="text-coral text-xl">•</span>
-              <span>Limited creative opportunities</span>
+            <li>
+              <span className="font-semibold text-coral">We prioritize accessibility over tradition.</span>
+              <p className="text-lg text-gray-700 mt-1">My husband brings knowledge of traditional bonsai techniques. I bring a love for creating without overthinking it. Together, we've built workshops that respect the art form while making it approachable for real people with real lives.</p>
             </li>
-            <li className="flex items-start gap-3">
-              <span className="text-coral text-xl">•</span>
-              <span>Lack of community</span>
+            <li>
+              <span className="font-semibold text-coral">We're local to Central Utah.</span>
+              <p className="text-lg text-gray-700 mt-1">This isn't a franchise or a side hustle shipped in from somewhere else. We live here. We're raising our family here. And we're building something we wish existed when we first got curious about bonsai.</p>
+            </li>
+            <li>
+              <span className="font-semibold text-coral">We believe in the power of unplugging.</span>
+              <p className="text-lg text-gray-700 mt-1">Our workshops are screen-free zones. No phones, no distractions — just two hours where you get to be fully present, work with your hands, and connect with the people around you.</p>
             </li>
           </ul>
-        </div>
-
-        <div className="bg-sage text-white rounded-lg p-8">
-          <h3 className="text-2xl font-semibold mb-4">The Solution</h3>
-          <p className="text-lg">
-            Unplug, create and grow - together. Our hands-on bonsai workshops help you cultivate
-            mindfulness, creativity and connection in under 2 hours.
+          <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">Who This is for</h3>
+          <ul className="space-y-2 mb-6">
+            <li className="flex items-start gap-3">
+              <span className="text-coral">•</span>
+              <span>Complete beginners who've always been curious but didn't know where to start</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="text-coral">•</span>
+              <span>People looking for a creative outlet that doesn't require a huge time commitment</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="text-coral">•</span>
+              <span>Anyone feeling burned out by screens and craving something tactile and grounding</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="text-coral">•</span>
+              <span>Couples, friends, or families who want to do something together that isn't dinner and a movie</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="text-coral">•</span>
+              <span>Gift-givers looking for a unique, memorable experience (we offer gift certificates!)</span>
+            </li>
+          </ul>
+          <p className="text-lg text-gray-700 mb-4">
+            You don't need a green thumb. You don't need prior experience. You just need to show up — we'll handle the rest.
           </p>
-        </div>
-      </div>
-
-      {/* Target Audience */}
-      <div className="bg-gradient-to-br from-coral-50 to-sage-50 rounded-lg p-8 mb-16">
-        <h3 className="text-3xl font-semibold text-gray-900 mb-6 text-center">Who We Serve</h3>
-        <p className="text-xl text-gray-700 text-center max-w-3xl mx-auto">
-          Wellness-focused individuals from ages 25-45 seeking creative, community experiences
-          that provide a break from digital overwhelm and nurture the soul.
-        </p>
-      </div>
-
-      {/* Our Approach */}
-      <div className="max-w-4xl mx-auto mb-16">
-        <h2 className="text-3xl font-semibold text-gray-900 mb-8 text-center">What Makes Us Unique</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="text-center">
-            <div className="text-5xl mb-4">🌱</div>
-            <h4 className="text-xl font-semibold text-gray-900 mb-2">Every Stage</h4>
-            <p className="text-gray-600">
-              Plants available at all developmental stages, from cuttings to mature specimens
-            </p>
-          </div>
-          <div className="text-center">
-            <div className="text-5xl mb-4">🤝</div>
-            <h4 className="text-xl font-semibold text-gray-900 mb-2">Community Focus</h4>
-            <p className="text-gray-600">
-              Workshops designed to foster connection and creativity
-            </p>
-          </div>
-          <div className="text-center">
-            <div className="text-5xl mb-4">🎨</div>
-            <h4 className="text-xl font-semibold text-gray-900 mb-2">Artisan Collaboration</h4>
-            <p className="text-gray-600">
-              Custom ceramic pots and local maker partnerships
-            </p>
-          </div>
+          <p className="text-lg text-gray-700 mb-6">
+            Whether you've never touched a bonsai or you've been curious for years, we'd love to have you. <span className="font-semibold text-coral">Come grow with us.</span>
+          </p>
         </div>
       </div>
 
       {/* Contact */}
       <div className="bg-cream rounded-lg p-8 text-center">
-        <h3 className="text-3xl font-semibold text-gray-900 mb-6">Get in Touch</h3>
+        <h3 className="text-3xl font-semibold text-gray-900 mb-6">Contact Us</h3>
         <div className="space-y-2 text-lg text-gray-700">
           <p>
-            <a href="mailto:zionbonsaiplants@gmail.com" className="text-coral hover:text-coral-600">
-              zionbonsaiplants@gmail.com
+            <a href="mailto:plants@zionbonsai.com" className="text-coral hover:text-coral-600">
+              plants@zionbonsai.com
             </a>
           </p>
           <p>

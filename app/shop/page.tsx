@@ -1,11 +1,21 @@
-import Link from 'next/link'
-import { sampleProducts } from '@/lib/data/products'
+'use client'
+
+import { ShopifyBuyButton } from '@/components/shopify'
 
 const stages = [
   { name: 'Seedlings & Cuttings', slug: 'seedlings', icon: '🌱' },
   { name: 'Pre-Bonsai Starters', slug: 'starters', icon: '🪴' },
   { name: 'Intermediate Trained', slug: 'intermediate', icon: '🌿' },
   { name: 'Mature Specimens', slug: 'mature', icon: '🌳' },
+]
+
+// Add your Shopify product handles here
+// Find the handle in Shopify Admin > Products > [Product] > URL handle
+// Example: If URL is cifsza-29.myshopify.com/products/dwarf-jade, handle is "dwarf-jade"
+const productHandles = [
+  // 'dwarf-jade-seedling',
+  // 'pre-bonsai-starter',
+  // Add more product handles here
 ]
 
 export default function ShopPage() {
@@ -24,54 +34,41 @@ export default function ShopPage() {
       {/* Quick Stage Navigation */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
         {stages.map((stage) => (
-          <Link
+          <div
             key={stage.slug}
-            href={`/shop/${stage.slug}`}
-            className="card text-center p-6 group"
+            className="card text-center p-6 group cursor-pointer hover:shadow-lg transition-shadow"
           >
             <div className="text-4xl mb-2">{stage.icon}</div>
             <h3 className="font-semibold text-gray-900 group-hover:text-coral transition-colors">
               {stage.name}
             </h3>
-          </Link>
+          </div>
         ))}
       </div>
 
-      {/* All Products */}
+      {/* Products */}
       <div>
         <h2 className="text-3xl font-bold text-gray-900 mb-8">All Plants</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {sampleProducts.map((product) => (
-            <Link
-              key={product.id}
-              href={`/shop/product/${product.id}`}
-              className="card group"
-            >
-              <div className="aspect-square bg-gradient-to-br from-sage-50 to-cream flex items-center justify-center">
-                <div className="text-6xl">🌿</div>
+
+        {productHandles.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {productHandles.map((handle) => (
+              <div key={handle} className="card p-4">
+                <ShopifyBuyButton productHandle={handle} />
               </div>
-              <div className="p-6">
-                <div className="flex items-start justify-between mb-2">
-                  <h3 className="text-lg font-semibold text-gray-900 group-hover:text-coral transition-colors flex-1">
-                    {product.name}
-                  </h3>
-                  <span className="text-lg font-bold text-sage ml-2">
-                    ${product.price}
-                  </span>
-                </div>
-                <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-                  {product.description}
-                </p>
-                <div className="flex items-center justify-between text-xs text-gray-500">
-                  <span className="bg-sage-50 px-2 py-1 rounded">
-                    {product.careLevel}
-                  </span>
-                  <span>{product.size}</span>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12 bg-cream rounded-lg border border-sage-200">
+            <div className="text-5xl mb-4">🌱</div>
+            <p className="text-gray-700 mb-2 font-medium">
+              Products coming soon!
+            </p>
+            <p className="text-sm text-gray-500">
+              Add product handles to display your Shopify products here.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   )

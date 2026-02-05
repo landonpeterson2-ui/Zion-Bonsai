@@ -1,16 +1,21 @@
-import Link from 'next/link'
-import { getAllWorkshops } from '@/lib/data/workshops'
-import { format } from 'date-fns'
+'use client'
+
+import { ShopifyBuyButton } from '@/components/shopify'
+
+const workshopTypes = [
+  { title: 'One-Time Workshops', slug: 'one-time', icon: '✨', description: 'Perfect introduction to bonsai' },
+  { title: 'Workshop Series', slug: 'series', icon: '📚', description: 'Multi-week learning journey' },
+  { title: 'Private Sessions', slug: 'private', icon: '👤', description: 'Personalized instruction' },
+]
+
+// Add your Shopify workshop product handles here
+// Find the handle in Shopify Admin > Products > [Product] > URL handle
+const workshopHandles = [
+  'beginner-bonsai-workshop',
+  // Add more workshop handles here
+]
 
 export default function WorkshopsPage() {
-  const workshops = getAllWorkshops()
-
-  const workshopTypes = [
-    { title: 'One-Time Workshops', slug: 'one-time', icon: '✨' },
-    { title: 'Workshop Series', slug: 'series', icon: '📚' },
-    { title: 'Private Sessions', slug: 'private', icon: '👤' },
-  ]
-
   return (
     <div className="container-custom py-12">
       {/* Header */}
@@ -30,63 +35,45 @@ export default function WorkshopsPage() {
         </div>
       </div>
 
-      {/* Workshop Type Navigation */}
+      {/* Workshop Type Info Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
         {workshopTypes.map((type) => (
-          <Link
+          <div
             key={type.slug}
-            href={`/workshops/${type.slug}`}
             className="card text-center p-8 group"
           >
             <div className="text-5xl mb-3">{type.icon}</div>
-            <h3 className="text-xl font-semibold text-gray-900 group-hover:text-coral transition-colors">
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
               {type.title}
             </h3>
-          </Link>
+            <p className="text-gray-600 text-sm">{type.description}</p>
+          </div>
         ))}
       </div>
 
-      {/* All Workshops */}
+      {/* Workshops Grid */}
       <div>
-        <h2 className="text-3xl font-bold text-gray-900 mb-8">Upcoming Workshops</h2>
-        <div className="space-y-6">
-          {workshops.map((workshop) => (
-            <Link
-              key={workshop.id}
-              href={`/workshops/${workshop.id}`}
-              className="card flex flex-col md:flex-row group"
-            >
-              <div className="md:w-1/3 aspect-video md:aspect-square bg-gradient-to-br from-coral-50 to-sage-50 flex items-center justify-center">
-                <div className="text-6xl">
-                  {workshop.type === 'one-time' ? '✨' : workshop.type === 'series' ? '📚' : '👤'}
-                </div>
+        <h2 className="text-3xl font-bold text-gray-900 mb-8">Available Workshops</h2>
+
+        {workshopHandles.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {workshopHandles.map((handle) => (
+              <div key={handle} className="card p-4">
+                <ShopifyBuyButton productHandle={handle} buttonText="Book Now" />
               </div>
-              <div className="flex-1 p-6">
-                <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <h3 className="text-2xl font-semibold text-gray-900 group-hover:text-coral transition-colors mb-2">
-                      {workshop.title}
-                    </h3>
-                    <span className="inline-block bg-sage-100 text-sage-800 px-3 py-1 rounded text-sm font-medium capitalize">
-                      {workshop.type.replace('-', ' ')}
-                    </span>
-                  </div>
-                  <span className="text-2xl font-bold text-sage">${workshop.price}</span>
-                </div>
-                <p className="text-gray-700 mb-4">{workshop.description}</p>
-                <div className="flex flex-wrap gap-4 text-sm text-gray-600">
-                  <span>⏱️ {workshop.duration}</span>
-                  <span>👥 Max {workshop.capacity} participants</span>
-                  {workshop.dates.length > 0 && (
-                    <span>
-                      📅 Next: {format(workshop.dates[0].date, 'MMM d, yyyy')}
-                    </span>
-                  )}
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12 bg-cream rounded-lg border border-sage-200">
+            <div className="text-5xl mb-4">✨</div>
+            <p className="text-gray-700 mb-2 font-medium">
+              Workshop schedule coming soon!
+            </p>
+            <p className="text-sm text-gray-500">
+              Check back shortly for upcoming workshop dates.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   )
