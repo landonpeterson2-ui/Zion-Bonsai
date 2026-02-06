@@ -11,7 +11,7 @@ const config: Config = {
       colors: {
         // Zion Bonsai Brand Colors (matched to logo)
         coral: {
-          DEFAULT: '#D8795E',
+          DEFAULT: '#DD6F47',
           50: '#FDF6F4',
           100: '#FCEAE5',
           200: '#F8D3C9',
@@ -24,7 +24,7 @@ const config: Config = {
           900: '#4E241A',
         },
         sage: {
-          DEFAULT: '#9CB43D',
+          DEFAULT: '#97B953',
           50: '#F6F9EE',
           100: '#EBF2D8',
           200: '#D7E5B2',
@@ -37,7 +37,7 @@ const config: Config = {
           900: '#20250C',
         },
         olive: {
-          DEFAULT: '#7D9331',
+          DEFAULT: '#647C11',
           light: '#9CB43D',
           dark: '#5E6E25',
         },
@@ -48,6 +48,7 @@ const config: Config = {
       },
       fontFamily: {
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        heading: ['var(--font-heading)', 'sans-serif'],
         script: ['var(--font-script)', 'cursive'],
       },
     },

@@ -9,13 +9,13 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <header className="bg-sage shadow-sm sticky top-0 z-50">
+    <header className="bg-olive shadow-sm sticky top-0 z-50">
       <nav className="container-custom py-2">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <Image
-              src="/ZB Logo.PNG"
+              src="/ZB Logo Transparent.png"
               alt="Zion Bonsai"
               width={80}
               height={80}

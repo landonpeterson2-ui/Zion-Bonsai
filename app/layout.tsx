@@ -1,14 +1,21 @@
 import type { Metadata } from 'next'
-import { Economica, Great_Vibes } from 'next/font/google'
+import { Montserrat, Economica, Great_Vibes } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 
-// Main font - Economica (matches your slides)
+// Main font - Montserrat
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-sans'
+})
+
+// Headline font - Economica
 const economica = Economica({
   subsets: ['latin'],
   weight: ['400', '700'],
-  variable: '--font-sans'
+  variable: '--font-heading'
 })
 
 // Script font - Using Great Vibes as placeholder for Sweetbelly Script
@@ -33,7 +40,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${economica.variable} ${scriptFont.variable} font-sans antialiased bg-cream`}>
+      <body className={`${montserrat.variable} ${economica.variable} ${scriptFont.variable} font-sans antialiased bg-cream`}>
         <Header />
         <main className="min-h-screen">
           {children}

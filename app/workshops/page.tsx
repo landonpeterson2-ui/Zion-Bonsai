@@ -20,11 +20,11 @@ export default function WorkshopsPage() {
     <div className="container-custom py-12">
       {/* Header */}
       <div className="mb-12 text-center">
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+        <h1 className="font-heading text-5xl md:text-6xl font-bold text-gray-900 mb-4">
           Bonsai <span className="text-coral">Workshops</span>
         </h1>
         <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-6">
-          Unplug, create, and grow together. Our hands-on workshops cultivate mindfulness,
+          Our hands-on workshops cultivate mindfulness,
           creativity, and connection through the ancient art of bonsai.
         </p>
         <div className="inline-block bg-sage-50 px-6 py-3 rounded-lg">

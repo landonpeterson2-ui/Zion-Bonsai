@@ -47,19 +47,31 @@ export default function Hero() {
       <div className="container-custom">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           {/* Text Content */}
-          <div>
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-              Nurturing <span className="text-coral">bonsai</span>
-              <br />
-              <span className="font-script text-4xl md:text-5xl text-sage">Nurtures the soul</span>
+          <div className="bg-sage rounded-2xl p-8 md:p-10 shadow-lg">
+            <Image
+              src="/ZB Logo.PNG"
+              alt="Zion Bonsai"
+              width={200}
+              height={200}
+              className="h-40 md:h-48 w-auto mb-6 rounded-lg"
+            />
+            <h1 className="font-heading text-5xl md:text-6xl font-bold text-white mb-4">
+              Unplug. Create. <span className="text-coral">Grow.</span>
             </h1>
-            <p className="text-xl text-gray-700 mb-8 max-w-lg">
-              Unplug, create and grow together. Our hands-on bonsai workshops help you cultivate
-              mindfulness, creativity and connection in under 2 hours.
+            <p className="text-xl font-medium text-cream mb-4">
+              Bonsai workshops for beginners in Central Utah.
+            </p>
+            <p className="text-lg text-white/80 mb-8">
+              No experience needed. No intimidating jargon. Just two hours where you disconnect
+              from screens, work with your hands, and leave with a living piece of art you
+              cultivated yourself.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/workshops" className="btn-primary text-center">
-                View Workshops
+                Sign Up for a Workshop
+              </Link>
+              <Link href="/about" className="bg-white text-sage font-semibold px-6 py-3 rounded-lg hover:bg-cream transition-colors text-center">
+                Learn More About Us
               </Link>
             </div>
           </div>

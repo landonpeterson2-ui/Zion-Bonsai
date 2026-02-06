@@ -35,7 +35,7 @@ export default function GalleryPage() {
     <div className="container-custom py-12">
       {/* Header */}
       <div className="mb-12 text-center">
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+        <h1 className="font-heading text-4xl md:text-5xl font-bold text-gray-900 mb-4">
           Our <span className="text-coral">Gallery</span>
         </h1>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto">

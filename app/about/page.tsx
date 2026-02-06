@@ -3,7 +3,7 @@ export default function AboutPage() {
     <div className="container-custom py-12">
       {/* Hero Section */}
       <div className="text-center mb-16">
-        <h1 className="text-5xl font-bold text-gray-900 mb-6">
+        <h1 className="font-heading text-5xl md:text-6xl font-bold text-gray-900 mb-4">
           About <span className="text-coral">Zion Bonsai</span>
         </h1>
         <p className="text-2xl text-gray-700 max-w-3xl mx-auto">

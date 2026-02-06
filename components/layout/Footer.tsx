@@ -9,7 +9,7 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <Image
-              src="/ZB Logo.PNG"
+              src="/ZB Logo Transparent.png"
               alt="Zion Bonsai"
               width={100}
               height={100}
