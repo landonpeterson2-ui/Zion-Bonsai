@@ -4,6 +4,7 @@ import workshopsJson from '@/content/workshops.json'
 import partnersJson from '@/content/partners.json'
 import galleryJson from '@/content/gallery.json'
 import faqJson from '@/content/faq.json'
+import shopJson from '@/content/shop.json'
 import {
   parseContent,
   siteSchema,
@@ -12,6 +13,7 @@ import {
   partnersSchema,
   gallerySchema,
   faqSchema,
+  shopSchema,
   type Site,
   type Season,
   type Workshop,
@@ -31,6 +33,7 @@ const workshopsFile = parseContent('workshops.json', workshopsSchema, workshopsJ
 const partners = parseContent('partners.json', partnersSchema, partnersJson)
 const gallery = parseContent('gallery.json', gallerySchema, galleryJson)
 const faq = parseContent('faq.json', faqSchema, faqJson)
+const shop = parseContent('shop.json', shopSchema, shopJson)
 
 export function getSite(): Site {
   return site
@@ -73,6 +76,11 @@ export function getPartner(id: string): Partner | undefined {
 
 export function getGallery(): GalleryItem[] {
   return gallery
+}
+
+/** Shopify product handles for the /shop page. */
+export function getShopHandles(): string[] {
+  return shop.handles
 }
 
 export function getFaq(): FaqItem[] {

@@ -21,7 +21,8 @@ declare module 'shopify-buy' {
   }
 
   export function buildClient(config: Config): Client;
-  export default { buildClient };
+  const shopifyBuy: { buildClient: typeof buildClient };
+  export default shopifyBuy;
 }
 
 declare global {

@@ -21,7 +21,7 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - [ ] 23 Our Story — after 20
 - [ ] 24 Care Guide — after 20
 - [ ] 25 Partners and Contact — after 20
-- [ ] 26 Gallery and Shop — after 20
+- [x] 26 Gallery and Shop — after 20 (asymmetric grid + native-dialog lightbox; content/shop.json; tokenized buy button; lint warnings 0)
 - [ ] **CHECKPOINT — Landon & Cass review all pages**
 
 ## Phase 5–6 — Content and polish
@@ -32,7 +32,6 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 
 ## Found while working
 <!-- Out-of-scope issues agents notice. Format: - (task NN) description -->
-- (task 00) types/shopify.d.ts: one lint warning (`import/no-anonymous-default-export`), left as is; revisit in task 26 (Shop).
 - (task 01) Existing pages still use legacy classes (`bg-cream-light`, `text-charcoal`, `.card`, coral-on-paper text) that predate the contrast rules; replace as pages are rebuilt, final sweep in task 42.
 - (task 01) `font-medium` (500) is used in a few places but Open Sans loads only 400/600; browser snaps to the nearest weight.
 - (task 05) Confirm sold/workshop status: all 21 `public/gallery` trees are marked `sold` by default (none confirmed). Some may be unsold or Shop candidates, so Landon to confirm. `status` can be `available` in content/gallery.json.
@@ -46,7 +45,6 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - (task 04) confirm production domain: sitemap/robots fall back to https://zionbonsai.com (guessed from plants@zionbonsai.com) when NEXT_PUBLIC_APP_URL is unset.
 - (task 04) Old links to /about, /gift, /workshops/series remain in Header, Footer, Hero and About (redirects cover them; update in tasks 03/20). /contact, /events, /partners do not exist yet, so /gift lands on a 404 until task 25.
 
-- (task 03) HeaderNav renders `cart` (ShopifyCart) in both the desktop and mobile markup when `shopEnabled`, so two instances mount. Task 26 should check it when the shop goes live.
 
 ## Placeholders to fill
 <!-- Filled by task 30. Format: - page: [PLACEHOLDER] -->
@@ -60,3 +58,4 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - 04: Permanent redirects in next.config.js (/workshops/:slug+ so /workshops does not loop), remotePatterns limited to cdn.shopify.com, sitemap/robots use lib/site-url.ts (fallback https://zionbonsai.com), robots disallows /directions/, app/about moved to app/our-story via git mv. Verified with next start: 308s for all three; sitemap has no localhost.
 - 03: Header split into server Header.tsx (reads getSite) + client HeaderNav.tsx (menu state, aria-current squiggle). Menu open state is keyed to the pathname it opened on, so route changes close it without an effect. Footer reads getSite(); nav items/footer groups live in components/layout/nav.ts; skip link, main#main and global [id] scroll-margin-top added.
 - 20: Home promoted from the concept. Primitives in components/ui: Eyebrow, TextLink, Photo, Section, SectionHeading, NextWorkshop (+ formatDate/formatTime), PhotoHero (soil-washed hero, reusable on inner pages); lib/photos.ts `getPhoto(name)` reads gallery.json. Home sections in components/home/; Testimonial is a dashed placeholder. Hero photo swaps via HERO_PHOTO in components/home/Hero.tsx. Old Hero/About/WorkshopPreview/ShopByStage deleted.
+- (task 26) Workshops page still imports ShopifyBuyButton (now clay-styled via components/shopify/styles.ts); decisions.md says remove it there. /shop interest-list link falls back to /contact until interestListUrl is set. Cart toggle icon is now forest (was white) for the paper header; check when shop goes live.
