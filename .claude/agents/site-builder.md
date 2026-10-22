@@ -15,7 +15,8 @@ Before writing code, read, in this order:
 5. Only the sections of `docs/redesign/handoff.md` the task points to.
 
 Then:
-- Confirm you're on the `redesign` branch (or the worktree branch you were given). Never commit to `main`.
+- Confirm you're on the `redesign` branch, or in a worktree. Never commit to `main`.
+- **In a worktree:** worktrees are created from `main`, so first run `git merge --ff-only redesign` to start from the latest redesign work (if that fails, stop and report), then `npm ci`. Commit on the worktree's own branch; the orchestrator merges it into `redesign`.
 - Do the task's scope and nothing more. Anything else you notice goes in STATUS.md under "Found while working".
 - Use tokens, never raw hex. Use content getters from `lib/content.ts`, never hardcoded dates/links/contact info.
 - Never invent testimonials, facts, prices, dates, or quotes. Use `[BRACKETED PLACEHOLDERS]`.
