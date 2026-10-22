@@ -12,7 +12,7 @@ Read `CLAUDE.md`, `docs/redesign/decisions.md`, and the task file. Look at the t
 Check, and cite file:line for every failure:
 1. **Done when:** go through every item in the task's "Done when" list. Run `npm run build` and `npm run lint`.
 2. **Scope:** no changes outside the task's scope, apart from STATUS.md notes.
-3. **Brand:** no raw hex in components. No `coral` or `sage` used as text color. Fonts only Montserrat, Open Sans, and Satisfy. Script used only for 1–2 line accents.
+3. **Brand:** no raw hex in components. No `coral` or `sage` used as text color. Fonts only Cormorant Garamond (`font-display`, headlines ≥24px), Montserrat (`font-label`, labels/nav/buttons), Open Sans (body) and Satisfy (at most once per page). Nothing from the CLAUDE.md "Never" list (squiggles, torn edges, pills, tilted photos, blobs).
 4. **Voice and facts:** tool policy is correct wherever tools come up. No invented testimonials, numbers, prices, or history. No business mechanics. Taglines match exactly. The unplugging message is present and plain, not spa-speak.
 5. **Booking:** no payment links on the site; registration goes only to the Google Form URL from content.
 6. **Accessibility:** alt text describes the actual image, form inputs have labels, interactive elements are keyboard reachable with visible focus, motion respects reduced motion, and one h1 per page.
