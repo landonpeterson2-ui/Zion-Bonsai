@@ -90,6 +90,14 @@ Instead of three competing directions, Opus built one from-scratch home concept 
 - The instructor photo (`workshop-instructor-holding-jade-roots.jpg`) is **Landon**. OK to name him in captions and alt text.
 - Hero tree should be **Zeus or Cheesecake** (named trees; Cheesecake is the oldest). **Cheesecake** is `cheesecake-blue-pot.jpg` (Landon's IMG_7314, the big tree in the blue glazed pot; also visible in `workshop-display-table-doorway.jpg` and `workshop-tables-set-for-class.jpg`). It's now the home hero. Gallery status `collection` = our own trees, not for sale. **Cheesecake is a he** (Cass's ruling; Cheesecake has not commented). Zeus: no photo or story yet.
 
+## 2026-10-21 — Faded-photo hero (Cass: "yes, yes, yes to this")
+
+The home hero now uses the same soil-washed photo treatment as the private events band, with linen text over the photo.
+- Phone: full-bleed photo with a bottom-up soil gradient.
+- Desktop: solid `soil` behind the text, fading into the photo on the right 55%.
+- Cass wants **a different hero photo**. The current Cheesecake shot has a cool white door and a doorknob. Ideal: a wide (landscape) shot of Cheesecake on wood or in warm light with room around him. Until it arrives, the current photo stays.
+- This faded-photo treatment is reusable for page heroes on inner pages too (with each page's own photo).
+
 ## Open items (from Landon & Cass)
 - [ ] Google Form URL(s) for registration
 - [ ] Upcoming workshop dates and prices

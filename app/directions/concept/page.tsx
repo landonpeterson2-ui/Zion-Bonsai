@@ -40,36 +40,46 @@ export default function HomeConcept() {
   return (
     <>
       {/* Hero */}
-      <section className="container-custom grid items-center gap-10 pb-20 pt-10 md:grid-cols-12 md:gap-12 md:pb-28 md:pt-16">
-        <div className="md:col-span-5">
-          <p className={`${label} text-clay`}>Bonsai workshops &middot; Manti, Utah</p>
-          <h1 className="mt-6 text-[2.9rem] leading-[1.02] md:text-[4.25rem]">
-            Put the phone down.
-            <br />
-            <em>Pick up a tree.</em>
-          </h1>
-          <p className="mt-6 max-w-md text-[17px] leading-[1.7] text-soil">
-            Two hours, a little soil under your nails, and a dwarf jade in a handmade pot that goes home with you. No
-            experience needed.
-          </p>
-          <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-5">
-            <Link href="/workshops#dates" className="btn-primary">Book a workshop</Link>
-            <Link href="/events" className={textLink}>Plan a private event</Link>
+      <section className="relative isolate flex min-h-[640px] items-end overflow-hidden bg-soil md:min-h-[720px] md:items-center">
+        {/* Phone: full-bleed. Desktop: the portrait photo fills the right half so the whole tree shows. */}
+        <div className="absolute inset-0 -z-10 md:left-auto md:w-[55%]">
+          <Image
+            src="/photos/cheesecake-blue-pot.jpg"
+            alt="Cheesecake, our oldest dwarf jade bonsai, with a thick curving trunk and layered canopy in a blue glazed pot"
+            fill
+            priority
+            sizes="(min-width: 768px) 55vw, 100vw"
+            className="object-cover object-[60%_30%] md:object-[40%_60%]"
+          />
+          {/* Same soil wash as the events band; on desktop it fades into the solid soil behind the text */}
+          <div className="absolute inset-0 bg-gradient-to-t from-soil/90 via-soil/65 to-soil/35 md:bg-gradient-to-r md:from-soil md:via-soil/45 md:to-soil/15" />
+        </div>
+        <div className="container-custom w-full pb-14 pt-32 md:py-24">
+          <div className="max-w-xl">
+            <p className={`${label} text-linen/85`}>Bonsai workshops &middot; Manti, Utah</p>
+            <h1 className="mt-6 text-[2.9rem] leading-[1.02] text-linen md:text-[4.5rem]">
+              Put the phone down.
+              <br />
+              <em>Pick up a tree.</em>
+            </h1>
+            <p className="mt-6 max-w-md text-[17px] leading-[1.7] text-linen/90">
+              Two hours, a little soil under your nails, and a dwarf jade in a handmade pot that goes home with you. No
+              experience needed.
+            </p>
+            <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-5">
+              <Link href="/workshops#dates" className="btn-primary">Book a workshop</Link>
+              <Link
+                href="/events"
+                className="border-b border-linen/70 pb-1 font-label text-[11px] font-semibold uppercase tracking-[0.16em] text-linen transition-colors hover:border-linen"
+              >
+                Plan a private event
+              </Link>
+            </div>
           </div>
         </div>
-        <div className="md:col-span-7 md:pl-6">
-          <div className="relative aspect-[4/5] overflow-hidden md:aspect-[5/6]">
-            <Image
-              src="/photos/cheesecake-blue-pot.jpg"
-              alt="Cheesecake, our oldest dwarf jade bonsai, with a thick curving trunk and layered canopy in a blue glazed pot"
-              fill
-              priority
-              sizes="(min-width: 768px) 55vw, 100vw"
-              className="object-cover"
-            />
-          </div>
-          <p className="mt-3 text-sm italic text-soil/80">Cheesecake, our oldest tree. He comes to every workshop.</p>
-        </div>
+        <p className="absolute bottom-4 right-4 hidden text-sm italic text-linen/80 md:block md:right-8">
+          Cheesecake, our oldest tree. He comes to every workshop.
+        </p>
       </section>
 
       {/* Statement */}
