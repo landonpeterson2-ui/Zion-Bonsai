@@ -1,85 +1,47 @@
 import type { Metadata } from 'next'
-import { ShopifyBuyButton } from '@/components/shopify'
+import Link from 'next/link'
+import Eyebrow from '@/components/ui/Eyebrow'
+import PhotoHero from '@/components/ui/PhotoHero'
+import TextLink from '@/components/ui/TextLink'
+import Dates from '@/components/workshops/Dates'
+import Expect from '@/components/workshops/Expect'
+import TakeHome from '@/components/workshops/TakeHome'
+import Collage from '@/components/workshops/Collage'
+import { Faq, GroupsLine, Shaping, WhoFor } from '@/components/workshops/Rest'
+import { getPhoto } from '@/lib/photos'
 
 export const metadata: Metadata = {
-  title: 'Bonsai Workshops',
-  description: 'Hands-on bonsai workshops in Central Utah. One-time classes, multi-week series, and private sessions — no experience needed.',
+  title: 'Bonsai Workshops in Manti & Central Utah',
+  description:
+    'Beginner bonsai workshops in Sanpete County, Utah. Two screen-free hours, your hands in the soil, and a jade bonsai in a handmade pot. No experience needed.',
 }
 
-const workshopTypes = [
-  { title: 'One-Time Workshops', slug: 'one-time', icon: '✨', description: 'Perfect introduction to bonsai' },
-  { title: 'Workshop Series', slug: 'series', icon: '📚', description: 'Multi-week learning journey' },
-  { title: 'Private Sessions', slug: 'private', icon: '👤', description: 'Personalized instruction' },
-]
-
-// Add your Shopify workshop product handles here
-// Find the handle in Shopify Admin > Products > [Product] > URL handle
-const workshopHandles = [
-  'beginner-bonsai-workshop',
-  // Add more workshop handles here
-]
-
 export default function WorkshopsPage() {
+  const photo = getPhoto('workshop-tables-set-for-class')
   return (
-    <div className="container-custom py-12">
-      {/* Header */}
-      <div className="mb-12 text-center">
-        <span className="eyebrow text-coral">Workshops</span>
-        <h1 className="text-5xl md:text-6xl text-charcoal mt-3 mb-4">
-          Bonsai <span className="text-coral font-semibold">Workshops</span>
+    <>
+      <PhotoHero src={photo.src} alt={photo.alt} objectPosition="object-[40%_50%]">
+        <Eyebrow tone="linen">Workshops &middot; Manti, Utah</Eyebrow>
+        <h1 className="mt-6 text-[2.9rem] leading-[1.02] text-linen md:text-[4.5rem]">
+          Two hours. No notifications. <em>Just you, some soil, and a tree.</em>
         </h1>
-        <p className="text-xl text-charcoal/70 max-w-3xl mx-auto mb-6">
-          Our hands-on workshops cultivate mindfulness,
-          creativity, and connection through the ancient art of bonsai.
+        <p className="mt-6 max-w-md text-[17px] leading-[1.7] text-linen/90">
+          A beginner-friendly bonsai workshop in Sanpete County. Your phone stays in your bag, your hands get dirty, and
+          the tree is going to be yours.
         </p>
-        <div className="inline-block bg-sage-50 px-6 py-3 rounded-lg">
-          <p className="text-sm text-charcoal/80">
-            <span className="font-semibold text-coral">Wellness-focused</span> experiences for
-            individuals ages 25-45 seeking creative community connections
-          </p>
+        <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-5">
+          <Link href="#dates" className="btn-primary">See dates</Link>
+          <TextLink href="/events" tone="linen">Plan a private event</TextLink>
         </div>
-      </div>
-
-      {/* Workshop Type Info Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-        {workshopTypes.map((type) => (
-          <div
-            key={type.slug}
-            className="card text-center p-8 group"
-          >
-            <div className="text-5xl mb-3">{type.icon}</div>
-            <h3 className="text-xl text-charcoal mb-2">
-              {type.title}
-            </h3>
-            <p className="text-charcoal/70 text-sm">{type.description}</p>
-          </div>
-        ))}
-      </div>
-
-      {/* Workshops Grid */}
-      <div>
-        <h2 className="text-3xl text-charcoal mb-8">Available Workshops</h2>
-
-        {workshopHandles.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {workshopHandles.map((handle) => (
-              <div key={handle} className="card p-4">
-                <ShopifyBuyButton productHandle={handle} buttonText="Book Now" />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-12 bg-cream-dark rounded-lg border border-sage-200">
-            <div className="text-5xl mb-4">✨</div>
-            <p className="text-charcoal/80 mb-2 font-medium">
-              Workshop schedule coming soon!
-            </p>
-            <p className="text-sm text-charcoal/60">
-              Check back shortly for upcoming workshop dates.
-            </p>
-          </div>
-        )}
-      </div>
-    </div>
+      </PhotoHero>
+      <Dates />
+      <Expect />
+      <TakeHome />
+      <Collage />
+      <Shaping />
+      <WhoFor />
+      <Faq />
+      <GroupsLine />
+    </>
   )
 }
