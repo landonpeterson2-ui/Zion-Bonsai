@@ -1,5 +1,12 @@
 [
   {
+    "src": "/photos/cheesecake-blue-pot.jpg",
+    "alt": "Cheesecake, our oldest dwarf jade bonsai, with a thick curving trunk and layered canopy in a blue glazed pot",
+    "caption": "Cheesecake, our oldest tree. It comes to every workshop.",
+    "status": "collection",
+    "featured": true
+  },
+  {
     "src": "/photos/jade-maroon-bowl-quartz.jpg",
     "alt": "Small jade bonsai leaning over pale quartz in a shallow glossy maroon bowl",
     "caption": "A low, leaning style.",

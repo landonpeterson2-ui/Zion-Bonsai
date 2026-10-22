@@ -88,7 +88,7 @@ Instead of three competing directions, Opus built one from-scratch home concept 
 - No arch crop on photos ("not sure we love the arched thingy"). Photos are plain rectangles.
 - Header redesigned: logo centered as an emblem (64px mobile / 88px desktop), nav split either side, Book on the right; mobile is menu · logo · Book. Header height 72px mobile / 104px desktop.
 - The instructor photo (`workshop-instructor-holding-jade-roots.jpg`) is **Landon**. OK to name him in captions and alt text.
-- Hero tree should be **Zeus or Cheesecake** (named trees; Cheesecake is the oldest). Waiting on photos; `jade-dark-tray-wide-canopy.jpg` holds the spot until then.
+- Hero tree should be **Zeus or Cheesecake** (named trees; Cheesecake is the oldest). **Cheesecake** is `cheesecake-blue-pot.jpg` (Landon's IMG_7314, the big tree in the blue glazed pot; also visible in `workshop-display-table-doorway.jpg` and `workshop-tables-set-for-class.jpg`). It's now the home hero. Gallery status `collection` = our own trees, not for sale. Zeus: no photo or story yet.
 
 ## Open items (from Landon & Cass)
 - [ ] Google Form URL(s) for registration

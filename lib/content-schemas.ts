@@ -73,7 +73,8 @@ export const galleryItemSchema = z.object({
   src: z.string().min(1),
   alt: z.string().min(1),
   caption: z.string(),
-  status: z.enum(['sold', 'available', 'workshop']),
+  // collection = our own trees (e.g. Cheesecake), not for sale
+  status: z.enum(['sold', 'available', 'workshop', 'collection']),
   featured: z.boolean(),
 })
 export const gallerySchema = z.array(galleryItemSchema)

@@ -60,14 +60,15 @@ export default function HomeConcept() {
         <div className="md:col-span-7 md:pl-6">
           <div className="relative aspect-[4/5] overflow-hidden md:aspect-[5/6]">
             <Image
-              src="/photos/jade-dark-tray-wide-canopy.jpg"
-              alt="Jade bonsai with a thick, gnarled trunk and wide layered branches in a dark rectangular tray"
+              src="/photos/cheesecake-blue-pot.jpg"
+              alt="Cheesecake, our oldest dwarf jade bonsai, with a thick curving trunk and layered canopy in a blue glazed pot"
               fill
               priority
               sizes="(min-width: 768px) 55vw, 100vw"
               className="object-cover"
             />
           </div>
+          <p className="mt-3 text-sm italic text-soil/80">Cheesecake, our oldest tree. It comes to every workshop.</p>
         </div>
       </section>
 
