@@ -36,6 +36,10 @@ yarn-error.log*
 next-env.d.ts
 
 # Claude Code
-.claude/
+.claude/*
+!.claude/agents/
 
 /lib/generated/prisma
+
+# Raw photo drop folder (optimized output in public/photos is committed)
+photos-inbox/
