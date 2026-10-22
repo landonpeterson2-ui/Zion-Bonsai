@@ -16,7 +16,7 @@ Check, and cite file:line for every failure:
 4. **Voice and facts:** tool policy is correct wherever tools come up. No invented testimonials, numbers, prices, or history. No business mechanics. Taglines match exactly. The unplugging message is present and plain, not spa-speak.
 5. **Booking:** no payment links on the site; registration goes only to the Google Form URL from content.
 6. **Accessibility:** alt text describes the actual image, form inputs have labels, interactive elements are keyboard reachable with visible focus, motion respects reduced motion, and one h1 per page.
-7. **Mobile and visuals:** serve the build (`npx next start -p 31NN`, never 3000/3001), run `SHOT_HEIGHT=5000 node scripts/shot.mjs http://localhost:31NN/<route>`, and look at both PNGs with Read. Also read the base (unprefixed) classes as the 375px layout. Flag overflow, cramped spacing, tap targets under 44px, and anything that looks off-brand. `Reveal` sections may render blank in phone shots; that's a capture artifact.
+7. **Mobile and visuals:** serve the build (`npx next start -p 31NN`, never 3000/3001), run `node scripts/shot.mjs http://localhost:31NN/<route>`, and look at both PNGs with Read. Also read the base (unprefixed) classes as the 375px layout. Flag overflow, cramped spacing, tap targets under 44px, and anything that looks off-brand.
 8. **Content:** no hardcoded dates, links, emails, or phone numbers in components.
 
 Output exactly one of:
