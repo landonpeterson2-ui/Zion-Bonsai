@@ -6,7 +6,7 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - [x] 00 Fix lint tooling
 - [x] 01 Tokens, fonts, base styles — after 00
 - [x] 02 Content files and loader — after 00 (parallel with 01)
-- [ ] 03 Header, footer, navigation — after 01 + 02
+- [x] 03 Header, footer, navigation — after 01 + 02
 - [ ] 04 Redirects, sitemap, robots — after 02
 - [ ] 05 Optimize and catalog photos — after 02
 
@@ -47,3 +47,4 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - 00: Added eslint.config.mjs (flat config), lint script is now `eslint .`; unescaped-entity errors fixed mechanically; trimmed .env.example. Lint and build exit 0.
 - 01: Brand tokens are RGB-channel CSS vars in globals.css, mapped in tailwind.config.ts; legacy coral/sage scales, olive, cream, charcoal kept under a LEGACY comment. Montserrat/Open Sans/Satisfy via next/font; focus ring, reduced-motion, .reveal and components/ui/Reveal.tsx added. Old `.bg-linen` class renamed `.bg-grain-legacy` (collided with the `linen` token); `.btn-outline` now aliases `.btn-secondary`.
 - 02: Added content/*.json, content/README.md and lib/content.ts (zod, parsed at module load; getters for site, season, workshops, partners, gallery, faq). `eventsInquiryUrl` (null) added to site.json for task 22. Schemas live in lib/content-schemas.ts; `npm run build` first runs the `prebuild` script (scripts/check-content.mjs, plain Node type stripping, needs Node 22.18+), which validates every content file and exits 1 with a readable error naming the file and field. Tested with a bad date: build exit 1, then exit 0 after revert.
+- 03: Header split into server Header.tsx (reads getSite) + client HeaderNav.tsx (menu state, aria-current squiggle). Menu open state is keyed to the pathname it opened on, so route changes close it without an effect. Footer reads getSite(); nav items/footer groups live in components/layout/nav.ts; skip link, main#main and global [id] scroll-margin-top added.
