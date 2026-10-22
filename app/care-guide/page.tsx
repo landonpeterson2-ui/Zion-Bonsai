@@ -1,229 +1,218 @@
 import type { Metadata } from 'next'
-import Image from 'next/image'
+import Link from 'next/link'
+import Eyebrow from '@/components/ui/Eyebrow'
+import Reveal from '@/components/ui/Reveal'
+import Section from '@/components/ui/Section'
+import SectionHeading from '@/components/ui/SectionHeading'
+import TextLink from '@/components/ui/TextLink'
+import { getSite } from '@/lib/content'
 
 export const metadata: Metadata = {
-  title: 'Dwarf Jade Care Guide',
-  description: 'Everything you need to know about caring for your Portulacaria afra (Dwarf Jade) bonsai: watering, light, temperature, fertilizing, pruning, and repotting.',
+  title: 'Jade Bonsai Care Guide',
+  description:
+    'How to water a jade bonsai, plus dwarf jade care for Central Utah: the leaf snap test, light, seasons, soil and growth stages.',
+}
+
+const jumps = [
+  { id: 'watering', label: 'Watering' },
+  { id: 'snap-test', label: 'Snap test' },
+  { id: 'light', label: 'Light' },
+  { id: 'seasons', label: 'Seasons' },
+  { id: 'stages', label: 'Growth stages' },
+  { id: 'soil', label: 'Soil' },
+  { id: 'return', label: 'Come back' },
+]
+
+// Stage names are placeholders until Landon supplies them.
+const stages = ['Plantlet', '[STAGE NAME]', '[STAGE NAME]', '[STAGE NAME]', 'Established']
+
+/** Two-column block: numbered label left, content right. */
+function Block({
+  n,
+  title,
+  children,
+}: {
+  n: string
+  title: React.ReactNode
+  children: React.ReactNode
+}) {
+  return (
+    <Reveal className="container-custom grid gap-6 md:grid-cols-12 md:gap-10">
+      <div className="md:col-span-5">
+        <Eyebrow>{n}</Eyebrow>
+        <h2 className="mt-4 text-[2.2rem] leading-[1.05] md:text-[3rem]">{title}</h2>
+      </div>
+      <div className="max-w-xl space-y-4 text-lg leading-relaxed text-forest md:col-span-7">
+        {children}
+      </div>
+    </Reveal>
+  )
+}
+
+function DropIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1" aria-hidden="true">
+      <path d="M12 3c3 4.2 6 7.4 6 11a6 6 0 0 1-12 0c0-3.6 3-6.8 6-11Z" />
+    </svg>
+  )
 }
 
 export default function CareGuidePage() {
+  const site = getSite()
+
   return (
-    <div className="container-custom py-12">
-      <div className="max-w-4xl mx-auto">
-        <span className="eyebrow text-coral">Care Guide</span>
-        <h1 className="text-5xl md:text-6xl text-charcoal mt-3 mb-4">
-          <span className="text-coral font-semibold">Dwarf Jade</span> Care Guide
+    <>
+      <header className="container-custom pb-14 pt-16 md:pb-20 md:pt-24">
+        <Eyebrow>Care guide</Eyebrow>
+        <h1 className="mt-5 max-w-3xl text-[2.9rem] leading-[1.02] md:text-[5rem]">
+          Keeping your jade <em>happy</em>
         </h1>
-        <p className="text-xl text-charcoal/70 mb-12">
-          Everything you need to know about caring for your Portulacaria afra bonsai
+        <p className="mt-6 max-w-xl text-lg leading-relaxed text-forest">
+          For past attendees and the curious. Good news: jades are forgiving. Get the watering right
+          and the rest is easy.
         </p>
+        <nav aria-label="On this page" className="mt-10 border-y border-forest/15 py-3">
+          <ul className="flex flex-wrap gap-x-6">
+            {jumps.map((j) => (
+              <li key={j.id}>
+                <a
+                  href={`#${j.id}`}
+                  className="inline-flex min-h-[44px] items-center font-label text-[11px] font-semibold uppercase tracking-[0.16em] text-moss hover:text-forest"
+                >
+                  {j.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </header>
 
-        {/* Quick Reference */}
-        <div className="card p-8 mb-12 bg-sage border-none">
-          <h2 className="text-3xl text-cream-light mb-6">Quick Reference</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="flex items-start gap-4">
-              <Image src="/icons/sun.png" alt="Sunlight" width={60} height={60} className="w-14 h-14 flex-shrink-0" />
-              <div>
-                <p className="text-xl font-semibold text-charcoal mb-1">Sunlight</p>
-                <p className="text-cream-light/90">Bright to medium sunlight</p>
-                <p className="text-cream-light/70 text-sm">6+ hours per day</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <Image src="/icons/water.png" alt="Water" width={60} height={60} className="w-14 h-14 flex-shrink-0" />
-              <div>
-                <p className="text-xl font-semibold text-charcoal mb-1">Water</p>
-                <p className="text-cream-light/90">Moderate watering</p>
-                <p className="text-cream-light/70 text-sm">Once a week in winter, 2-3x weekly in summer</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <Image src="/icons/temperature.png" alt="Temperature" width={60} height={60} className="w-14 h-14 flex-shrink-0" />
-              <div>
-                <p className="text-xl font-semibold text-charcoal mb-1">Temperature</p>
-                <p className="text-cream-light/90">Warm & humid is best</p>
-                <p className="text-cream-light/70 text-sm">55°F - 95°F ideal range</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <Image src="/icons/fertilizer.png" alt="Fertilizer" width={60} height={60} className="w-14 h-14 flex-shrink-0" />
-              <div>
-                <p className="text-xl font-semibold text-charcoal mb-1">Fertilizer</p>
-                <p className="text-cream-light/90">Regular feeding</p>
-                <p className="text-cream-light/70 text-sm">Every other month during growing season</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Detailed Care Instructions */}
-        <div className="space-y-8">
-          {/* Watering */}
-          <div className="card p-8">
-            <h3 className="text-2xl text-charcoal mb-4">💧 Watering</h3>
-            <div className="space-y-4 text-charcoal/80">
-              <p>
-                Portulacaria afra is a succulent, which means it stores water in its leaves and can
-                tolerate some drought. However, for healthy growth as a bonsai, consistent watering
-                is important.
-              </p>
-              <div>
-                <p className="font-semibold text-coral mb-2">Winter (Cold months):</p>
-                <ul className="list-disc list-inside space-y-1 ml-4">
-                  <li>Water once a week</li>
-                  <li>Allow soil to dry slightly between waterings</li>
-                  <li>Reduce watering if plant goes dormant</li>
-                </ul>
-              </div>
-              <div>
-                <p className="font-semibold text-coral mb-2">Summer (Warm months):</p>
-                <ul className="list-disc list-inside space-y-1 ml-4">
-                  <li>Water 2-3 times per week</li>
-                  <li>Check soil daily during hot weather</li>
-                  <li>Water thoroughly until it drains from bottom</li>
-                </ul>
-              </div>
-              <p className="bg-sage-50 p-3 rounded">
-                <strong>Tip:</strong> Water in the morning to allow excess moisture to evaporate during the day.
-              </p>
-            </div>
-          </div>
-
-          {/* Light */}
-          <div className="card p-8">
-            <h3 className="text-2xl text-charcoal mb-4">☀️ Light Requirements</h3>
-            <div className="space-y-4 text-charcoal/80">
-              <p>
-                Dwarf Jade thrives in bright light and can tolerate direct sunlight, especially
-                when acclimated gradually.
-              </p>
-              <ul className="list-disc list-inside space-y-2 ml-4">
-                <li>Provide 6+ hours of bright light daily</li>
-                <li>South or west-facing windows are ideal indoors</li>
-                <li>Can be placed outdoors in partial to full sun during warm months</li>
-                <li>Leaves may develop red edges in bright light (this is normal and attractive)</li>
-                <li>Insufficient light leads to leggy growth and pale leaves</li>
-              </ul>
-              <p className="bg-sage-50 p-3 rounded">
-                <strong>Tip:</strong> When moving your plant to brighter light, do so gradually over 1-2 weeks
-                to prevent sunburn.
-              </p>
-            </div>
-          </div>
-
-          {/* Temperature */}
-          <div className="card p-8">
-            <h3 className="text-2xl text-charcoal mb-4">🌡️ Temperature & Humidity</h3>
-            <div className="space-y-4 text-charcoal/80">
-              <p>
-                Portulacaria afra is native to South Africa and prefers warm temperatures.
-              </p>
-              <ul className="list-disc list-inside space-y-2 ml-4">
-                <li>Ideal temperature range: 55°F - 95°F (13°C - 35°C)</li>
-                <li>Can tolerate brief periods down to 40°F (4°C)</li>
-                <li>Protect from frost - bring indoors if temperatures drop below 40°F</li>
-                <li>Prefers moderate to high humidity but adapts to average household humidity</li>
-                <li>Good air circulation is beneficial</li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Feeding */}
-          <div className="card p-8">
-            <h3 className="text-2xl text-charcoal mb-4">🌱 Fertilizing</h3>
-            <div className="space-y-4 text-charcoal/80">
-              <p>
-                Regular feeding promotes healthy growth and vibrant foliage.
-              </p>
-              <ul className="list-disc list-inside space-y-2 ml-4">
-                <li>Fertilize every other month during the growing season (spring through fall)</li>
-                <li>Use a balanced fertilizer (10-10-10 or similar) at half strength</li>
-                <li>Reduce or stop fertilizing in winter when growth slows</li>
-                <li>Organic options: diluted fish emulsion or compost tea</li>
-              </ul>
-              <p className="bg-sage-50 p-3 rounded">
-                <strong>Tip:</strong> Always water before fertilizing to prevent root burn.
-              </p>
-            </div>
-          </div>
-
-          {/* Pruning & Shaping */}
-          <div className="card p-8">
-            <h3 className="text-2xl text-charcoal mb-4">✂️ Pruning & Shaping</h3>
-            <div className="space-y-4 text-charcoal/80">
-              <p>
-                Dwarf Jade responds well to pruning and can be shaped into beautiful bonsai forms.
-              </p>
-              <ul className="list-disc list-inside space-y-2 ml-4">
-                <li>Prune during growing season for best results</li>
-                <li>Use sharp, clean scissors or bonsai shears</li>
-                <li>Remove crossing branches and those growing straight up or down</li>
-                <li>Wiring can be done but isn&apos;t always necessary</li>
-                <li>Branches become brittle with age - wire young, flexible growth</li>
-                <li>Pinch back new growth to encourage ramification</li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Repotting */}
-          <div className="card p-8">
-            <h3 className="text-2xl text-charcoal mb-4">🏺 Repotting</h3>
-            <div className="space-y-4 text-charcoal/80">
-              <p>
-                Repotting refreshes the soil and promotes healthy root development.
-              </p>
-              <ul className="list-disc list-inside space-y-2 ml-4">
-                <li>Repot young plants every 2 years</li>
-                <li>Mature specimens can go 3-4 years between repotting</li>
-                <li>Best time: early spring before new growth begins</li>
-                <li>Use well-draining bonsai soil mix (50% organic, 50% inorganic)</li>
-                <li>Trim up to 1/3 of root mass when repotting</li>
-                <li>Water thoroughly after repotting and keep out of direct sun for 1-2 weeks</li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Common Issues */}
-          <div className="card p-8 bg-coral-50">
-            <h3 className="text-2xl text-charcoal mb-4">⚠️ Common Issues</h3>
-            <div className="space-y-4 text-charcoal/80">
-              <div>
-                <p className="font-semibold text-coral">Leaf Drop:</p>
-                <p>Usually caused by overwatering or sudden environmental changes. Adjust watering and keep conditions stable.</p>
-              </div>
-              <div>
-                <p className="font-semibold text-coral">Wrinkled Leaves:</p>
-                <p>Sign of underwatering. Water thoroughly and establish a consistent watering schedule.</p>
-              </div>
-              <div>
-                <p className="font-semibold text-coral">Leggy Growth:</p>
-                <p>Insufficient light. Move to a brighter location and prune back leggy stems.</p>
-              </div>
-              <div>
-                <p className="font-semibold text-coral">Pests:</p>
-                <p>Occasionally affected by mealybugs or aphids. Treat with insecticidal soap or neem oil.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* CTA */}
-        <div className="text-center mt-12 p-8 bg-olive rounded-lg text-cream-light">
-          <h3 className="text-3xl mb-4">Questions?</h3>
-          <p className="text-lg mb-6">
-            Join one of our workshops or reach out for personalized care advice!
+      <Section id="watering" tone="paper-deep">
+        <Block n="01" title={<>The one thing to <em>get right</em></>}>
+          <p>Water thoroughly, until it drains completely out the bottom. Then let it dry out.</p>
+          <p>
+            It isn&apos;t about whether the soil <em>feels</em> dry. It&apos;s the full soak, then the
+            wait.
           </p>
-          <div className="flex gap-4 justify-center">
-            <a href="/workshops" className="bg-cream-light text-olive px-7 py-3 rounded-full font-semibold hover:bg-cream-dark transition-colors">
-              View Workshops
-            </a>
-            <a href="mailto:zionbonsaiplants@gmail.com" className="btn-primary">
-              Contact Us
-            </a>
+          <p className="flex items-start gap-3 border-l border-clay pl-4">
+            <span className="mt-0.5 shrink-0 text-moss"><DropIcon /></span>
+            <span>
+              Bonsai hate wet feet. Never let the roots sit in water. Jades store water in their
+              stems and leaves, so they can wait.
+            </span>
+          </p>
+        </Block>
+      </Section>
+
+      <Section id="snap-test">
+        <Block n="02" title={<>The leaf <em>snap test</em></>}>
+          <p>Not sure whether it&apos;s time? Snap a leaf in half.</p>
+          <ul className="divide-y divide-forest/15 border-y border-forest/15">
+            <li className="py-4">
+              <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-moss">
+                Firm and wet inside
+              </span>
+              <p className="mt-1">Hydrated. Wait.</p>
+            </li>
+            <li className="py-4">
+              <span className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-clay">
+                Limp and dry inside
+              </span>
+              <p className="mt-1">Time to water.</p>
+            </li>
+          </ul>
+          <div className="relative !mt-8 border border-dashed border-forest/30 px-6 py-12 text-center">
+            <span className="absolute -top-2.5 left-6 bg-paper px-2 font-label text-[10px] font-semibold uppercase tracking-[0.2em] text-soil">
+              Placeholder
+            </span>
+            <p className="font-display text-xl italic text-forest">[PHOTO &mdash; snapped jade leaf]</p>
           </div>
+        </Block>
+      </Section>
+
+      <Section id="light" tone="paper-deep">
+        <Block n="03" title={<>Light, and <em>where to keep it</em></>}>
+          <p>
+            Dwarf jade (<em>Portulacaria</em>) and jade (<em>Crassula</em>) thrive indoors,
+            year-round, in Central Utah. That&apos;s a real advantage over outdoor bonsai here.
+          </p>
+          <p>Give it a bright spot by a window.</p>
+        </Block>
+      </Section>
+
+      <Section id="seasons">
+        <Block n="04" title={<>Seasons, <em>paced</em></>}>
+          <p>Summer is the faster growth season.</p>
+          <p>Fall and winter are slower. Not dormant, just paced.</p>
+        </Block>
+      </Section>
+
+      <Section id="stages" tone="paper-deep">
+        <div className="container-custom">
+          <SectionHeading eyebrow="05">
+            Growth <em>stages</em>
+          </SectionHeading>
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-forest">
+            We label every tree by stage, from a young plantlet to a multi-year established tree.
+          </p>
+          <Reveal>
+            <ol className="relative mt-14 md:mt-20 md:grid md:grid-cols-5">
+              <span
+                aria-hidden="true"
+                className="absolute bottom-2 left-[5px] top-2 w-px bg-forest/30 md:bottom-auto md:left-0 md:right-0 md:top-[5px] md:h-px md:w-auto"
+              />
+              {stages.map((s, i) => (
+                <li key={i} className="relative pb-10 pl-9 last:pb-0 md:pb-0 md:pl-0 md:pr-4 md:pt-9">
+                  <span
+                    aria-hidden="true"
+                    className="absolute left-0 top-[5px] h-px w-[11px] bg-forest md:top-0 md:h-[11px] md:w-px"
+                  />
+                  <span className="font-label text-[11px] font-semibold uppercase tracking-[0.2em] text-moss">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <p className="mt-1 font-display text-2xl italic text-forest md:text-[1.7rem]">{s}</p>
+                </li>
+              ))}
+            </ol>
+          </Reveal>
         </div>
-      </div>
-    </div>
+      </Section>
+
+      <Section id="soil">
+        <Block n="06" title={<>Our <em>soil</em></>}>
+          <p>
+            It&apos;s our own custom mix, engineered to hold just enough moisture without staying
+            soggy.
+          </p>
+        </Block>
+      </Section>
+
+      <Section id="return" tone="paper-deep">
+        <Block n="07" title={<>When to <em>come back</em></>}>
+          <p>
+            Six to nine months after your workshop, come back for a return shaping session. We&apos;ll
+            shape and train your tree together.
+          </p>
+          <p>
+            <TextLink href="/workshops">See workshops</TextLink>
+          </p>
+        </Block>
+      </Section>
+
+      <section className="container-custom py-24 text-center md:py-32">
+        <h2 className="text-[2.4rem] leading-[1.05] md:text-[3.25rem]">
+          Questions about <em>your tree?</em>
+        </h2>
+        <p className="mt-5 text-lg text-forest">
+          Write us at{' '}
+          <a href={`mailto:${site.email}`} className="text-clay underline underline-offset-4">
+            {site.email}
+          </a>
+          .
+        </p>
+        <p className="mt-4 font-script text-2xl text-soil">Come grow with us.</p>
+        <Link href="/workshops#dates" className="btn-primary mt-8">Book a workshop</Link>
+      </section>
+    </>
   )
 }
