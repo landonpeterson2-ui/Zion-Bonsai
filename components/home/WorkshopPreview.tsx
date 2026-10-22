@@ -1,49 +1,77 @@
-export default function WorkshopPreview() {
-  const features = [
-    {
-      emoji: '🌿',
-      title: 'Hands-on learning',
-      description:
-        'We guide you through every step, from selecting your tree to shaping and potting it.',
-    },
-    {
-      emoji: '🪴',
-      title: 'Beginner-friendly plants',
-      description:
-        'We work with succulents and indoor-tolerant varieties that are forgiving and beautiful.',
-    },
-    {
-      emoji: '🤝',
-      title: 'Good company',
-      description:
-        'Small groups (8-12 people) mean you get personalized attention and real connection.',
-    },
-    {
-      emoji: '🏡',
-      title: 'Take it home',
-      description:
-        "Your tree is yours to keep and grow. We'll teach you how to care for it long after the workshop ends.",
-    },
-  ]
+import Link from 'next/link'
+import Image from 'next/image'
 
+const workshopCards = [
+  {
+    slug: 'one-time',
+    title: 'One-Time Workshops',
+    description: 'Perfect introduction to bonsai',
+    tags: ['2 hours', 'Beginner'],
+    image: '/gallery/3.jpeg',
+    alt: 'Bonsai in a white hexagonal pot',
+  },
+  {
+    slug: 'series',
+    title: 'Workshop Series',
+    description: 'Multi-week learning journey',
+    tags: ['Multi-week', 'All levels'],
+    image: '/gallery/8.jpeg',
+    alt: 'Bonsai in a grey ceramic pot',
+  },
+  {
+    slug: 'private',
+    title: 'Private Sessions',
+    description: 'Personalized instruction',
+    tags: ['Flexible', 'Groups welcome'],
+    image: '/gallery/12.jpeg',
+    alt: 'Bonsai in a white tapered pot',
+  },
+]
+
+export default function WorkshopPreview() {
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-br from-sage-50 to-cream">
+    <section className="bg-cream-dark py-16 md:py-24">
       <div className="container-custom">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            What to <span className="text-coral">Expect</span>
-          </h2>
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+          <div>
+            <span className="eyebrow text-sage-700">Workshops</span>
+            <h2 className="text-3xl md:text-4xl mt-4 max-w-lg">
+              Start with your hands, not your screen.
+            </h2>
+          </div>
+          <Link href="/workshops" className="font-semibold text-coral-600 border-b-[1.5px] border-coral-600 pb-0.5 self-start md:self-auto">
+            View all workshops &rarr;
+          </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {features.map((feature) => (
-            <div key={feature.title} className="card">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-9">
+          {workshopCards.map((card) => (
+            <div key={card.slug} className="card border-t-4 border-t-coral">
+              <div className="relative h-[250px] w-full">
+                <Image
+                  src={card.image}
+                  alt={card.alt}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover"
+                />
+              </div>
               <div className="p-6">
-                <div className="text-3xl mb-3">{feature.emoji}</div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600">{feature.description}</p>
+                <div className="flex gap-2 mb-4">
+                  {card.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="text-xs font-semibold text-sage-700 border border-sage-300 rounded-full px-2.5 py-1"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <h3 className="text-xl mb-2">{card.title}</h3>
+                <p className="text-[15px] text-charcoal/70 mb-4">{card.description}</p>
+                <Link href="/workshops" className="text-sm font-semibold text-coral-600">
+                  Reserve your seat &rarr;
+                </Link>
               </div>
             </div>
           ))}

@@ -1,50 +1,57 @@
+import type { Metadata } from 'next'
 import Image from 'next/image'
+
+export const metadata: Metadata = {
+  title: 'Dwarf Jade Care Guide',
+  description: 'Everything you need to know about caring for your Portulacaria afra (Dwarf Jade) bonsai: watering, light, temperature, fertilizing, pruning, and repotting.',
+}
 
 export default function CareGuidePage() {
   return (
     <div className="container-custom py-12">
       <div className="max-w-4xl mx-auto">
-        <h1 className="font-heading text-5xl md:text-6xl font-bold text-gray-900 mb-4">
-          <span className="text-coral">Dwarf Jade</span> Care Guide
+        <span className="eyebrow text-coral">Care Guide</span>
+        <h1 className="text-5xl md:text-6xl text-charcoal mt-3 mb-4">
+          <span className="text-coral font-semibold">Dwarf Jade</span> Care Guide
         </h1>
-        <p className="text-xl text-gray-600 mb-12">
+        <p className="text-xl text-charcoal/70 mb-12">
           Everything you need to know about caring for your Portulacaria afra bonsai
         </p>
 
         {/* Quick Reference */}
-        <div className="card p-8 mb-12 bg-sage">
-          <h2 className="text-3xl font-semibold text-gray-900 mb-6">Quick Reference</h2>
+        <div className="card p-8 mb-12 bg-sage border-none">
+          <h2 className="text-3xl text-cream-light mb-6">Quick Reference</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="flex items-start gap-4">
               <Image src="/icons/sun.png" alt="Sunlight" width={60} height={60} className="w-14 h-14 flex-shrink-0" />
               <div>
-                <p className="text-xl font-semibold text-coral mb-1">Sunlight</p>
-                <p className="text-gray-700">Bright to medium sunlight</p>
-                <p className="text-gray-600 text-sm">6+ hours per day</p>
+                <p className="text-xl font-semibold text-charcoal mb-1">Sunlight</p>
+                <p className="text-cream-light/90">Bright to medium sunlight</p>
+                <p className="text-cream-light/70 text-sm">6+ hours per day</p>
               </div>
             </div>
             <div className="flex items-start gap-4">
               <Image src="/icons/water.png" alt="Water" width={60} height={60} className="w-14 h-14 flex-shrink-0" />
               <div>
-                <p className="text-xl font-semibold text-coral mb-1">Water</p>
-                <p className="text-gray-700">Moderate watering</p>
-                <p className="text-gray-600 text-sm">Once a week in winter, 2-3x weekly in summer</p>
+                <p className="text-xl font-semibold text-charcoal mb-1">Water</p>
+                <p className="text-cream-light/90">Moderate watering</p>
+                <p className="text-cream-light/70 text-sm">Once a week in winter, 2-3x weekly in summer</p>
               </div>
             </div>
             <div className="flex items-start gap-4">
               <Image src="/icons/temperature.png" alt="Temperature" width={60} height={60} className="w-14 h-14 flex-shrink-0" />
               <div>
-                <p className="text-xl font-semibold text-coral mb-1">Temperature</p>
-                <p className="text-gray-700">Warm & humid is best</p>
-                <p className="text-gray-600 text-sm">55°F - 95°F ideal range</p>
+                <p className="text-xl font-semibold text-charcoal mb-1">Temperature</p>
+                <p className="text-cream-light/90">Warm & humid is best</p>
+                <p className="text-cream-light/70 text-sm">55°F - 95°F ideal range</p>
               </div>
             </div>
             <div className="flex items-start gap-4">
               <Image src="/icons/fertilizer.png" alt="Fertilizer" width={60} height={60} className="w-14 h-14 flex-shrink-0" />
               <div>
-                <p className="text-xl font-semibold text-coral mb-1">Fertilizer</p>
-                <p className="text-gray-700">Regular feeding</p>
-                <p className="text-gray-600 text-sm">Every other month during growing season</p>
+                <p className="text-xl font-semibold text-charcoal mb-1">Fertilizer</p>
+                <p className="text-cream-light/90">Regular feeding</p>
+                <p className="text-cream-light/70 text-sm">Every other month during growing season</p>
               </div>
             </div>
           </div>
@@ -54,8 +61,8 @@ export default function CareGuidePage() {
         <div className="space-y-8">
           {/* Watering */}
           <div className="card p-8">
-            <h3 className="text-2xl font-semibold text-gray-900 mb-4">💧 Watering</h3>
-            <div className="space-y-4 text-gray-700">
+            <h3 className="text-2xl text-charcoal mb-4">💧 Watering</h3>
+            <div className="space-y-4 text-charcoal/80">
               <p>
                 Portulacaria afra is a succulent, which means it stores water in its leaves and can
                 tolerate some drought. However, for healthy growth as a bonsai, consistent watering
@@ -85,8 +92,8 @@ export default function CareGuidePage() {
 
           {/* Light */}
           <div className="card p-8">
-            <h3 className="text-2xl font-semibold text-gray-900 mb-4">☀️ Light Requirements</h3>
-            <div className="space-y-4 text-gray-700">
+            <h3 className="text-2xl text-charcoal mb-4">☀️ Light Requirements</h3>
+            <div className="space-y-4 text-charcoal/80">
               <p>
                 Dwarf Jade thrives in bright light and can tolerate direct sunlight, especially
                 when acclimated gradually.
@@ -107,8 +114,8 @@ export default function CareGuidePage() {
 
           {/* Temperature */}
           <div className="card p-8">
-            <h3 className="text-2xl font-semibold text-gray-900 mb-4">🌡️ Temperature & Humidity</h3>
-            <div className="space-y-4 text-gray-700">
+            <h3 className="text-2xl text-charcoal mb-4">🌡️ Temperature & Humidity</h3>
+            <div className="space-y-4 text-charcoal/80">
               <p>
                 Portulacaria afra is native to South Africa and prefers warm temperatures.
               </p>
@@ -124,8 +131,8 @@ export default function CareGuidePage() {
 
           {/* Feeding */}
           <div className="card p-8">
-            <h3 className="text-2xl font-semibold text-gray-900 mb-4">🌱 Fertilizing</h3>
-            <div className="space-y-4 text-gray-700">
+            <h3 className="text-2xl text-charcoal mb-4">🌱 Fertilizing</h3>
+            <div className="space-y-4 text-charcoal/80">
               <p>
                 Regular feeding promotes healthy growth and vibrant foliage.
               </p>
@@ -143,8 +150,8 @@ export default function CareGuidePage() {
 
           {/* Pruning & Shaping */}
           <div className="card p-8">
-            <h3 className="text-2xl font-semibold text-gray-900 mb-4">✂️ Pruning & Shaping</h3>
-            <div className="space-y-4 text-gray-700">
+            <h3 className="text-2xl text-charcoal mb-4">✂️ Pruning & Shaping</h3>
+            <div className="space-y-4 text-charcoal/80">
               <p>
                 Dwarf Jade responds well to pruning and can be shaped into beautiful bonsai forms.
               </p>
@@ -161,8 +168,8 @@ export default function CareGuidePage() {
 
           {/* Repotting */}
           <div className="card p-8">
-            <h3 className="text-2xl font-semibold text-gray-900 mb-4">🏺 Repotting</h3>
-            <div className="space-y-4 text-gray-700">
+            <h3 className="text-2xl text-charcoal mb-4">🏺 Repotting</h3>
+            <div className="space-y-4 text-charcoal/80">
               <p>
                 Repotting refreshes the soil and promotes healthy root development.
               </p>
@@ -179,8 +186,8 @@ export default function CareGuidePage() {
 
           {/* Common Issues */}
           <div className="card p-8 bg-coral-50">
-            <h3 className="text-2xl font-semibold text-gray-900 mb-4">⚠️ Common Issues</h3>
-            <div className="space-y-4 text-gray-700">
+            <h3 className="text-2xl text-charcoal mb-4">⚠️ Common Issues</h3>
+            <div className="space-y-4 text-charcoal/80">
               <div>
                 <p className="font-semibold text-coral">Leaf Drop:</p>
                 <p>Usually caused by overwatering or sudden environmental changes. Adjust watering and keep conditions stable.</p>
@@ -202,16 +209,16 @@ export default function CareGuidePage() {
         </div>
 
         {/* CTA */}
-        <div className="text-center mt-12 p-8 bg-gradient-to-br from-sage to-olive rounded-lg text-white">
-          <h3 className="text-3xl font-semibold mb-4">Questions?</h3>
+        <div className="text-center mt-12 p-8 bg-olive rounded-lg text-cream-light">
+          <h3 className="text-3xl mb-4">Questions?</h3>
           <p className="text-lg mb-6">
             Join one of our workshops or reach out for personalized care advice!
           </p>
           <div className="flex gap-4 justify-center">
-            <a href="/workshops" className="bg-white text-sage px-6 py-3 rounded-lg font-semibold hover:bg-cream transition-colors">
+            <a href="/workshops" className="bg-cream-light text-olive px-7 py-3 rounded-full font-semibold hover:bg-cream-dark transition-colors">
               View Workshops
             </a>
-            <a href="mailto:zionbonsaiplants@gmail.com" className="bg-coral text-white px-6 py-3 rounded-lg font-semibold hover:bg-coral-600 transition-colors">
+            <a href="mailto:zionbonsaiplants@gmail.com" className="btn-primary">
               Contact Us
             </a>
           </div>

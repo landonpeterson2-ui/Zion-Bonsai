@@ -42,14 +42,15 @@ const config: Config = {
           dark: '#5E6E25',
         },
         cream: {
-          DEFAULT: '#F8F6F1',
+          DEFAULT: '#AF8C57',
           dark: '#EFEBE0',
+          light: '#FBF8F3',
         },
+        charcoal: '#2A2A28',
       },
       fontFamily: {
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
-        heading: ['var(--font-heading)', 'sans-serif'],
-        script: ['var(--font-script)', 'cursive'],
+        heading: ['var(--font-heading)', 'serif'],
       },
     },
   },

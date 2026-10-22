@@ -1,36 +1,55 @@
 import type { Metadata } from 'next'
-import { Montserrat, Economica, Great_Vibes } from 'next/font/google'
+import { Work_Sans, Newsreader } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 
-// Main font - Montserrat
-const montserrat = Montserrat({
+// Body font - Work Sans
+const workSans = Work_Sans({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
+  weight: ['400', '500', '600'],
   variable: '--font-sans'
 })
 
-// Headline font - Economica
-const economica = Economica({
+// Heading font - Newsreader
+const newsreader = Newsreader({
   subsets: ['latin'],
-  weight: ['400', '700'],
+  style: ['normal', 'italic'],
+  weight: ['400', '500', '600'],
   variable: '--font-heading'
 })
 
-// Script font - Using Great Vibes as placeholder for Sweetbelly Script
-// Great Vibes is a similar elegant script font from Google Fonts
-// To use your actual Sweetbelly Script font, see instructions in README
-const scriptFont = Great_Vibes({
-  subsets: ['latin'],
-  weight: '400',
-  variable: '--font-script'
-})
+const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+const title = 'Zion Bonsai | Nurturing bonsai Nurtures the soul'
+const description = 'Unplug, create and grow together. Hands-on bonsai workshops and living art for wellness-focused individuals in Central Utah. Portulacaria afra (Dwarf Jade) bonsai at every stage.'
 
 export const metadata: Metadata = {
-  title: 'Zion Bonsai | Nurturing bonsai Nurtures the soul',
-  description: 'Unplug, create and grow together. Hands-on bonsai workshops and living art for wellness-focused individuals. Portulacaria afra (Dwarf Jade) bonsai at every stage.',
-  keywords: 'bonsai, dwarf jade, portulacaria afra, workshops, mindfulness, creativity, wellness, plant care',
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: title,
+    template: '%s | Zion Bonsai',
+  },
+  description,
+  keywords: 'bonsai, dwarf jade, portulacaria afra, workshops, mindfulness, creativity, wellness, plant care, Central Utah',
+  openGraph: {
+    title,
+    description,
+    url: siteUrl,
+    siteName: 'Zion Bonsai',
+    images: [{ url: '/gallery/1.jpeg', width: 1200, height: 1200 }],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title,
+    description,
+    images: ['/gallery/1.jpeg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 }
 
 export default function RootLayout({
@@ -40,7 +59,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${montserrat.variable} ${economica.variable} ${scriptFont.variable} font-sans antialiased bg-cream`}>
+      <body className={`${workSans.variable} ${newsreader.variable} font-sans antialiased bg-cream-light text-charcoal`}>
         <Header />
         <main className="min-h-screen">
           {children}

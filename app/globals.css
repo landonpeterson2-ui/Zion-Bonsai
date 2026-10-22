@@ -4,11 +4,12 @@
 
 @layer base {
   body {
-    @apply text-gray-900;
+    @apply text-charcoal;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-semibold;
+    @apply font-heading font-medium;
+    letter-spacing: -0.01em;
   }
 
   h1 {
@@ -25,23 +26,43 @@
 }
 
 @layer components {
+  .eyebrow {
+    @apply text-xs font-sans font-semibold uppercase tracking-widest;
+    letter-spacing: 0.12em;
+  }
+
   .btn-primary {
-    @apply bg-coral hover:bg-coral-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200;
+    @apply bg-coral hover:bg-coral-600 text-cream-light font-sans font-semibold py-3 px-7 rounded-full transition-colors duration-200;
   }
 
   .btn-secondary {
-    @apply bg-sage hover:bg-sage-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200;
+    @apply bg-sage hover:bg-sage-600 text-cream-light font-sans font-semibold py-3 px-7 rounded-full transition-colors duration-200;
   }
 
   .btn-outline {
-    @apply border-2 border-coral text-coral hover:bg-coral hover:text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200;
+    @apply border-[1.5px] border-coral text-coral hover:bg-coral hover:text-cream-light font-sans font-semibold py-[10.5px] px-7 rounded-full transition-colors duration-200;
   }
 
   .card {
-    @apply bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-200;
+    @apply bg-cream-light border border-black/[0.08] rounded-lg overflow-hidden transition-all duration-200;
+  }
+
+  .card:hover {
+    @apply -translate-y-0.5;
+    box-shadow: 0 18px 36px -22px rgba(42, 42, 40, 0.28);
   }
 
   .container-custom {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Woven-fiber grain + brush streaks, layered over whatever sits behind this element
+     (the page's flowing gradient) so the texture has no hard-edged color of its own */
+  .bg-linen {
+    background-image:
+      repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0px, rgba(255, 255, 255, 0.05) 1px, transparent 1px, transparent 3px),
+      repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.04) 0px, rgba(0, 0, 0, 0.04) 1px, transparent 1px, transparent 3px),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.06 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    background-blend-mode: overlay, overlay, overlay;
   }
 }
