@@ -5,7 +5,7 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 ## Phase 2 — Foundation
 - [x] 00 Fix lint tooling
 - [ ] 01 Tokens, fonts, base styles — after 00
-- [ ] 02 Content files and loader — after 00 (parallel with 01)
+- [x] 02 Content files and loader — after 00 (parallel with 01)
 - [ ] 03 Header, footer, navigation — after 01 + 02
 - [ ] 04 Redirects, sitemap, robots — after 02
 - [ ] 05 Optimize and catalog photos — after 02
@@ -43,3 +43,4 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 ## Milestone notes
 <!-- Short summaries / screenshots per task -->
 - 00: Added eslint.config.mjs (flat config), lint script is now `eslint .`; unescaped-entity errors fixed mechanically; trimmed .env.example. Lint and build exit 0.
+- 02: Added content/*.json, content/README.md and lib/content.ts (zod, parsed at module load; getters for site, season, workshops, partners, gallery, faq). `eventsInquiryUrl` (null) added to site.json for task 22. A deliberately bad date failed the build with a readable error naming the file and field. The loader is only checked at build once a page imports it (Phase 4).
