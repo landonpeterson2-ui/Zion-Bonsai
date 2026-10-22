@@ -7,21 +7,8 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { bookHref, getNavItems } from './nav'
 
-function Squiggle() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 60 8"
-      preserveAspectRatio="none"
-      className="pointer-events-none absolute -bottom-1 left-0 h-2 w-full text-coral"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-    >
-      <path d="M2 5 C 8 1, 12 7, 19 4 S 31 2, 38 5 S 50 7, 58 3" />
-    </svg>
-  )
+function ActiveMark() {
+  return <span aria-hidden="true" className="pointer-events-none absolute -bottom-1.5 left-0 h-px w-full bg-clay" />
 }
 
 export default function HeaderNav({ shopEnabled, cart }: { shopEnabled: boolean; cart: ReactNode }) {
@@ -94,7 +81,7 @@ export default function HeaderNav({ shopEnabled, cart }: { shopEnabled: boolean;
   }, [open, close])
 
   const desktopLink =
-    'relative inline-flex items-center min-h-[44px] font-heading font-semibold text-sm text-forest hover:text-clay transition-colors'
+    'relative inline-flex items-center min-h-[44px] font-heading font-semibold text-xs uppercase tracking-[0.14em] text-forest hover:text-clay transition-colors'
 
   return (
     <header ref={headerRef} className="sticky top-0 z-50 bg-paper border-b border-forest/10">
@@ -122,7 +109,7 @@ export default function HeaderNav({ shopEnabled, cart }: { shopEnabled: boolean;
               >
                 <span className="relative">
                   {item.label}
-                  {isActive(item.href) && <Squiggle />}
+                  {isActive(item.href) && <ActiveMark />}
                 </span>
               </Link>
             ))}
@@ -181,11 +168,11 @@ export default function HeaderNav({ shopEnabled, cart }: { shopEnabled: boolean;
                 href={item.href}
                 onClick={closeToContent}
                 aria-current={isActive(item.href) ? 'page' : undefined}
-                className="flex min-h-[56px] items-center font-heading text-xl font-bold text-forest"
+                className="flex min-h-[56px] items-center font-heading text-lg font-semibold text-forest"
               >
                 <span className="relative">
                   {item.label}
-                  {isActive(item.href) && <Squiggle />}
+                  {isActive(item.href) && <ActiveMark />}
                 </span>
               </Link>
             </li>

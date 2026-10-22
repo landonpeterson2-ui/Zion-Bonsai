@@ -82,12 +82,12 @@
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center min-h-[44px] bg-clay hover:bg-clay-dark text-linen font-sans font-semibold py-3 px-7 rounded-full transition-colors duration-200;
+    @apply inline-flex items-center justify-center min-h-[44px] bg-clay hover:bg-clay-dark text-linen font-heading text-xs font-semibold uppercase tracking-[0.14em] py-3 px-6 rounded-[3px] transition-colors duration-300;
   }
 
   .btn-secondary,
   .btn-outline {
-    @apply inline-flex items-center justify-center min-h-[44px] border-[1.5px] border-forest text-forest hover:bg-forest hover:text-linen font-sans font-semibold py-[10.5px] px-7 rounded-full transition-colors duration-200;
+    @apply inline-flex items-center justify-center min-h-[44px] border border-forest/60 text-forest hover:border-forest hover:bg-forest hover:text-linen font-heading text-xs font-semibold uppercase tracking-[0.14em] py-3 px-6 rounded-[3px] transition-colors duration-300;
   }
 
   .card {

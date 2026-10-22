@@ -11,12 +11,12 @@ Mobile menu has no label/aria state, footer links 404 (`/workshops/one-time`, `/
 - Logo left (`ZB Logo Transparent.png`, ~48px tall mobile, 56px desktop, `priority`).
 - Desktop nav (≥ `lg`): Workshops · Events · Gallery · Shop (only if `shopEnabled`) · Our Story · Care Guide, then a `.btn-primary` "Book a workshop" → `/workshops#dates`.
 - Mobile: logo, a compact "Book" button, and a menu button with `aria-label="Open menu"`, `aria-expanded`, `aria-controls`. Menu opens as a full-height panel on `paper`, links in Montserrat at a comfortable 1.25rem with 44px+ targets, Escape closes it, focus moves into the panel and returns to the button on close, body scroll locked while open, closes on route change.
-- Current page link gets `aria-current="page"` and a hand-drawn-feeling underline (SVG squiggle or uneven border) in `coral`.
+- Current page link gets `aria-current="page"` and a fine 1px `clay` underline. (Changed 2026-10-21 from a squiggle — see decisions.md "Refined, not kid-ish".)
 - ShopifyCart renders only when `shopEnabled`.
 - Header can be sticky but must stay short (≤ 72px) and must not cover anchor targets (add `scroll-margin-top` to sections).
 
 ### Footer (`components/layout/Footer.tsx`)
-- Background `soil`, text `linen`. Top edge: an irregular wavy/torn SVG edge instead of a straight line.
+- Background `soil`, text `linen`. Clean straight top edge. (Changed 2026-10-21 from a torn edge.)
 - Columns (stack on mobile): brand (logo + "Dirt. Creativity. Connection." in `font-script`), Visit (Workshops, Events, Gallery, Care Guide), About (Our Story, Partners, Contact), Connect (email, phone, Instagram, Facebook — from `getSite()`).
 - Sign-off line: "Come grow with us." in script.
 - Bottom row: © year · "Sanpete County, Central Utah".

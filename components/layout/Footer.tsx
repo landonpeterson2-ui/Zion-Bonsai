@@ -13,19 +13,8 @@ export default function Footer() {
   const site = getSite()
 
   return (
-    <footer className="relative mt-16 bg-soil text-linen">
-      {/* Irregular torn edge */}
-      <svg
-        aria-hidden="true"
-        viewBox="0 0 1200 40"
-        preserveAspectRatio="none"
-        className="absolute inset-x-0 top-0 h-6 w-full -translate-y-[calc(100%-1px)] text-soil sm:h-8"
-        fill="currentColor"
-      >
-        <path d="M0 40 L0 22 C40 10 70 30 120 18 S190 2 250 16 S330 34 390 20 S470 4 530 18 S620 36 690 22 S770 6 830 20 S920 34 980 18 S1070 4 1130 20 S1180 26 1200 14 L1200 40 Z" />
-      </svg>
-
-      <div className="container-custom pb-8 pt-10">
+    <footer className="mt-24 bg-soil text-linen">
+      <div className="container-custom pb-8 pt-16">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <Image
@@ -35,7 +24,9 @@ export default function Footer() {
               height={160}
               className="mb-3 h-24 w-24"
             />
-            <p className="font-script text-2xl">Dirt. Creativity. Connection.</p>
+            <p className="font-heading text-xs font-semibold uppercase tracking-[0.2em] text-linen/80">
+              Dirt. Creativity. Connection.
+            </p>
           </div>
 
           {footerGroups.map((group) => (
@@ -80,7 +71,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <p className="mt-10 font-script text-3xl">Come grow with us.</p>
+        <p className="mt-14 font-script text-2xl text-linen/90">Come grow with us.</p>
 
         <div className="mt-6 flex flex-col gap-1 border-t border-linen/20 pt-5 text-sm text-linen/80 sm:flex-row sm:justify-between">
           <p>&copy; {new Date().getFullYear()} Zion Bonsai</p>

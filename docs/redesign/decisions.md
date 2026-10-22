@@ -41,6 +41,13 @@ Redirects: `/about` → `/our-story`; `/workshops/*` → `/workshops`; `/gift` �
 
 **Visual direction.** Not chosen yet. Tasks 10–12 build three options; Landon & Cass pick at the Phase 3 checkpoint and record the choice here. Phase 4 tasks must follow the recorded choice.
 
+## 2026-10-21 — Refined, not kid-ish
+
+Landon, after seeing the new header/footer: "It needs to feel less kid-ish and more refined and organic."
+- Removed from the shell: coral squiggle under the active nav link (now a 1px clay rule), wavy torn footer edge, pill buttons (now 3px radius, uppercase tracked labels), two script lines in the footer (now one).
+- "Organic" = natural materials, photography, asymmetry, fine detail. Not hand-drawn/craft-fair motifs. See CLAUDE.md "Look and feel" for the do/don't list; it overrides handoff section 3's "hand-drawn-feeling dividers" and "imperfect circles" suggestions.
+- Direction A "Potting Shed" (torn paper, tape, tilted photos, dashed path) is replaced by "Studio" in tasks 10–12.
+
 ## Open items (from Landon & Cass)
 - [ ] Google Form URL(s) for registration
 - [ ] Upcoming workshop dates and prices

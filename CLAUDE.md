@@ -50,9 +50,21 @@ The site is mid-redesign on the `redesign` branch. The brief is [docs/redesign/h
 
 ## Look and feel
 
-Sunlit potting shed: warm paper backgrounds with grain, organic/irregular shapes, generous whitespace, real photos, slow subtle motion. Read section 3 of the handoff before any visual work.
+**Refined and organic — grown-up, never cute.** Think a ceramicist's studio or a botanical journal: calm, restrained, made by hand by adults who take the craft seriously but aren't precious about it. Read section 3 of the handoff before any visual work, and read the 2026-10-21 "Refined, not kid-ish" entry in `decisions.md`.
 
-Never: three identical icon cards in a row, gradient heroes, pastel spa styling, emoji as icons, countdowns or scarcity banners, popups, bouncing/flashing animation, carousels that auto-advance faster than ~8s.
+"Organic" comes from **real materials and composition**, not from cartoon shapes:
+- Photography does the heavy lifting: soil, roots, bark, glaze, hands, natural light. Let photos run large with generous margins.
+- Asymmetric, editorial layouts; quiet alignment; lots of whitespace.
+- Fine details: 1px rules in `forest/15`, small uppercase Montserrat labels with wide tracking, restrained numerals.
+- Gentle natural geometry is fine when used sparingly: a soft arch-topped image frame, a single subtle radius. One per page section at most.
+- Paper grain at a whisper.
+- Color is mostly paper, linen, forest and soil. Clay and coral are accents — a button, a thin rule, one numeral — never large playful fills.
+
+Type is restrained: Montserrat 600–700 in sentence case for headlines, sized with confidence but not shouting; Open Sans body at a comfortable 1.65 line height and ~65ch measure. **Script (`font-script`) appears at most once per page**, small, as a signature-like accent.
+
+Buttons are small-radius (3px) with uppercase tracked labels, not pills. Icons are thin-line (1.5px stroke) or absent.
+
+Never: squiggles, wavy/torn-paper edges, tape strips, stickers, blob masks, tilted/rotated photos, polaroid frames, doodles, bouncy pills, emoji, bright saturated fills, dashed "path" illustrations, three identical icon cards in a row, gradient heroes, pastel spa styling, countdowns or scarcity banners, popups, bouncing/flashing animation, carousels that auto-advance faster than ~8s.
 
 Motion: fades/rises under 600ms, triggered once on scroll. Everything must be static under `prefers-reduced-motion: reduce`.
 
