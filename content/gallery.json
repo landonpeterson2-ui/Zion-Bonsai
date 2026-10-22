@@ -1,1 +1,282 @@
-[]
+[
+  {
+    "src": "/photos/jade-maroon-bowl-quartz.jpg",
+    "alt": "Small jade bonsai leaning over pale quartz in a shallow glossy maroon bowl",
+    "caption": "A low, leaning style.",
+    "status": "sold",
+    "featured": false
+  },
+  {
+    "src": "/photos/jade-coral-speckle-pot.jpg",
+    "alt": "Young jade bonsai with red stems and bright leaves in a coral pot with white dashes",
+    "caption": "Fresh growth, ready for a new home.",
+    "status": "sold",
+    "featured": false
+  },
+  {
+    "src": "/photos/jade-white-faceted-pot.jpg",
+    "alt": "Slender jade bonsai with tiny leaves in a white faceted pot with a gold rim",
+    "caption": "",
+    "status": "sold",
+    "featured": false
+  },
+  {
+    "src": "/photos/jade-grey-faceted-pot.jpg",
+    "alt": "Small jade bonsai with red-tinged branches in a glossy grey faceted pot",
+    "caption": "",
+    "status": "sold",
+    "featured": false
+  },
+  {
+    "src": "/photos/jade-terracotta-tall-stem.jpg",
+    "alt": "Tall-stemmed jade bonsai with green leaves in a plain terracotta pot",
+    "caption": "",
+    "status": "sold",
+    "featured": false
+  },
+  {
+    "src": "/photos/jade-ochre-two-tone-pot.jpg",
+    "alt": "Branching jade bonsai with coral-pink stems and a small stone in an ochre and cream pot",
+    "caption": "",
+    "status": "sold",
+    "featured": false
+  },
+  {
+    "src": "/photos/jade-teal-square-pot.jpg",
+    "alt": "Y-shaped jade bonsai with two upright branches in a teal square pot with saucer",
+    "caption": "",
+    "status": "sold",
+    "featured": false
+  },
+  {
+    "src": "/photos/jade-grey-rectangle-pot.jpg",
+    "alt": "Jade bonsai with spotted leaves and a red agate at the base in a grey rectangular pot",
+    "caption": "",
+    "status": "sold",
+    "featured": false
+  },
+  {
+    "src": "/photos/jade-black-matte-pot.jpg",
+    "alt": "Upright jade bonsai with variegated leaves and a stone in a matte black pot with saucer",
+    "caption": "",
+    "status": "sold",
+    "featured": false
+  },
+  {
+    "src": "/photos/jade-broad-leaf-white-hex-pot.jpg",
+    "alt": "Jade with broad red-edged leaves in a white hexagonal pot with a gold rim and gravel",
+    "caption": "",
+    "status": "sold",
+    "featured": false
+  },
+  {
+    "src": "/photos/jade-blue-glaze-low-pot.jpg",
+    "alt": "Small jade bonsai with a swollen trunk and bent branches in a low blue glazed pot",
+    "caption": "Character in the trunk.",
+    "status": "sold",
+    "featured": false
+  },
+  {
+    "src": "/photos/jade-white-cone-pot-purple-stone.jpg",
+    "alt": "Young jade bonsai with a purple stone at its base in a white tapered pot",
+    "caption": "",
+    "status": "sold",
+    "featured": false
+  },
+  {
+    "src": "/photos/jade-scalloped-blue-bowl.jpg",
+    "alt": "Jade bonsai with a twisting trunk in a scalloped blue glazed bowl with red gravel",
+    "caption": "",
+    "status": "sold",
+    "featured": false
+  },
+  {
+    "src": "/photos/jade-terracotta-flower-pot.jpg",
+    "alt": "Full-canopied jade bonsai with a red stone at the base in a flower-shaped terracotta pot",
+    "caption": "",
+    "status": "sold",
+    "featured": false
+  },
+  {
+    "src": "/photos/jade-dark-tray-wide-canopy.jpg",
+    "alt": "Jade bonsai with a thick, gnarled trunk and wide layered branches in a dark rectangular tray",
+    "caption": "A trunk with some years behind it.",
+    "status": "sold",
+    "featured": true
+  },
+  {
+    "src": "/photos/jade-white-pot-dense-canopy.jpg",
+    "alt": "Dwarf jade bonsai with a dense canopy of tiny leaves in a tapered white pot with saucer",
+    "caption": "",
+    "status": "sold",
+    "featured": false
+  },
+  {
+    "src": "/photos/jade-white-round-bowl.jpg",
+    "alt": "Jade bonsai with a straight trunk and leafy branches in a round white bowl beside an agate",
+    "caption": "Simple pot, strong trunk.",
+    "status": "sold",
+    "featured": true
+  },
+  {
+    "src": "/photos/jade-white-origami-pot-porch.jpg",
+    "alt": "Jade bonsai with a sweeping, thick trunk and exposed roots in a white origami-style pot",
+    "caption": "Roots showing, the way we like it.",
+    "status": "sold",
+    "featured": true
+  },
+  {
+    "src": "/photos/variegated-jade-grey-pot.jpg",
+    "alt": "Variegated jade bonsai with cream and green leaves and pink tips in a pale grey pot",
+    "caption": "A variegated one, rare and showy.",
+    "status": "sold",
+    "featured": true
+  },
+  {
+    "src": "/photos/jade-striped-pot-porch.jpg",
+    "alt": "Tall jade with a forked trunk and glossy leaves in a white pot with grey stripes, porch behind",
+    "caption": "",
+    "status": "sold",
+    "featured": false
+  },
+  {
+    "src": "/photos/jade-drip-glaze-pot.jpg",
+    "alt": "Jade bonsai with glossy leaves in a white pot with a dark drip glaze, in front of a wooden crate",
+    "caption": "",
+    "status": "sold",
+    "featured": false
+  },
+  {
+    "src": "/photos/workshop-hands-in-soil-round-table.jpg",
+    "alt": "Four participants lean over a round table, hands in soil, repotting a jade bonsai",
+    "caption": "Hands in the dirt, phones nowhere.",
+    "status": "workshop",
+    "featured": true
+  },
+  {
+    "src": "/photos/workshop-table-soil-and-roots.jpg",
+    "alt": "Four participants reach into a mound of soil and jade cuttings on a table in a bright hall",
+    "caption": "",
+    "status": "workshop",
+    "featured": false
+  },
+  {
+    "src": "/photos/workshop-four-holding-trees-brick-wall.jpg",
+    "alt": "Four smiling participants each hold a small jade bonsai in a handmade pot against a brick wall",
+    "caption": "",
+    "status": "workshop",
+    "featured": false
+  },
+  {
+    "src": "/photos/workshop-pair-holding-trees-brick-wall.jpg",
+    "alt": "Two participants hold their finished jade bonsai in handmade pots in front of a brick wall",
+    "caption": "",
+    "status": "workshop",
+    "featured": false
+  },
+  {
+    "src": "/photos/workshop-display-table-doorway.jpg",
+    "alt": "Two people stand behind a folding table of jade bonsai in blue, black and terracotta pots",
+    "caption": "",
+    "status": "workshop",
+    "featured": false
+  },
+  {
+    "src": "/photos/workshop-group-around-soil-table.jpg",
+    "alt": "Six participants smile around a round table scattered with soil, jade cuttings and driftwood",
+    "caption": "",
+    "status": "workshop",
+    "featured": false
+  },
+  {
+    "src": "/photos/workshop-pair-chalkboard-sign.jpg",
+    "alt": "Two participants hold small jade bonsai beside a chalkboard sign reading Welcome Zion Bonsai Class",
+    "caption": "",
+    "status": "workshop",
+    "featured": false
+  },
+  {
+    "src": "/photos/workshop-pair-with-trees-chalkboard-a.jpg",
+    "alt": "A smiling pair holds small jade bonsai in handmade pots next to the Zion Bonsai Class chalkboard",
+    "caption": "",
+    "status": "workshop",
+    "featured": false
+  },
+  {
+    "src": "/photos/workshop-pair-with-trees-chalkboard-b.jpg",
+    "alt": "Two participants with small potted jade bonsai stand by the Zion Bonsai Class chalkboard",
+    "caption": "",
+    "status": "workshop",
+    "featured": false
+  },
+  {
+    "src": "/photos/workshop-four-with-trees-chalkboard.jpg",
+    "alt": "Four participants hold their new jade bonsai in a white room with a chalkboard sign",
+    "caption": "",
+    "status": "workshop",
+    "featured": false
+  },
+  {
+    "src": "/photos/workshop-group-messy-table.jpg",
+    "alt": "Six participants smile behind a round table covered in soil, small jade bonsai in front of them",
+    "caption": "",
+    "status": "workshop",
+    "featured": false
+  },
+  {
+    "src": "/photos/workshop-pair-waving-with-trees.jpg",
+    "alt": "Two participants hold finished jade bonsai near a chalkboard sign; one waves at the camera",
+    "caption": "",
+    "status": "workshop",
+    "featured": false
+  },
+  {
+    "src": "/photos/workshop-pair-showing-trees-chalkboard.jpg",
+    "alt": "Two participants hold small jade bonsai in handmade pots beside a chalkboard sign",
+    "caption": "",
+    "status": "workshop",
+    "featured": false
+  },
+  {
+    "src": "/photos/workshop-two-young-participants-trees.jpg",
+    "alt": "Two young participants hold small jade bonsai in handmade pots beside the class chalkboard",
+    "caption": "",
+    "status": "workshop",
+    "featured": false
+  },
+  {
+    "src": "/photos/workshop-tables-set-for-class.jpg",
+    "alt": "Round tables set with kraft paper, scissors, thank-you cards and large jade plants before class",
+    "caption": "",
+    "status": "workshop",
+    "featured": false
+  },
+  {
+    "src": "/photos/workshop-selfie-in-venue.jpg",
+    "alt": "A woman and a man in glasses smile for a selfie in a bright venue with workshop tables behind",
+    "caption": "",
+    "status": "workshop",
+    "featured": false
+  },
+  {
+    "src": "/photos/workshop-finished-jade-thank-you-card.jpg",
+    "alt": "Freshly potted jade in a handmade swirled pot beside a card reading Thank you for growing with us today",
+    "caption": "Thank you for growing with us today.",
+    "status": "workshop",
+    "featured": true
+  },
+  {
+    "src": "/photos/workshop-barn-tables-ready.jpg",
+    "alt": "Wood-beamed barn with round tables and folding chairs set for a workshop, jade plants on shelves",
+    "caption": "",
+    "status": "workshop",
+    "featured": false
+  },
+  {
+    "src": "/photos/workshop-instructor-holding-jade-roots.jpg",
+    "alt": "An instructor holds a jade cutting with bare roots up to show the class, tools on the table below",
+    "caption": "",
+    "status": "workshop",
+    "featured": false
+  }
+]

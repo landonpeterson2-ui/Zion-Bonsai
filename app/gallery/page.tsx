@@ -2,31 +2,12 @@
 
 import Image from 'next/image'
 import { useState } from 'react'
+import { getGallery } from '@/lib/content'
 
-// Same images as Hero - keep in sync or import from a shared config
-const galleryImages = [
-  '/gallery/1.jpeg',
-  '/gallery/2.jpeg',
-  '/gallery/3.jpeg',
-  '/gallery/4.jpeg',
-  '/gallery/5.jpeg',
-  '/gallery/6.jpeg',
-  '/gallery/7.jpeg',
-  '/gallery/8.jpeg',
-  '/gallery/9.jpeg',
-  '/gallery/10.jpeg',
-  '/gallery/11.jpeg',
-  '/gallery/12.jpeg',
-  '/gallery/13.jpeg',
-  '/gallery/14.jpeg',
-  '/gallery/15.jpeg',
-  '/gallery/16.jpeg',
-  '/gallery/17.jpeg',
-  '/gallery/18.jpeg',
-  '/gallery/19.jpeg',
-  '/gallery/20.jpeg',
-  '/gallery/21.jpeg',
-]
+// Trees we've shaped. Workshop photos live on the Workshops page.
+const galleryItems = getGallery().filter((g) => g.status !== 'workshop')
+const galleryImages = galleryItems.map((g) => g.src)
+const altFor = (src: string) => galleryItems.find((g) => g.src === src)?.alt ?? ''
 
 export default function GalleryPage() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
@@ -46,7 +27,7 @@ export default function GalleryPage() {
 
       {/* Gallery Grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {galleryImages.map((src, index) => (
+        {galleryImages.map((src) => (
           <button
             key={src}
             onClick={() => setSelectedImage(src)}
@@ -54,7 +35,7 @@ export default function GalleryPage() {
           >
             <Image
               src={src}
-              alt={`Zion Bonsai gallery image ${index + 1}`}
+              alt={altFor(src)}
               fill
               className="object-cover transition-transform duration-300 group-hover:scale-110"
               sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
@@ -94,7 +75,7 @@ export default function GalleryPage() {
           <div className="relative max-w-4xl max-h-[80vh] w-full h-full">
             <Image
               src={selectedImage}
-              alt="Gallery image"
+              alt={altFor(selectedImage)}
               fill
               className="object-contain"
               onClick={(e) => e.stopPropagation()}

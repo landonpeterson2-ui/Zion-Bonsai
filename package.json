@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "prebuild": "node scripts/check-content.mjs",
+    "photos": "node scripts/optimize-photos.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint ."

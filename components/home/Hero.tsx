@@ -3,31 +3,11 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
+import { getGallery } from '@/lib/content'
 
-// Add your gallery images here - place files in public/gallery/
-const galleryImages = [
-  '/gallery/1.jpeg',
-  '/gallery/2.jpeg',
-  '/gallery/3.jpeg',
-  '/gallery/4.jpeg',
-  '/gallery/5.jpeg',
-  '/gallery/6.jpeg',
-  '/gallery/7.jpeg',
-  '/gallery/8.jpeg',
-  '/gallery/9.jpeg',
-  '/gallery/10.jpeg',
-  '/gallery/11.jpeg',
-  '/gallery/12.jpeg',
-  '/gallery/13.jpeg',
-  '/gallery/14.jpeg',
-  '/gallery/15.jpeg',
-  '/gallery/16.jpeg',
-  '/gallery/17.jpeg',
-  '/gallery/18.jpeg',
-  '/gallery/19.jpeg',
-  '/gallery/20.jpeg',
-  '/gallery/21.jpeg',
-]
+// Finished trees only (workshop photos with people live on the Workshops page).
+const galleryItems = getGallery().filter((g) => g.status !== 'workshop')
+const galleryImages = galleryItems.map((g) => g.src)
 
 export default function Hero() {
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -101,7 +81,7 @@ export default function Hero() {
                       <Image
                         key={src}
                         src={src}
-                        alt={`Zion Bonsai gallery image ${index + 1}`}
+                        alt={galleryItems[index].alt}
                         fill
                         sizes="(max-width: 768px) 100vw, 50vw"
                         className={`object-cover transition-opacity duration-1000 ${
