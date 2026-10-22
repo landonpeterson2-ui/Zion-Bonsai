@@ -31,7 +31,7 @@ export default function PhotoHero({
           sizes="(min-width: 768px) 55vw, 100vw"
           className={`object-cover ${objectPosition}`}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-soil/90 via-soil/65 to-soil/35 md:bg-gradient-to-r md:from-soil md:via-soil/45 md:to-soil/15" />
+        <div className="absolute inset-0 bg-gradient-to-t from-soil/95 via-soil/80 to-soil/60 md:bg-gradient-to-r md:from-soil md:via-soil/45 md:to-soil/15" />
       </div>
       <div className="container-custom w-full pb-14 pt-32 md:py-24">
         <div className="max-w-xl">{children}</div>

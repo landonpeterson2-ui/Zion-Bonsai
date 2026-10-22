@@ -52,7 +52,7 @@ export default function HomeConcept() {
             className="object-cover object-[60%_30%] md:object-[40%_60%]"
           />
           {/* Same soil wash as the events band; on desktop it fades into the solid soil behind the text */}
-          <div className="absolute inset-0 bg-gradient-to-t from-soil/90 via-soil/65 to-soil/35 md:bg-gradient-to-r md:from-soil md:via-soil/45 md:to-soil/15" />
+          <div className="absolute inset-0 bg-gradient-to-t from-soil/95 via-soil/80 to-soil/60 md:bg-gradient-to-r md:from-soil md:via-soil/45 md:to-soil/15" />
         </div>
         <div className="container-custom w-full pb-14 pt-32 md:py-24">
           <div className="max-w-xl">

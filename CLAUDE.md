@@ -71,6 +71,15 @@ Never: squiggles, wavy/torn-paper edges, tape strips, stickers, blob masks, tilt
 
 Motion: fades/rises under 600ms, triggered once on scroll. Everything must be static under `prefers-reduced-motion: reduce`.
 
+## Building pages (Phase 4 onward)
+
+The approved look is the home page (`app/page.tsx` + `components/home/`), originally `app/directions/concept/page.tsx`. Every page should feel like it belongs next to it. Where an older task file says "the chosen direction", read it as this.
+
+- Build pages from `components/ui/`: `PhotoHero` (soil-washed photo hero, one per page, linen text), `Section` (vertical rhythm, `paper` / `paper-deep`), `SectionHeading` (eyebrow + Cormorant h2), `Eyebrow`, `TextLink`, `Photo` (plain rectangle + optional caption), `NextWorkshop`. Extend a primitive with a prop rather than forking it; don't restyle it for one page.
+- Photos and alt text come from `content/gallery.json` via `getPhoto(name)` in `lib/photos.ts`.
+- Page rhythm: alternate `paper` and `paper-deep` sections, and use at most one dark soil-washed band besides the hero. Use two-column, photo + text layouts with asymmetric columns (5/7 or 6/6). Use numbered lists with hairlines instead of card grids.
+- Inner page heroes can use `PhotoHero` with that page's best photo, or a quieter text-only header on `paper` (eyebrow + h1 + one line). Don't put a full-bleed hero on every page. Workshops and Events get `PhotoHero`; Care Guide, Partners and Contact get the quiet header.
+
 ## Voice
 
 Warm, conversational, beginner-first. A friend inviting you over, not a business converting a lead. Short and punchy; edit hard.
