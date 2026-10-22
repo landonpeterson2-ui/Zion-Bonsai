@@ -69,7 +69,7 @@
 
   /* Keep anchor targets clear of the sticky header (<= 72px). */
   [id] {
-    scroll-margin-top: 5.5rem;
+    scroll-margin-top: 7.5rem;
   }
 
   @media (prefers-reduced-motion: reduce) {

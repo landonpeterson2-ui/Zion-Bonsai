@@ -82,6 +82,14 @@ Compared four headline fonts on a rendered sample (same copy, photos, palette). 
 
 **Palette:** Cass likes the "Zion stone" palette, especially Stone and Stone deep. `paper` is now #F4EEE6 (Stone, was a yellower #FAF3E0), `paper-deep` is #E9DFD2 (Stone deep), and there's a new `sandstone` (#D9AE93) fill. Logo coral and sage are unchanged. Contrast was rechecked; see the CLAUDE.md table.
 
+## 2026-10-21 — Home concept approved as the direction
+
+Instead of three competing directions, Opus built one from-scratch home concept at `/directions/concept` (`app/directions/concept/page.tsx`). Cass: "liking the concept direction much better." **This replaces tasks 10–12. The concept page is the visual reference for every Phase 4 page.**
+- No arch crop on photos ("not sure we love the arched thingy"). Photos are plain rectangles.
+- Header redesigned: logo centered as an emblem (64px mobile / 88px desktop), nav split either side, Book on the right; mobile is menu · logo · Book. Header height 72px mobile / 104px desktop.
+- The instructor photo (`workshop-instructor-holding-jade-roots.jpg`) is **Landon**. OK to name him in captions and alt text.
+- Hero tree should be **Zeus or Cheesecake** (named trees; Cheesecake is the oldest). Waiting on photos; `jade-dark-tray-wide-canopy.jpg` holds the spot until then.
+
 ## Open items (from Landon & Cass)
 - [ ] Google Form URL(s) for registration
 - [ ] Upcoming workshop dates and prices

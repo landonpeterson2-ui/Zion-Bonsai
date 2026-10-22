@@ -11,10 +11,8 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - [x] 05 Optimize and catalog photos — after 02
 
 ## Phase 3 — Visual direction
-- [ ] 10 Direction A: Studio — after Phase 2
-- [ ] 11 Direction B: Field Journal — after Phase 2 (parallel with 10, 12)
-- [ ] 12 Direction C: Seasonal Table — after Phase 2 (parallel with 10, 11)
-- [ ] **CHECKPOINT — Landon & Cass pick a direction; record it in decisions.md**
+- [x] ~~10–12 three directions~~ — replaced by the home concept (`/directions/concept`), see decisions.md
+- [x] **CHECKPOINT — Cass approved the concept direction (2026-10-21)**
 
 ## Phase 4 — Pages
 - [ ] 20 Home

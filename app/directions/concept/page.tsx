@@ -58,7 +58,7 @@ export default function HomeConcept() {
           </div>
         </div>
         <div className="md:col-span-7 md:pl-6">
-          <div className="relative aspect-[4/5] overflow-hidden rounded-t-full md:aspect-[5/6]">
+          <div className="relative aspect-[4/5] overflow-hidden md:aspect-[5/6]">
             <Image
               src="/photos/jade-dark-tray-wide-canopy.jpg"
               alt="Jade bonsai with a thick, gnarled trunk and wide layered branches in a dark rectangular tray"
