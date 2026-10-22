@@ -1,27 +1,30 @@
+import type { Metadata } from 'next'
+import Close from '@/components/home/Close'
+import Groups from '@/components/home/Groups'
 import Hero from '@/components/home/Hero'
-// import ShopByStage from '@/components/home/ShopByStage'
-import WorkshopPreview from '@/components/home/WorkshopPreview'
-import About from '@/components/home/About'
+import Statement from '@/components/home/Statement'
+import Testimonial from '@/components/home/Testimonial'
+import TheWorkshop from '@/components/home/TheWorkshop'
+import TreesWeveShaped from '@/components/home/TreesWeveShaped'
+import WhoYoullLearnFrom from '@/components/home/WhoYoullLearnFrom'
+
+export const metadata: Metadata = {
+  title: 'Zion Bonsai | Beginner Bonsai Workshops in Manti, Utah',
+  description:
+    'Screen-free beginner bonsai workshops in Sanpete County, Utah: two hours at the table, and you take home a jade bonsai in a handmade pot.',
+}
 
 export default function Home() {
   return (
-    <div className="relative bg-gradient-to-b from-cream via-sage-50 via-75% to-white">
-      {/* Texture rides on top of the color gradient across the whole homepage,
-          fading out near the bottom so it dissolves before the footer instead
-          of cutting off in a hard line. */}
-      <div
-        className="bg-grain-legacy absolute inset-0"
-        style={{
-          maskImage: 'linear-gradient(to bottom, black 0%, black 85%, transparent 100%)',
-          WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 85%, transparent 100%)',
-        }}
-      />
-      <div className="relative">
-        <Hero />
-        {/* <ShopByStage /> */}
-        <About />
-        <WorkshopPreview />
-      </div>
-    </div>
+    <>
+      <Hero />
+      <Statement />
+      <TheWorkshop />
+      <WhoYoullLearnFrom />
+      <TreesWeveShaped />
+      <Groups />
+      <Testimonial />
+      <Close />
+    </>
   )
 }
