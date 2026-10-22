@@ -1,0 +1,33 @@
+{
+  "spring": {
+    "draft": true,
+    "eyebrow": "Spring workshops",
+    "headline": "Something new is waking up.",
+    "lede": "Phones down, sleeves up. Come make a tree of your own while the whole valley starts to green.",
+    "photo": null,
+    "photoAlt": null
+  },
+  "summer": {
+    "draft": true,
+    "eyebrow": "Summer workshops",
+    "headline": "Long days, slow hands.",
+    "lede": "Two hours, no notifications, and a little soil under your nails. The tree is the only thing asking for your attention.",
+    "photo": null,
+    "photoAlt": null
+  },
+  "fall": {
+    "eyebrow": "Fall workshops",
+    "headline": "Find calm as seasons shift.",
+    "lede": "Two hours. No notifications. Just you, some soil, and a tree that's going to be yours.",
+    "photo": null,
+    "photoAlt": null
+  },
+  "winter": {
+    "draft": true,
+    "eyebrow": "Winter workshops",
+    "headline": "Warm up with something living.",
+    "lede": "It's cold out. Come inside, set the phone face-down, and put your hands in some soil.",
+    "photo": null,
+    "photoAlt": null
+  }
+}

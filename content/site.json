@@ -1,0 +1,16 @@
+{
+  "name": "Zion Bonsai",
+  "email": "plants@zionbonsai.com",
+  "phone": "435-201-0336",
+  "area": "Sanpete County, Central Utah",
+  "towns": ["Manti", "Ephraim"],
+  "social": {
+    "instagram": "https://instagram.com/zionbonsai",
+    "facebook": "https://facebook.com/zionbonsai"
+  },
+  "interestListUrl": null,
+  "eventsInquiryUrl": null,
+  "giftCertificates": { "mode": "inquiry", "url": null },
+  "shopEnabled": false,
+  "season": "fall"
+}
