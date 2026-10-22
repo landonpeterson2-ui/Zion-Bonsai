@@ -9,9 +9,19 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Zion Bonsai Brand Colors (matched to logo)
+        // Brand tokens (CSS variables in app/globals.css)
+        paper: 'rgb(var(--color-paper) / <alpha-value>)',
+        'paper-deep': 'rgb(var(--color-paper-deep) / <alpha-value>)',
+        linen: 'rgb(var(--color-linen) / <alpha-value>)',
+        clay: 'rgb(var(--color-clay) / <alpha-value>)',
+        'clay-dark': 'rgb(var(--color-clay-dark) / <alpha-value>)',
+        moss: 'rgb(var(--color-moss) / <alpha-value>)',
+        forest: 'rgb(var(--color-forest) / <alpha-value>)',
+        soil: 'rgb(var(--color-soil) / <alpha-value>)',
+
+        // LEGACY — removed in task 42 (only the DEFAULT of coral and sage are tokens)
         coral: {
-          DEFAULT: '#DD6F47',
+          DEFAULT: 'rgb(var(--color-coral) / <alpha-value>)',
           50: '#FDF6F4',
           100: '#FCEAE5',
           200: '#F8D3C9',
@@ -24,7 +34,7 @@ const config: Config = {
           900: '#4E241A',
         },
         sage: {
-          DEFAULT: '#97B953',
+          DEFAULT: 'rgb(var(--color-sage) / <alpha-value>)',
           50: '#F6F9EE',
           100: '#EBF2D8',
           200: '#D7E5B2',
@@ -48,9 +58,22 @@ const config: Config = {
         },
         charcoal: '#2A2A28',
       },
+      borderRadius: {
+        organic: '42% 58% 55% 45% / 48% 42% 58% 52%',
+        soft: '1.25rem',
+      },
+      fontSize: {
+        display: ['clamp(2.5rem, 1.6rem + 4vw, 4.5rem)', { lineHeight: '1.05' }],
+        title: ['clamp(1.875rem, 1.4rem + 2vw, 3rem)', { lineHeight: '1.1' }],
+        lead: ['1.25rem', { lineHeight: '1.6' }],
+      },
+      maxWidth: {
+        'prose-narrow': '38rem',
+      },
       fontFamily: {
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
-        heading: ['var(--font-heading)', 'serif'],
+        heading: ['var(--font-heading)', 'system-ui', 'sans-serif'],
+        script: ['var(--font-script)', 'cursive'],
       },
     },
   },

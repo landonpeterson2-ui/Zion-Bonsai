@@ -4,7 +4,7 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 
 ## Phase 2 — Foundation
 - [x] 00 Fix lint tooling
-- [ ] 01 Tokens, fonts, base styles — after 00
+- [x] 01 Tokens, fonts, base styles — after 00
 - [ ] 02 Content files and loader — after 00 (parallel with 01)
 - [ ] 03 Header, footer, navigation — after 01 + 02
 - [ ] 04 Redirects, sitemap, robots — after 02
@@ -36,6 +36,8 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 <!-- Out-of-scope issues agents notice. Format: - (task NN) description -->
 - (task 00) components/home/Hero.tsx: `react-hooks/set-state-in-effect` disabled on one line; remove when Hero is rebuilt (task 20).
 - (task 00) types/shopify.d.ts: one lint warning (`import/no-anonymous-default-export`), left as is; revisit in task 26 (Shop).
+- (task 01) Existing pages still use legacy classes (`bg-cream-light`, `text-charcoal`, `.card`, coral-on-paper text) that predate the contrast rules; replace as pages are rebuilt, final sweep in task 42.
+- (task 01) `font-medium` (500) is used in a few places but Open Sans loads only 400/600; browser snaps to the nearest weight.
 
 ## Placeholders to fill
 <!-- Filled by task 30. Format: - page: [PLACEHOLDER] -->
@@ -43,3 +45,4 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 ## Milestone notes
 <!-- Short summaries / screenshots per task -->
 - 00: Added eslint.config.mjs (flat config), lint script is now `eslint .`; unescaped-entity errors fixed mechanically; trimmed .env.example. Lint and build exit 0.
+- 01: Brand tokens are RGB-channel CSS vars in globals.css, mapped in tailwind.config.ts; legacy coral/sage scales, olive, cream, charcoal kept under a LEGACY comment. Montserrat/Open Sans/Satisfy via next/font; focus ring, reduced-motion, .reveal and components/ui/Reveal.tsx added. Old `.bg-linen` class renamed `.bg-grain-legacy` (collided with the `linen` token); `.btn-outline` now aliases `.btn-secondary`.

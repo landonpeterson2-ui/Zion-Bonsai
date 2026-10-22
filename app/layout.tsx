@@ -1,22 +1,28 @@
 import type { Metadata } from 'next'
-import { Work_Sans, Newsreader } from 'next/font/google'
+import { Montserrat, Open_Sans, Satisfy } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 
-// Body font - Work Sans
-const workSans = Work_Sans({
+const montserrat = Montserrat({
   subsets: ['latin'],
-  weight: ['400', '500', '600'],
-  variable: '--font-sans'
+  weight: ['600', '700'],
+  display: 'swap',
+  variable: '--font-heading',
 })
 
-// Heading font - Newsreader
-const newsreader = Newsreader({
+const openSans = Open_Sans({
   subsets: ['latin'],
-  style: ['normal', 'italic'],
-  weight: ['400', '500', '600'],
-  variable: '--font-heading'
+  weight: ['400', '600'],
+  display: 'swap',
+  variable: '--font-sans',
+})
+
+const satisfy = Satisfy({
+  subsets: ['latin'],
+  weight: '400',
+  display: 'swap',
+  variable: '--font-script',
 })
 
 const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
@@ -59,7 +65,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${workSans.variable} ${newsreader.variable} font-sans antialiased bg-cream-light text-charcoal`}>
+      <body className={`${montserrat.variable} ${openSans.variable} ${satisfy.variable} font-sans antialiased bg-paper text-forest`}>
         <Header />
         <main className="min-h-screen">
           {children}
