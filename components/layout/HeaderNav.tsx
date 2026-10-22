@@ -26,10 +26,14 @@ function Squiggle() {
 
 export default function HeaderNav({ shopEnabled, cart }: { shopEnabled: boolean; cart: ReactNode }) {
   const pathname = usePathname()
-  // Menu is open only while the path it was opened on is still current,
-  // so any route change closes it without an effect.
-  const [openedAt, setOpenedAt] = useState<string | null>(null)
-  const open = openedAt === pathname
+  const [open, setOpen] = useState(false)
+  // Any pathname change (link, Back/Forward) closes the menu. State is adjusted
+  // during render rather than in an effect.
+  const [prevPath, setPrevPath] = useState(pathname)
+  if (prevPath !== pathname) {
+    setPrevPath(pathname)
+    setOpen(false)
+  }
   const headerRef = useRef<HTMLElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
@@ -38,8 +42,15 @@ export default function HeaderNav({ shopEnabled, cart }: { shopEnabled: boolean;
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/')
 
   const close = useCallback((returnFocus: boolean) => {
-    setOpenedAt(null)
+    setOpen(false)
     if (returnFocus) buttonRef.current?.focus()
+  }, [])
+
+  // A panel link hides itself when it closes the menu, so hand focus to the
+  // page content (also right for same-page anchors like #dates).
+  const closeToContent = useCallback(() => {
+    setOpen(false)
+    document.getElementById('main')?.focus({ preventScroll: true })
   }, [])
 
   // Focus into the panel on open; lock body scroll; Escape, Tab wrap, resize.
@@ -89,7 +100,7 @@ export default function HeaderNav({ shopEnabled, cart }: { shopEnabled: boolean;
     <header ref={headerRef} className="sticky top-0 z-50 bg-paper border-b border-forest/10">
       <nav aria-label="Main" className="container-custom">
         <div className="flex h-16 items-center justify-between gap-3 lg:h-[72px]">
-          <Link href="/" className="flex shrink-0 items-center" aria-label="Zion Bonsai, home">
+          <Link href="/" onClick={() => close(false)} className="flex shrink-0 items-center" aria-label="Zion Bonsai, home">
             <Image
               src="/ZB Logo Transparent.png"
               alt=""
@@ -136,7 +147,7 @@ export default function HeaderNav({ shopEnabled, cart }: { shopEnabled: boolean;
               aria-label={open ? 'Close menu' : 'Open menu'}
               aria-expanded={open}
               aria-controls="mobile-menu"
-              onClick={() => (open ? close(true) : setOpenedAt(pathname))}
+              onClick={() => (open ? close(true) : setOpen(true))}
               className="inline-flex h-11 w-11 items-center justify-center rounded-full text-forest"
             >
               <svg
@@ -168,7 +179,7 @@ export default function HeaderNav({ shopEnabled, cart }: { shopEnabled: boolean;
             <li key={item.href} className="border-b border-forest/10">
               <Link
                 href={item.href}
-                onClick={() => close(false)}
+                onClick={closeToContent}
                 aria-current={isActive(item.href) ? 'page' : undefined}
                 className="flex min-h-[56px] items-center font-heading text-xl font-bold text-forest"
               >

@@ -39,6 +39,8 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - (task 01) Existing pages still use legacy classes (`bg-cream-light`, `text-charcoal`, `.card`, coral-on-paper text) that predate the contrast rules; replace as pages are rebuilt, final sweep in task 42.
 - (task 01) `font-medium` (500) is used in a few places but Open Sans loads only 400/600; browser snaps to the nearest weight.
 
+- (task 03) HeaderNav renders `cart` (ShopifyCart) in both the desktop and mobile markup when `shopEnabled`, so two instances mount. Task 26 should check it when the shop goes live.
+
 ## Placeholders to fill
 <!-- Filled by task 30. Format: - page: [PLACEHOLDER] -->
 

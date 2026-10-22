@@ -4,7 +4,7 @@ import { getSite } from '@/lib/content'
 import { footerGroups } from './nav'
 
 const linkClass =
-  'inline-flex min-h-[44px] items-center text-linen/90 underline-offset-4 hover:text-linen hover:underline transition-colors'
+  'inline-flex min-h-[44px] min-w-0 max-w-full items-center break-words text-linen/90 underline-offset-4 hover:text-linen hover:underline transition-colors'
 
 const headingClass =
   'mb-2 font-heading text-xs font-semibold uppercase tracking-widest text-linen/80'

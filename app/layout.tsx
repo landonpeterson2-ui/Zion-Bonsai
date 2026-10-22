@@ -73,7 +73,7 @@ export default function RootLayout({
           Skip to content
         </a>
         <Header />
-        <main id="main" className="min-h-screen">
+        <main id="main" tabIndex={-1} className="min-h-screen outline-none">
           {children}
         </main>
         <Footer />
