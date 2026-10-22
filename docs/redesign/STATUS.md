@@ -20,7 +20,7 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - [ ] 22 Events — after 20
 - [ ] 23 Our Story — after 20
 - [ ] 24 Care Guide — after 20
-- [ ] 25 Partners and Contact — after 20
+- [x] 25 Partners and Contact — after 20. /partners and /contact built from ui primitives; partner links, gift (#gift) and interest-list fallbacks all driven by content/. Gift/interest CTAs are mailto until URLs are set.
 - [ ] 26 Gallery and Shop — after 20
 - [ ] **CHECKPOINT — Landon & Cass review all pages**
 
@@ -31,6 +31,7 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - [ ] 42 Cleanup and PR
 
 ## Found while working
+- (task 25) Contact page "Groups" band links to /events and /workshops; /events may not exist until its task lands. Partner photos for Sweet Roots and Thistle & Honey are placeholders; Taya photo is workshop-finished-jade-thank-you-card (pot assumed hers per brief).
 <!-- Out-of-scope issues agents notice. Format: - (task NN) description -->
 - (task 00) types/shopify.d.ts: one lint warning (`import/no-anonymous-default-export`), left as is; revisit in task 26 (Shop).
 - (task 01) Existing pages still use legacy classes (`bg-cream-light`, `text-charcoal`, `.card`, coral-on-paper text) that predate the contrast rules; replace as pages are rebuilt, final sweep in task 42.
