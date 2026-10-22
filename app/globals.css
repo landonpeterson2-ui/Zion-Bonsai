@@ -2,14 +2,45 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Brand tokens as RGB channels so Tailwind opacity modifiers work. */
+  --color-paper: 250 243 224; /* #FAF3E0 */
+  --color-paper-deep: 243 233 210; /* #F3E9D2 */
+  --color-linen: 251 248 243; /* #FBF8F3 */
+  --color-coral: 221 111 71; /* #DD6F47 decorative only */
+  --color-clay: 168 74 43; /* #A84A2B */
+  --color-clay-dark: 143 62 35; /* #8F3E23 */
+  --color-sage: 151 185 83; /* #97B953 decorative only */
+  --color-moss: 79 100 32; /* #4F6420 */
+  --color-forest: 47 59 34; /* #2F3B22 */
+  --color-soil: 74 52 38; /* #4A3426 */
+}
+
 @layer base {
   body {
-    @apply text-charcoal;
+    @apply bg-paper text-forest font-sans;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-heading font-medium;
+  /* Paper grain: fixed so it doesn't shimmer on scroll, very low opacity,
+     painted behind content (z-index -1) so it never touches text contrast. */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.35;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.29  0 0 0 0 0.2  0 0 0 0 0.15  0 0 0 0.07 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-heading font-bold text-forest;
+    text-wrap: balance;
     letter-spacing: -0.01em;
+  }
+
+  h5, h6 {
+    @apply font-heading font-semibold;
   }
 
   h1 {
@@ -23,24 +54,35 @@
   h3 {
     @apply text-2xl md:text-3xl;
   }
+
+  :focus-visible {
+    outline: 3px solid rgb(var(--color-clay));
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
 
 @layer components {
   .eyebrow {
-    @apply text-xs font-sans font-semibold uppercase tracking-widest;
+    @apply text-xs font-sans font-semibold uppercase tracking-widest text-moss;
     letter-spacing: 0.12em;
   }
 
   .btn-primary {
-    @apply bg-coral hover:bg-coral-600 text-cream-light font-sans font-semibold py-3 px-7 rounded-full transition-colors duration-200;
+    @apply inline-flex items-center justify-center min-h-[44px] bg-clay hover:bg-clay-dark text-linen font-sans font-semibold py-3 px-7 rounded-full transition-colors duration-200;
   }
 
-  .btn-secondary {
-    @apply bg-sage hover:bg-sage-600 text-cream-light font-sans font-semibold py-3 px-7 rounded-full transition-colors duration-200;
-  }
-
+  .btn-secondary,
   .btn-outline {
-    @apply border-[1.5px] border-coral text-coral hover:bg-coral hover:text-cream-light font-sans font-semibold py-[10.5px] px-7 rounded-full transition-colors duration-200;
+    @apply inline-flex items-center justify-center min-h-[44px] border-[1.5px] border-forest text-forest hover:bg-forest hover:text-linen font-sans font-semibold py-[10.5px] px-7 rounded-full transition-colors duration-200;
   }
 
   .card {
@@ -56,13 +98,32 @@
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 
-  /* Woven-fiber grain + brush streaks, layered over whatever sits behind this element
-     (the page's flowing gradient) so the texture has no hard-edged color of its own */
-  .bg-linen {
+  /* LEGACY (removed in task 42): renamed from .bg-linen, which now collides with
+     the `linen` color token. Woven-fiber grain + brush streaks over the home gradient. */
+  .bg-grain-legacy {
     background-image:
       repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0px, rgba(255, 255, 255, 0.05) 1px, transparent 1px, transparent 3px),
       repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.04) 0px, rgba(0, 0, 0, 0.04) 1px, transparent 1px, transparent 3px),
       url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.06 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
     background-blend-mode: overlay, overlay, overlay;
+  }
+
+  /* Scroll reveal: fade/rise once (see components/ui/Reveal.tsx). */
+  .reveal {
+    opacity: 0;
+    translate: 0 12px;
+    transition: opacity 0.6s ease, translate 0.6s ease;
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      translate: 0 0;
+    }
   }
 }

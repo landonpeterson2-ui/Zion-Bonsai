@@ -10,7 +10,7 @@ export default function Home() {
           fading out near the bottom so it dissolves before the footer instead
           of cutting off in a hard line. */}
       <div
-        className="bg-linen absolute inset-0"
+        className="bg-grain-legacy absolute inset-0"
         style={{
           maskImage: 'linear-gradient(to bottom, black 0%, black 85%, transparent 100%)',
           WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 85%, transparent 100%)',
