@@ -12,6 +12,7 @@ const config: Config = {
         // Brand tokens (CSS variables in app/globals.css)
         paper: 'rgb(var(--color-paper) / <alpha-value>)',
         'paper-deep': 'rgb(var(--color-paper-deep) / <alpha-value>)',
+        sandstone: 'rgb(var(--color-sandstone) / <alpha-value>)',
         linen: 'rgb(var(--color-linen) / <alpha-value>)',
         clay: 'rgb(var(--color-clay) / <alpha-value>)',
         'clay-dark': 'rgb(var(--color-clay-dark) / <alpha-value>)',
@@ -72,7 +73,8 @@ const config: Config = {
       },
       fontFamily: {
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
-        heading: ['var(--font-heading)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-display)', 'Georgia', 'serif'],
+        label: ['var(--font-label)', 'system-ui', 'sans-serif'],
         script: ['var(--font-script)', 'cursive'],
       },
     },

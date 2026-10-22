@@ -1,14 +1,22 @@
 import type { Metadata } from 'next'
-import { Montserrat, Open_Sans, Satisfy } from 'next/font/google'
+import { Cormorant_Garamond, Montserrat, Open_Sans, Satisfy } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
+
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['500', '600'],
+  style: ['normal', 'italic'],
+  display: 'swap',
+  variable: '--font-display',
+})
 
 const montserrat = Montserrat({
   subsets: ['latin'],
   weight: ['600', '700'],
   display: 'swap',
-  variable: '--font-heading',
+  variable: '--font-label',
 })
 
 const openSans = Open_Sans({
@@ -65,10 +73,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${montserrat.variable} ${openSans.variable} ${satisfy.variable} font-sans antialiased bg-paper text-forest`}>
+      <body className={`${cormorant.variable} ${montserrat.variable} ${openSans.variable} ${satisfy.variable} font-sans antialiased bg-paper text-forest`}>
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-clay focus:px-5 focus:py-3 focus:font-semibold focus:text-linen"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-[3px] focus:bg-clay focus:px-5 focus:py-3 focus:font-semibold focus:text-linen"
         >
           Skip to content
         </a>

@@ -81,7 +81,7 @@ export default function HeaderNav({ shopEnabled, cart }: { shopEnabled: boolean;
   }, [open, close])
 
   const desktopLink =
-    'relative inline-flex items-center min-h-[44px] font-heading font-semibold text-xs uppercase tracking-[0.14em] text-forest hover:text-clay transition-colors'
+    'relative inline-flex items-center min-h-[44px] font-label font-semibold text-xs uppercase tracking-[0.14em] text-forest hover:text-clay transition-colors'
 
   return (
     <header ref={headerRef} className="sticky top-0 z-50 bg-paper border-b border-forest/10">
@@ -168,7 +168,7 @@ export default function HeaderNav({ shopEnabled, cart }: { shopEnabled: boolean;
                 href={item.href}
                 onClick={closeToContent}
                 aria-current={isActive(item.href) ? 'page' : undefined}
-                className="flex min-h-[56px] items-center font-heading text-lg font-semibold text-forest"
+                className="flex min-h-[56px] items-center font-label text-lg font-semibold text-forest"
               >
                 <span className="relative">
                   {item.label}

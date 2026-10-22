@@ -31,26 +31,29 @@ The site is mid-redesign on the `redesign` branch. The brief is [docs/redesign/h
 
 | Token | Hex | Use |
 |---|---|---|
-| `paper` | `#FAF3E0` | page background |
-| `paper-deep` | `#F3E9D2` | alternate section background |
+| `paper` | `#F4EEE6` | "Stone" — page background |
+| `paper-deep` | `#E9DFD2` | "Stone deep" — alternate section background. `clay` text here only ≥24px (4.3:1) |
+| `sandstone` | `#D9AE93` | pale Zion sandstone. Fills, image mats, accents only; `forest`/`soil` text on it. **Never text.** |
 | `linen` | `#FBF8F3` | text on dark/clay backgrounds, cards |
 | `coral` | `#DD6F47` | logo coral. Fills, large display shapes, decorative only. **Never text on paper, never small text.** |
-| `clay` | `#A84A2B` | primary buttons (with `linen` text, 5.4:1), text links, coral-toned text |
+| `clay` | `#A84A2B` | primary buttons (with `linen` text, 5.4:1), text links and small labels **on `paper` only** (4.95:1) |
 | `clay-dark` | `#8F3E23` | button hover |
 | `sage` | `#97B953` | logo sage. Fills, botanical accents. **Never text.** |
-| `moss` | `#4F6420` | sage-toned text, eyebrows, secondary links (6:1 on paper) |
-| `forest` | `#2F3B22` | headings and body text (10.7:1) |
+| `moss` | `#4F6420` | sage-toned text, eyebrows, secondary links (5.7:1 on paper) |
+| `forest` | `#2F3B22` | headings and body text (10.3:1) |
 | `soil` | `#4A3426` | warm alternate text, footer background |
 
-**Type**
-- Headings: Montserrat 700 (600 for small labels). Body: Open Sans 400/600. Accent: Satisfy 400.
-- Script (`.font-script`) is for taglines and pull quotes only, 1–2 lines, never body text, never buttons.
+**Type** (changed 2026-10-21 — Cass chose Option A; see decisions.md)
+- **Display: Cormorant Garamond 500 (600 sparingly), with its italic** — `font-display`. h1–h3 use it by default. Sentence case. Only at ≥24px; it's too delicate below that. An italic second line ("*Pick up a tree.*") is the signature move — use it for emphasis instead of color or weight.
+- **Labels: Montserrat 600** — `font-label`. Nav, buttons, eyebrows, small uppercase labels with wide tracking (0.14–0.22em), h4. Never for big headlines. It echoes the bold "ZION" in the logo.
+- **Body: Open Sans 400/600** — `font-sans`.
+- **Accent: Satisfy** — `font-script`. At most once per page, small, signature-like ("Come grow with us."). Never body text or buttons.
 
 **Logo** — use the files in `public/` (`ZB Logo Transparent.png`, `ZB Logo Hero.png`). Never redraw, recolor or crop the logo.
 
 ## Look and feel
 
-**Refined and organic — grown-up, never cute.** Think a ceramicist's studio or a botanical journal: calm, restrained, made by hand by adults who take the craft seriously but aren't precious about it. Read section 3 of the handoff before any visual work, and read the 2026-10-21 "Refined, not kid-ish" entry in `decisions.md`.
+**Refined and organic — grown-up, never cute.** Cass's brief: **classic high-end interior design meets trees.** Think a ceramicist's studio, a botanical journal, a quiet design showroom: calm, restrained, made by hand by adults who take the craft seriously but aren't precious about it. Read section 3 of the handoff before any visual work, and read the 2026-10-21 "Refined, not kid-ish" entry in `decisions.md`.
 
 "Organic" comes from **real materials and composition**, not from cartoon shapes:
 - Photography does the heavy lifting: soil, roots, bark, glaze, hands, natural light. Let photos run large with generous margins.
@@ -60,7 +63,7 @@ The site is mid-redesign on the `redesign` branch. The brief is [docs/redesign/h
 - Paper grain at a whisper.
 - Color is mostly paper, linen, forest and soil. Clay and coral are accents — a button, a thin rule, one numeral — never large playful fills.
 
-Type is restrained: Montserrat 600–700 in sentence case for headlines, sized with confidence but not shouting; Open Sans body at a comfortable 1.65 line height and ~65ch measure. **Script (`font-script`) appears at most once per page**, small, as a signature-like accent.
+Type is restrained: Cormorant display headlines with generous size and air; small tracked Montserrat labels; Open Sans body at a comfortable 1.65 line height and ~65ch measure.
 
 Buttons are small-radius (3px) with uppercase tracked labels, not pills. Icons are thin-line (1.5px stroke) or absent.
 

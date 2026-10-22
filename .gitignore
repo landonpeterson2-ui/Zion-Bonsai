@@ -43,3 +43,6 @@ next-env.d.ts
 
 # Raw photo drop folder (optimized output in public/photos is committed)
 photos-inbox/
+
+# Local screenshots from scripts/shot.mjs
+.shots/

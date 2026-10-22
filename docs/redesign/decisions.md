@@ -48,6 +48,40 @@ Landon, after seeing the new header/footer: "It needs to feel less kid-ish and m
 - "Organic" = natural materials, photography, asymmetry, fine detail. Not hand-drawn/craft-fair motifs. See CLAUDE.md "Look and feel" for the do/don't list; it overrides handoff section 3's "hand-drawn-feeling dividers" and "imperfect circles" suggestions.
 - Direction A "Potting Shed" (torn paper, tape, tilted photos, dashed path) is replaced by "Studio" in tasks 10–12.
 
+## 2026-10-21 — Reference sites (from Cass)
+
+Builders can't browse, so these notes are the reference. Capture the *feel*; never copy layouts, copy text, or assets.
+
+**Bergs Potter (bergspotter.com)** — Danish terracotta pot maker since 1942. Cass likes: minimalism, earthy tones, classy type, "storytelling meets craftsmanship."
+- Lifestyle photography: pots and plants on wooden tables in sunlit rooms, process shots of clay being shaped by hand.
+- Alternating editorial blocks: image → short heading → 2–3 sentence paragraph → plain text link ("Explore collections"). Buttons often just text links.
+- Sentence-case headings; small uppercase labels for utility items.
+- Story copy that treats irregularity as proof of craft: "The small variations left behind are part of the craft – and part of what makes each pot its own." That's our wabi-sabi idea, said plainly. Their headline voice is short and warm ("Pots your plants love").
+- Journal series profiling makers/homes — a model for a future "From the table" story section.
+
+**Magnolia (magnolia.com)** — Cass likes: warm tones, classic, cozy.
+- Type pairing: **Minion** (classic book serif) for display + **Brandon Grotesque** (geometric sans) for UI/labels. Classic serif + clean geometric sans is the "classier" feel.
+- Mostly neutral ground (warm white, near-black #1C1C1C, greys) with one warm accent (a muted gold, #EABC63). Warmth comes from photography and a restrained palette, not from colored backgrounds.
+- Friendly, conversational, personal copy ("Jo's Picks", "Home Team").
+
+**Zion National Park — ambiance and palette.** Iron-stained Navajo sandstone: deep red base, red-brown lower cliffs, white/buff/grey upper cliffs; pine green; desert sky. Colors glow in low reflected light. Reference palette (eggradients "Zion Colors"): terracotta #C26142, pine #3A5E43, gold #D99B3B, sandy clay #D9AE93, sky #87BCD9. Our `clay` (#A84A2B), `forest` (#2F3B22) and `coral` already sit in this family; the gap is a **pale sandstone/buff neutral** and a warmer, less yellow paper.
+
+**Little Jade Bonsai (littlejadebonsai.com)** — content reference only. Cass dislikes the logo; likes the depth of information about *Portulacaria afra* as bonsai and the "new version of an old art form" angle.
+- Topics worth covering in our voice (Care Guide / future journal): why dwarf jade suits bonsai (forgiving, takes most styles, indoor-friendly), a growth timeline from cutting to established tree, propagating from cuttings, soil, trimming for branching, wiring, defoliation.
+- Our care facts still come only from handoff section 5 (their watering advice differs — ignore it).
+- Frame: bonsai has a thousand-year history; we're a modern, beginner-first, succulent take on it. Respect the tradition, skip the gatekeeping.
+
+## 2026-10-21 — Type and palette (Cass)
+
+Cass's summary of the feel: **"classic high-end interior design meets trees."** Additional references: McGee & Co (Sainte Colombe serif display, warm cream, rust-brown, olive) and Sunriver Gardens (Lora serif). Every reference uses a classic serif for display.
+
+Compared four headline fonts on a rendered sample (same copy, photos, palette). **Cass picked Option A: Cormorant Garamond.** This overrides handoff section 4's "Headlines: Montserrat Bold."
+- Display headlines: Cormorant Garamond 500 + italic (`font-display`).
+- Montserrat 600 moves to labels, nav and buttons (`font-label`, renamed from `font-heading`).
+- Open Sans body and Satisfy accent unchanged.
+
+**Palette:** Cass likes the "Zion stone" palette, especially Stone and Stone deep. `paper` is now #F4EEE6 (Stone, was a yellower #FAF3E0), `paper-deep` is #E9DFD2 (Stone deep), and there's a new `sandstone` (#D9AE93) fill. Logo coral and sage are unchanged. Contrast was rechecked; see the CLAUDE.md table.
+
 ## Open items (from Landon & Cass)
 - [ ] Google Form URL(s) for registration
 - [ ] Upcoming workshop dates and prices

@@ -14,7 +14,7 @@ export default function AboutPage() {
           About <span className="text-coral font-semibold">Zion Bonsai</span>
         </h1>
         <p className="text-2xl text-charcoal/80 max-w-3xl mx-auto">
-          <span className="font-heading italic text-coral text-3xl">Nurturing bonsai</span>
+          <span className="font-label italic text-coral text-3xl">Nurturing bonsai</span>
           <br />
           Nurtures the soul
         </p>

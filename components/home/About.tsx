@@ -35,7 +35,7 @@ export default function About() {
             <p className="text-lg text-cream-light/80 mb-7">
               It&apos;s not complicated. It&apos;s not expensive. And you don&apos;t need to be an expert.
             </p>
-            <p className="font-heading italic text-2xl text-coral-200 mb-9">
+            <p className="font-label italic text-2xl text-coral-200 mb-9">
               You just need to show up.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">

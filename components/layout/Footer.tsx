@@ -7,7 +7,7 @@ const linkClass =
   'inline-flex min-h-[44px] min-w-0 max-w-full items-center break-words text-linen/90 underline-offset-4 hover:text-linen hover:underline transition-colors'
 
 const headingClass =
-  'mb-2 font-heading text-xs font-semibold uppercase tracking-widest text-linen/80'
+  'mb-2 font-label text-xs font-semibold uppercase tracking-widest text-linen/80'
 
 export default function Footer() {
   const site = getSite()
@@ -24,7 +24,7 @@ export default function Footer() {
               height={160}
               className="mb-3 h-24 w-24"
             />
-            <p className="font-heading text-xs font-semibold uppercase tracking-[0.2em] text-linen/80">
+            <p className="font-label text-xs font-semibold uppercase tracking-[0.2em] text-linen/80">
               Dirt. Creativity. Connection.
             </p>
           </div>

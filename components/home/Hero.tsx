@@ -91,7 +91,7 @@ export default function Hero() {
                       />
                     )
                   ))}
-                  <div className="absolute left-5 bottom-5 rounded bg-cream-light/90 px-4 py-2.5 font-heading italic text-sm text-charcoal">
+                  <div className="absolute left-5 bottom-5 rounded bg-cream-light/90 px-4 py-2.5 font-label italic text-sm text-charcoal">
                     Portulacaria afra &middot; hand-shaped in Central Utah
                   </div>
                 </div>

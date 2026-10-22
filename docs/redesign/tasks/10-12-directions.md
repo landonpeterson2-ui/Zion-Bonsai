@@ -5,7 +5,7 @@
 ## Why
 Landon & Cass want to react to real pages, not descriptions. Each direction is a Home hero + one content section, built as a preview route. They pick one (or a blend) at the checkpoint.
 
-**Read first:** CLAUDE.md "Look and feel" and decisions.md "Refined, not kid-ish". All three directions must feel **refined and organic, grown-up, never cute**. They differ in composition and mood, not in how playful they are. If something you're adding could appear on a children's craft-kit box, cut it.
+**Read first:** CLAUDE.md "Brand rules" and "Look and feel", plus decisions.md "Refined, not kid-ish", "Reference sites" and "Type and palette". Cass's one-line brief: *classic high-end interior design meets trees.* All three directions must feel **refined and organic, grown-up, never cute**. They differ in composition and mood, not in how playful they are. If something you're adding could appear on a children's craft-kit box, cut it.
 
 ## Shared requirements (all three)
 - Route: `app/directions/<a|b|c>/page.tsx`, with `export const metadata = { robots: { index: false } }`. Uses the real Header/Footer.
@@ -21,13 +21,14 @@ Landon & Cass want to react to real pages, not descriptions. Each direction is a
 - Use only `featured` photos and finished-tree photos. **No photos where attendees' faces are identifiable.** Photo permission is unconfirmed (see STATUS.md).
 - Components for a direction live in `components/directions/<a|b|c>/`. Don't modify shared `components/ui/` in ways that affect other directions.
 - Must look intentional at 375px first, then 768px and 1280px.
-- Tokens and fonts from task 01 only. `.btn-primary` / `.btn-secondary` as defined. Script at most once on the page. Respect reduced motion; use `Reveal` for gentle fades only.
+- Fonts are fixed for all three: Cormorant display headlines, Montserrat labels and buttons, Open Sans body. The directions differ in **composition, rhythm and photo treatment**, not type or palette.
+- Tokens only. `.btn-primary` / `.btn-secondary` as defined. Script at most once on the page. Respect reduced motion; use `Reveal` for gentle fades only.
 - No three-identical-card rows. The "beats" must not be an icon-card grid.
 
 ## Direction A — "Studio" (task 10)
 A ceramicist's studio: natural light, stone, clay and bark. Calm and tactile through material, not decoration.
 - Palette leans warm-neutral: `paper` / `paper-deep` grounds, `soil` and `forest` text, a single `clay` accent.
-- Hero: a large photo in a soft **arch-topped frame** (top corners fully rounded into an arch, square bottom). Place it on the right on desktop, full-width on mobile. Headline left in Montserrat, with a lot of air around it. A small uppercase tracked eyebrow sits above it, and the lede is a short paragraph in `soil`. The `clay` primary button is paired with a quiet text link for the secondary CTA.
+- Hero: a large photo in a soft **arch-topped frame** (top corners fully rounded into an arch, square bottom). Place it on the right on desktop, full-width on mobile. Headline on the left in Cormorant, with an italic second line and a lot of air around it. A small uppercase tracked eyebrow sits above it, and the lede is a short paragraph in `soil`. The `clay` primary button is paired with a quiet text link for the secondary CTA.
 - Beats: two columns on desktop. A tall tightly cropped detail photo (roots, soil, glaze) sits on one side, and on the other the beats run as short paragraphs. Each beat has a small `clay` numeral and a 1px `forest/15` rule between beats.
 - Next workshop: a simple bordered block (1px `forest/20`, 3px radius) with the date set large in Montserrat, venue and time small, and one button.
 
