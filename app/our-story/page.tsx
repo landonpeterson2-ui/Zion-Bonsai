@@ -14,19 +14,10 @@ export const metadata: Metadata = {
     'Landon fell down a bonsai rabbit hole, Cass joined in, and now they teach beginner, screen-free bonsai workshops in Sanpete County, Central Utah.',
 }
 
-function Placeholder({ label, aspect }: { label: string; aspect: string }) {
-  return (
-    <div
-      className={`flex items-center justify-center border border-dashed border-forest/40 bg-paper-deep p-6 text-center text-sm text-forest ${aspect}`}
-    >
-      {label}
-    </div>
-  )
-}
-
 export default function OurStoryPage() {
   const origin = getPhoto('jade-white-origami-pot-porch')
   const landon = getPhoto('workshop-instructor-holding-jade-roots')
+  const both = getPhoto('workshop-selfie-in-venue')
   const soil = getPhoto('workshop-hands-in-soil-round-table')
   const cheesecake = getPhoto('cheesecake-blue-pot')
 
@@ -104,20 +95,26 @@ export default function OurStoryPage() {
               </p>
             </div>
             <div className="md:mt-16">
-              <Placeholder label="[PHOTO — Cass]" aspect="aspect-[4/5]" />
-              <h3 className="mt-6 font-display text-3xl">Cass</h3>
+              <h3 className="font-display text-3xl">Cass</h3>
               <p className="mt-3 leading-[1.7] text-soil">
                 A floral designer&rsquo;s eye, and the aesthetic and feel of it all. She likes making something
                 beautiful without needing to know all the rules.
               </p>
+              <p className="mt-6 leading-[1.7] text-soil">
+                Together we made workshops that respect the art form and stay approachable for real people with real
+                lives. We live here, and we&rsquo;re raising our family here.
+              </p>
+              <div className="mt-8 max-w-md">
+                <Photo
+                  src={both.src}
+                  alt={both.alt}
+                  sizes="(min-width: 768px) 30vw, 90vw"
+                  aspect="aspect-[4/3]"
+                  caption="Cass and Landon."
+                  objectPosition="object-[50%_35%]"
+                />
+              </div>
             </div>
-          </div>
-          <p className="mt-12 max-w-2xl leading-[1.7] text-soil">
-            Together we made workshops that respect the art form and stay approachable for real people with real lives.
-            We live here, and we&rsquo;re raising our family here.
-          </p>
-          <div className="mt-8 max-w-md">
-            <Placeholder label="[PHOTO — Landon & Cass]" aspect="aspect-[3/2]" />
           </div>
         </div>
       </Section>
@@ -179,7 +176,7 @@ export default function OurStoryPage() {
             </SectionHeading>
             <div className="mt-6 space-y-4 leading-[1.7] text-soil">
               <p>Cheesecake is our oldest bonsai, and he&rsquo;s at every workshop.</p>
-              <p>[CHEESECAKE&rsquo;S STORY &mdash; from Landon]</p>
+              <p>He&rsquo;s six now. Landon started him as a cutting in a plastic Cheesecake Factory cup, from one of our kids. Look at him now.</p>
             </div>
           </div>
         </div>
