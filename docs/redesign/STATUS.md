@@ -7,7 +7,7 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - [x] 01 Tokens, fonts, base styles — after 00
 - [x] 02 Content files and loader — after 00 (parallel with 01)
 - [ ] 03 Header, footer, navigation — after 01 + 02
-- [ ] 04 Redirects, sitemap, robots — after 02
+- [x] 04 Redirects, sitemap, robots — after 02
 - [x] 05 Optimize and catalog photos — after 02
 
 ## Phase 3 — Visual direction
@@ -46,6 +46,8 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - (task 05) Files still pointing at `/gallery/*.jpeg` originals (outside task scope): app/layout.tsx (OG image `/gallery/1.jpeg`, tasks 03/40), components/home/About.tsx, components/home/WorkshopPreview.tsx (task 20). Switch to `/photos/...` then; originals can be deleted from the repo afterwards.
 - (task 05) Hero and Gallery page now show only non-`workshop` items; workshop photos (19) are for the Workshops page (task 21). Gallery page lightbox still has legacy a11y issues (no focus trap, non-semantic buttons), for task 26.
 - (task 05) Photo budget: public/photos is ~13 MB at q74 / 2000px. Adding more photos to photos-inbox needs an entry in scripts/photos-map.json and content/gallery.json.
+- (task 04) confirm production domain: sitemap/robots fall back to https://zionbonsai.com (guessed from plants@zionbonsai.com) when NEXT_PUBLIC_APP_URL is unset.
+- (task 04) Old links to /about, /gift, /workshops/series remain in Header, Footer, Hero and About (redirects cover them; update in tasks 03/20). /contact, /events, /partners do not exist yet, so /gift lands on a 404 until task 25.
 
 ## Placeholders to fill
 <!-- Filled by task 30. Format: - page: [PLACEHOLDER] -->
@@ -56,3 +58,4 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - 01: Brand tokens are RGB-channel CSS vars in globals.css, mapped in tailwind.config.ts; legacy coral/sage scales, olive, cream, charcoal kept under a LEGACY comment. Montserrat/Open Sans/Satisfy via next/font; focus ring, reduced-motion, .reveal and components/ui/Reveal.tsx added. Old `.bg-linen` class renamed `.bg-grain-legacy` (collided with the `linen` token); `.btn-outline` now aliases `.btn-secondary`.
 - 02: Added content/*.json, content/README.md and lib/content.ts (zod, parsed at module load; getters for site, season, workshops, partners, gallery, faq). `eventsInquiryUrl` (null) added to site.json for task 22. Schemas live in lib/content-schemas.ts; `npm run build` first runs the `prebuild` script (scripts/check-content.mjs, plain Node type stripping, needs Node 22.18+), which validates every content file and exits 1 with a readable error naming the file and field. Tested with a bad date: build exit 1, then exit 0 after revert.
 - 05: `npm run photos` (scripts/optimize-photos.mjs) turns public/gallery + photos-inbox into 40 named JPGs in public/photos (~13 MB); original -> name mapping in scripts/photos-map.json. content/gallery.json has specific alt text for all 40 (21 sold trees, 19 workshop), 6 featured. Hero and Gallery page read getGallery().
+- 04: Permanent redirects in next.config.js (/workshops/:slug+ so /workshops does not loop), remotePatterns limited to cdn.shopify.com, sitemap/robots use lib/site-url.ts (fallback https://zionbonsai.com), robots disallows /directions/, app/about moved to app/our-story via git mv. Verified with next start: 308s for all three; sitemap has no localhost.
