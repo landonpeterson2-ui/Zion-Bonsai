@@ -20,6 +20,8 @@ Answers from Landon & Cass and choices made during planning. This file overrides
 
 **Wellness / unplugging is the lead message.** Landon: people respond really well to the "get off your phone and be with your tree" idea — not in those words, but that idea. Lead with it on Home and Workshops; carry it everywhere else (see CLAUDE.md "Voice"). Plain, warm, a little wry; never preachy or spa-like.
 
+**Workshop length** is two hours (from Landon's pre-redesign hero copy: "Just two hours where you disconnect from screens"). OK to state in copy.
+
 **Brand colors** were sampled from the logo files: coral `#DD6F47`, sage `#97B953`. These replace the handoff's approximations (`#E76F51`, `#9DAD7F`). Text and button colors were picked to pass WCAG AA; see the token table in CLAUDE.md.
 
 **Routes.**
