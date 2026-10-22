@@ -68,7 +68,7 @@ export default function HomeConcept() {
               className="object-cover"
             />
           </div>
-          <p className="mt-3 text-sm italic text-soil/80">Cheesecake, our oldest tree. It comes to every workshop.</p>
+          <p className="mt-3 text-sm italic text-soil/80">Cheesecake, our oldest tree. He comes to every workshop.</p>
         </div>
       </section>
 
