@@ -7,7 +7,7 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - [x] 01 Tokens, fonts, base styles — after 00
 - [x] 02 Content files and loader — after 00 (parallel with 01)
 - [ ] 03 Header, footer, navigation — after 01 + 02
-- [ ] 04 Redirects, sitemap, robots — after 02
+- [x] 04 Redirects, sitemap, robots — after 02
 - [ ] 05 Optimize and catalog photos — after 02
 
 ## Phase 3 — Visual direction
@@ -39,6 +39,9 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - (task 01) Existing pages still use legacy classes (`bg-cream-light`, `text-charcoal`, `.card`, coral-on-paper text) that predate the contrast rules; replace as pages are rebuilt, final sweep in task 42.
 - (task 01) `font-medium` (500) is used in a few places but Open Sans loads only 400/600; browser snaps to the nearest weight.
 
+- (task 04) confirm production domain: sitemap/robots fall back to https://zionbonsai.com (guessed from plants@zionbonsai.com) when NEXT_PUBLIC_APP_URL is unset.
+- (task 04) Old links to /about, /gift, /workshops/series remain in Header, Footer, Hero and About (redirects cover them; update in tasks 03/20). /contact, /events, /partners do not exist yet, so /gift lands on a 404 until task 25.
+
 ## Placeholders to fill
 <!-- Filled by task 30. Format: - page: [PLACEHOLDER] -->
 
@@ -47,3 +50,4 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - 00: Added eslint.config.mjs (flat config), lint script is now `eslint .`; unescaped-entity errors fixed mechanically; trimmed .env.example. Lint and build exit 0.
 - 01: Brand tokens are RGB-channel CSS vars in globals.css, mapped in tailwind.config.ts; legacy coral/sage scales, olive, cream, charcoal kept under a LEGACY comment. Montserrat/Open Sans/Satisfy via next/font; focus ring, reduced-motion, .reveal and components/ui/Reveal.tsx added. Old `.bg-linen` class renamed `.bg-grain-legacy` (collided with the `linen` token); `.btn-outline` now aliases `.btn-secondary`.
 - 02: Added content/*.json, content/README.md and lib/content.ts (zod, parsed at module load; getters for site, season, workshops, partners, gallery, faq). `eventsInquiryUrl` (null) added to site.json for task 22. Schemas live in lib/content-schemas.ts; `npm run build` first runs the `prebuild` script (scripts/check-content.mjs, plain Node type stripping, needs Node 22.18+), which validates every content file and exits 1 with a readable error naming the file and field. Tested with a bad date: build exit 1, then exit 0 after revert.
+- 04: Permanent redirects in next.config.js (/workshops/:slug+ so /workshops does not loop), remotePatterns limited to cdn.shopify.com, sitemap/robots use lib/site-url.ts (fallback https://zionbonsai.com), robots disallows /directions/, app/about moved to app/our-story via git mv. Verified with next start: 308s for all three; sitemap has no localhost.
