@@ -18,7 +18,7 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - [x] 20 Home
 - [ ] 21 Workshops — after 20
 - [ ] 22 Events — after 20
-- [ ] 23 Our Story — after 20
+- [x] 23 Our Story — after 20
 - [ ] 24 Care Guide — after 20
 - [ ] 25 Partners and Contact — after 20
 - [ ] 26 Gallery and Shop — after 20
@@ -60,3 +60,4 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - 04: Permanent redirects in next.config.js (/workshops/:slug+ so /workshops does not loop), remotePatterns limited to cdn.shopify.com, sitemap/robots use lib/site-url.ts (fallback https://zionbonsai.com), robots disallows /directions/, app/about moved to app/our-story via git mv. Verified with next start: 308s for all three; sitemap has no localhost.
 - 03: Header split into server Header.tsx (reads getSite) + client HeaderNav.tsx (menu state, aria-current squiggle). Menu open state is keyed to the pathname it opened on, so route changes close it without an effect. Footer reads getSite(); nav items/footer groups live in components/layout/nav.ts; skip link, main#main and global [id] scroll-margin-top added.
 - 20: Home promoted from the concept. Primitives in components/ui: Eyebrow, TextLink, Photo, Section, SectionHeading, NextWorkshop (+ formatDate/formatTime), PhotoHero (soil-washed hero, reusable on inner pages); lib/photos.ts `getPhoto(name)` reads gallery.json. Home sections in components/home/; Testimonial is a dashed placeholder. Hero photo swaps via HERO_PHOTO in components/home/Hero.tsx. Old Hero/About/WorkshopPreview/ShopByStage deleted.
+- (task 23) Our Story: no confirmed photo of Cass or Landon & Cass (placeholders in place); origin photo is a generic tree shot; Cheesecake's story is a placeholder. Cut the Who-this-is-for and What-makes-us-different lists (covered on Home/Workshops).
