@@ -40,7 +40,7 @@ export default function ShopByStage() {
             Shop by <span className="text-coral">Stage</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Every bonsai is a journey. Choose where you'd like to begin yours.
+            Every bonsai is a journey. Choose where you&apos;d like to begin yours.
           </p>
         </div>
 

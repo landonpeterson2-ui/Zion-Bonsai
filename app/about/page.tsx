@@ -25,45 +25,45 @@ export default function AboutPage() {
         <div className="card p-8">
           <h2 className="text-3xl text-charcoal mb-6">Our Story</h2>
           <p className="text-lg text-charcoal/80 mb-4">
-            It started during COVID. My husband fell down a bonsai rabbit hole on YouTube — the kind where you look up one video and suddenly it's 2am and you're watching someone wire a juniper in Japan.
+            It started during COVID. My husband fell down a bonsai rabbit hole on YouTube — the kind where you look up one video and suddenly it&apos;s 2am and you&apos;re watching someone wire a juniper in Japan.
           </p>
           <p className="text-lg text-charcoal/80 mb-4">
             In 2021, he ordered his first tree from Little Jade Bonsai. It was a succulent variety, something forgiving enough to grow indoors without needing a degree in horticulture. One plant turned into two. Two turned into a small collection taking over our living room.
           </p>
           <p className="text-lg text-charcoal/80 mb-4">
-            Then our second son was born in 2022, and life got beautifully chaotic. In the middle of sleepless nights and toddler meltdowns, I'd watch him tend to these little trees. Shaping them, pruning them, turning them into tiny pieces of living art. It was the most calming thing in our house.
+            Then our second son was born in 2022, and life got beautifully chaotic. In the middle of sleepless nights and toddler meltdowns, I&apos;d watch him tend to these little trees. Shaping them, pruning them, turning them into tiny pieces of living art. It was the most calming thing in our house.
           </p>
           <p className="text-lg text-charcoal/80 mb-4">
-            Eventually, I started joining in. I loved the creative side — making something beautiful without needing to know all the "rules" or spend years studying ancient techniques. He learned the traditional art. I just wanted to make things that felt good.
+            Eventually, I started joining in. I loved the creative side — making something beautiful without needing to know all the &quot;rules&quot; or spend years studying ancient techniques. He learned the traditional art. I just wanted to make things that felt good.
           </p>
           <p className="text-lg text-charcoal/80 mb-6">
-            And that's when it clicked: what if other people could experience this too?
+            And that&apos;s when it clicked: what if other people could experience this too?
           </p>
 
           <h3 className="text-xl text-charcoal mt-8 mb-3">Why Zion Bonsai Exists</h3>
           <p className="text-lg text-charcoal/80 mb-4">
-            Here in Central Utah, we don't have a lot of spaces where you can unplug, work with your hands, and create something living. We're surrounded by beautiful outdoor recreation, but when it comes to creative, hands-on experiences? The options are pretty limited.
+            Here in Central Utah, we don&apos;t have a lot of spaces where you can unplug, work with your hands, and create something living. We&apos;re surrounded by beautiful outdoor recreation, but when it comes to creative, hands-on experiences? The options are pretty limited.
           </p>
           <p className="text-lg text-charcoal/80 mb-4">
-            Zion Bonsai fills that gap. We're building a space where you can step away from screens, connect with people in your community, and leave with a piece of living art you made yourself. No intimidating jargon. No pressure to be perfect. Just soil, tools, good company, and a tree that's yours to grow.
+            Zion Bonsai fills that gap. We&apos;re building a space where you can step away from screens, connect with people in your community, and leave with a piece of living art you made yourself. No intimidating jargon. No pressure to be perfect. Just soil, tools, good company, and a tree that&apos;s yours to grow.
           </p>
           <p className="text-lg text-charcoal/80 mb-6">
-            We focus on beginner-friendly varieties — especially succulents and indoor-tolerant species — because we believe bonsai shouldn't require a greenhouse or years of study to get started. You can do this in your living room. You can do this with zero experience. And honestly? That's the whole point.
+            We focus on beginner-friendly varieties — especially succulents and indoor-tolerant species — because we believe bonsai shouldn&apos;t require a greenhouse or years of study to get started. You can do this in your living room. You can do this with zero experience. And honestly? That&apos;s the whole point.
           </p>
 
           <h3 className="text-xl text-charcoal mt-8 mb-3">What Makes Us Different?</h3>
           <ul className="space-y-4 mb-6">
             <li>
-              <span className="font-semibold text-coral">We're beginner-focused, not expert-obsessed.</span>
-              <p className="text-lg text-charcoal/80 mt-1">You won't find complicated terminology or gatekeeping here. We break things down so anyone can follow along, ask questions, and actually enjoy the process.</p>
+              <span className="font-semibold text-coral">We&apos;re beginner-focused, not expert-obsessed.</span>
+              <p className="text-lg text-charcoal/80 mt-1">You won&apos;t find complicated terminology or gatekeeping here. We break things down so anyone can follow along, ask questions, and actually enjoy the process.</p>
             </li>
             <li>
               <span className="font-semibold text-coral">We prioritize accessibility over tradition.</span>
-              <p className="text-lg text-charcoal/80 mt-1">My husband brings knowledge of traditional bonsai techniques. I bring a love for creating without overthinking it. Together, we've built workshops that respect the art form while making it approachable for real people with real lives.</p>
+              <p className="text-lg text-charcoal/80 mt-1">My husband brings knowledge of traditional bonsai techniques. I bring a love for creating without overthinking it. Together, we&apos;ve built workshops that respect the art form while making it approachable for real people with real lives.</p>
             </li>
             <li>
-              <span className="font-semibold text-coral">We're local to Central Utah.</span>
-              <p className="text-lg text-charcoal/80 mt-1">This isn't a franchise or a side hustle shipped in from somewhere else. We live here. We're raising our family here. And we're building something we wish existed when we first got curious about bonsai.</p>
+              <span className="font-semibold text-coral">We&apos;re local to Central Utah.</span>
+              <p className="text-lg text-charcoal/80 mt-1">This isn&apos;t a franchise or a side hustle shipped in from somewhere else. We live here. We&apos;re raising our family here. And we&apos;re building something we wish existed when we first got curious about bonsai.</p>
             </li>
             <li>
               <span className="font-semibold text-coral">We believe in the power of unplugging.</span>
@@ -74,11 +74,11 @@ export default function AboutPage() {
           <ul className="space-y-2 mb-6">
             <li className="flex items-start gap-3">
               <span className="text-coral">•</span>
-              <span>Complete beginners who've always been curious but didn't know where to start</span>
+              <span>Complete beginners who&apos;ve always been curious but didn&apos;t know where to start</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="text-coral">•</span>
-              <span>People looking for a creative outlet that doesn't require a huge time commitment</span>
+              <span>People looking for a creative outlet that doesn&apos;t require a huge time commitment</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="text-coral">•</span>
@@ -86,7 +86,7 @@ export default function AboutPage() {
             </li>
             <li className="flex items-start gap-3">
               <span className="text-coral">•</span>
-              <span>Couples, friends, or families who want to do something together that isn't dinner and a movie</span>
+              <span>Couples, friends, or families who want to do something together that isn&apos;t dinner and a movie</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="text-coral">•</span>
@@ -94,10 +94,10 @@ export default function AboutPage() {
             </li>
           </ul>
           <p className="text-lg text-charcoal/80 mb-4">
-            You don't need a green thumb. You don't need prior experience. You just need to show up — we'll handle the rest.
+            You don&apos;t need a green thumb. You don&apos;t need prior experience. You just need to show up — we&apos;ll handle the rest.
           </p>
           <p className="text-lg text-charcoal/80 mb-6">
-            Whether you've never touched a bonsai or you've been curious for years, we'd love to have you. <span className="font-semibold text-coral">Come grow with us.</span>
+            Whether you&apos;ve never touched a bonsai or you&apos;ve been curious for years, we&apos;d love to have you. <span className="font-semibold text-coral">Come grow with us.</span>
           </p>
         </div>
       </div>

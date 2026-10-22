@@ -159,7 +159,7 @@ export default function CareGuidePage() {
                 <li>Prune during growing season for best results</li>
                 <li>Use sharp, clean scissors or bonsai shears</li>
                 <li>Remove crossing branches and those growing straight up or down</li>
-                <li>Wiring can be done but isn't always necessary</li>
+                <li>Wiring can be done but isn&apos;t always necessary</li>
                 <li>Branches become brittle with age - wire young, flexible growth</li>
                 <li>Pinch back new growth to encourage ramification</li>
               </ul>

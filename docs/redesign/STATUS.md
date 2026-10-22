@@ -3,7 +3,7 @@
 Tick a task in the same commit that finishes it. Tasks within a phase can run in parallel only where noted.
 
 ## Phase 2 — Foundation
-- [ ] 00 Fix lint tooling
+- [x] 00 Fix lint tooling
 - [ ] 01 Tokens, fonts, base styles — after 00
 - [ ] 02 Content files and loader — after 00 (parallel with 01)
 - [ ] 03 Header, footer, navigation — after 01 + 02
@@ -34,9 +34,12 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 
 ## Found while working
 <!-- Out-of-scope issues agents notice. Format: - (task NN) description -->
+- (task 00) components/home/Hero.tsx: `react-hooks/set-state-in-effect` disabled on one line; remove when Hero is rebuilt (task 20).
+- (task 00) types/shopify.d.ts: one lint warning (`import/no-anonymous-default-export`), left as is; revisit in task 26 (Shop).
 
 ## Placeholders to fill
 <!-- Filled by task 30. Format: - page: [PLACEHOLDER] -->
 
 ## Milestone notes
 <!-- Short summaries / screenshots per task -->
+- 00: Added eslint.config.mjs (flat config), lint script is now `eslint .`; unescaped-entity errors fixed mechanically; trimmed .env.example. Lint and build exit 0.

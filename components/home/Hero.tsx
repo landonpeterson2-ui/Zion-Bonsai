@@ -37,6 +37,7 @@ export default function Hero() {
   const [mountedIndices, setMountedIndices] = useState<Set<number>>(() => new Set([0, 1 % galleryImages.length]))
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Hero is rebuilt in task 20; remove then
     setIsLoaded(true)
     const interval = setInterval(() => {
       setCurrentIndex((prev) => {

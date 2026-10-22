@@ -40,7 +40,7 @@ export default function GalleryPage() {
           Our <span className="text-coral font-semibold">Gallery</span>
         </h1>
         <p className="text-xl text-charcoal/70 max-w-2xl mx-auto">
-          A glimpse into the world of Zion Bonsai - our plants, workshops, and the community we're building together.
+          A glimpse into the world of Zion Bonsai - our plants, workshops, and the community we&apos;re building together.
         </p>
       </div>
 
