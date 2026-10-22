@@ -15,7 +15,7 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - [x] **CHECKPOINT — Cass approved the concept direction (2026-10-21)**
 
 ## Phase 4 — Pages
-- [ ] 20 Home
+- [x] 20 Home
 - [ ] 21 Workshops — after 20
 - [ ] 22 Events — after 20
 - [ ] 23 Our Story — after 20
@@ -32,7 +32,6 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 
 ## Found while working
 <!-- Out-of-scope issues agents notice. Format: - (task NN) description -->
-- (task 00) components/home/Hero.tsx: `react-hooks/set-state-in-effect` disabled on one line; remove when Hero is rebuilt (task 20).
 - (task 00) types/shopify.d.ts: one lint warning (`import/no-anonymous-default-export`), left as is; revisit in task 26 (Shop).
 - (task 01) Existing pages still use legacy classes (`bg-cream-light`, `text-charcoal`, `.card`, coral-on-paper text) that predate the contrast rules; replace as pages are rebuilt, final sweep in task 42.
 - (task 01) `font-medium` (500) is used in a few places but Open Sans loads only 400/600; browser snaps to the nearest weight.
@@ -41,7 +40,7 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - (task 05) Privacy: 16 workshop photos show identifiable attendees' faces, including minors in IMG_6550 and IMG_6541. Confirm attendee permission before the photos go public. Alt text is generic, no names. `featured` is only on `workshop-hands-in-soil-round-table` and `workshop-finished-jade-thank-you-card` (no posed faces).
 - (task 05) Landon & Cass portrait: `workshop-selfie-in-venue.jpg` (IMG_7456) and `workshop-instructor-holding-jade-roots.jpg` (_DSC7906) may be Landon/Cass; not labeled, Landon to confirm. Still no proper portrait.
 - (task 05) Handoff wishlist shots still missing: Cheesecake (unconfirmed), clean hands-in-soil close-up (only the group shots IMG_6047/6048), Taya's pots close-up (handmade pots appear only small in workshop shots), Landon & Cass portrait, a phone face-down on the table.
-- (task 05) Files still pointing at `/gallery/*.jpeg` originals (outside task scope): app/layout.tsx (OG image `/gallery/1.jpeg`, tasks 03/40), components/home/About.tsx, components/home/WorkshopPreview.tsx (task 20). Switch to `/photos/...` then; originals can be deleted from the repo afterwards.
+- (task 05) app/layout.tsx still uses OG image `/gallery/1.jpeg` (tasks 03/40); originals in public/gallery can be deleted after that.
 - (task 05) Hero and Gallery page now show only non-`workshop` items; workshop photos (19) are for the Workshops page (task 21). Gallery page lightbox still has legacy a11y issues (no focus trap, non-semantic buttons), for task 26.
 - (task 05) Photo budget: public/photos is ~13 MB at q74 / 2000px. Adding more photos to photos-inbox needs an entry in scripts/photos-map.json and content/gallery.json.
 - (task 04) confirm production domain: sitemap/robots fall back to https://zionbonsai.com (guessed from plants@zionbonsai.com) when NEXT_PUBLIC_APP_URL is unset.
@@ -60,3 +59,4 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - 05: `npm run photos` (scripts/optimize-photos.mjs) turns public/gallery + photos-inbox into 40 named JPGs in public/photos (~13 MB); original -> name mapping in scripts/photos-map.json. content/gallery.json has specific alt text for all 40 (21 sold trees, 19 workshop), 6 featured. Hero and Gallery page read getGallery().
 - 04: Permanent redirects in next.config.js (/workshops/:slug+ so /workshops does not loop), remotePatterns limited to cdn.shopify.com, sitemap/robots use lib/site-url.ts (fallback https://zionbonsai.com), robots disallows /directions/, app/about moved to app/our-story via git mv. Verified with next start: 308s for all three; sitemap has no localhost.
 - 03: Header split into server Header.tsx (reads getSite) + client HeaderNav.tsx (menu state, aria-current squiggle). Menu open state is keyed to the pathname it opened on, so route changes close it without an effect. Footer reads getSite(); nav items/footer groups live in components/layout/nav.ts; skip link, main#main and global [id] scroll-margin-top added.
+- 20: Home promoted from the concept. Primitives in components/ui: Eyebrow, TextLink, Photo, Section, SectionHeading, NextWorkshop (+ formatDate/formatTime), PhotoHero (soil-washed hero, reusable on inner pages); lib/photos.ts `getPhoto(name)` reads gallery.json. Home sections in components/home/; Testimonial is a dashed placeholder. Hero photo swaps via HERO_PHOTO in components/home/Hero.tsx. Old Hero/About/WorkshopPreview/ShopByStage deleted.
