@@ -66,8 +66,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${montserrat.variable} ${openSans.variable} ${satisfy.variable} font-sans antialiased bg-paper text-forest`}>
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-clay focus:px-5 focus:py-3 focus:font-semibold focus:text-linen"
+        >
+          Skip to content
+        </a>
         <Header />
-        <main className="min-h-screen">
+        <main id="main" tabIndex={-1} className="min-h-screen outline-none">
           {children}
         </main>
         <Footer />

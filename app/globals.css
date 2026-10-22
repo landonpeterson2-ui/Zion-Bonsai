@@ -60,6 +60,11 @@
     outline-offset: 3px;
   }
 
+  /* Keep anchor targets clear of the sticky header (<= 72px). */
+  [id] {
+    scroll-margin-top: 5.5rem;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
