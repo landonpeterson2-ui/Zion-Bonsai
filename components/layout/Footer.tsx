@@ -4,27 +4,27 @@ import { getSite } from '@/lib/content'
 import { footerGroups } from './nav'
 
 const linkClass =
-  'inline-flex min-h-[44px] min-w-0 max-w-full items-center break-words text-linen/90 underline-offset-4 hover:text-linen hover:underline transition-colors'
+  'inline-flex min-h-[44px] min-w-0 max-w-full items-center break-words text-parchment underline-offset-4 hover:text-linen hover:underline transition-colors'
 
 const headingClass =
-  'mb-2 font-label text-xs font-semibold uppercase tracking-widest text-linen/80'
+  'mb-2 font-label text-xs font-semibold uppercase tracking-widest text-parchment'
 
 export default function Footer() {
   const site = getSite()
 
   return (
-    <footer className="mt-24 bg-soil text-linen">
+    <footer className="mt-24 bg-bark text-parchment [&_:focus-visible]:outline-parchment">
       <div className="container-custom pb-8 pt-16">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <Image
-              src="/ZB Logo Transparent.png"
+              src="/zb-logo-wide.png"
               alt="Zion Bonsai"
-              width={160}
-              height={160}
-              className="mb-3 h-24 w-24"
+              width={654}
+              height={360}
+              className="-ml-1 mb-4 h-20 w-auto"
             />
-            <p className="font-label text-xs font-semibold uppercase tracking-[0.2em] text-linen/80">
+            <p className="font-label text-xs font-semibold uppercase tracking-[0.2em] text-parchment">
               Dirt. Creativity. Connection.
             </p>
           </div>
@@ -71,9 +71,9 @@ export default function Footer() {
           </div>
         </div>
 
-        <p className="mt-14 font-display text-[1.75rem] italic text-linen/90">Come grow with us.</p>
+        <p className="mt-14 font-display text-[1.75rem] italic text-parchment">Come grow with us.</p>
 
-        <div className="mt-6 flex flex-col gap-1 border-t border-linen/20 pt-5 text-sm text-linen/80 sm:flex-row sm:justify-between">
+        <div className="mt-6 flex flex-col gap-1 border-t border-parchment/25 pt-5 text-sm text-parchment sm:flex-row sm:justify-between">
           <p>&copy; {new Date().getFullYear()} Zion Bonsai</p>
           <p>{site.area}</p>
         </div>

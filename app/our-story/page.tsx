@@ -119,8 +119,79 @@ export default function OurStoryPage() {
         </div>
       </Section>
 
+      {/* 3b. Why Zion: approved copy from "Why Zion — Website Copy" (Landon, 2026-10-23). Use exactly as written. */}
+      <Section id="why-zion">
+        <div className="container-custom">
+          <Reveal className="mx-auto max-w-[40rem]">
+            <h2 className="text-[2.4rem] leading-[1.05] md:text-[3.25rem]">
+              Why <em>Zion?</em>
+            </h2>
+            <div className="mt-10 space-y-6 text-lg leading-[1.8] text-soil">
+              <p>
+                The name started with a place. We spent the first eight years of our marriage in St. George, and Zion
+                National Park became one of the places we felt most at peace: the red rock, the wide vistas, the
+                stillness. Those colors are woven into everything we make, because we want our workshops to feel the
+                way that canyon feels.
+              </p>
+              <p>
+                But Zion means more to us than a park. In our faith as members of The Church of Jesus Christ of
+                Latter-day Saints, Zion describes a people &ldquo;of one heart and one mind,&rdquo; a oneness we try to
+                build in our home and our community. That hope isn&rsquo;t ours alone. It echoes through the Hebrew
+                psalms, through the Christian longing for a city of peace, and through the quiet traditions bonsai
+                itself grew from. Through the ancient art of bonsai, we want to help nurture the Zion in all of us:
+                connection to nature, to God, and to each other.
+              </p>
+              <p>Our trees have a way of teaching us along the way. Landon puts it like this:</p>
+            </div>
+          </Reveal>
+
+          {/* Landon's Zeus story: a direct quote, set as a pull quote in his voice. */}
+          <Reveal className="mx-auto my-14 max-w-[46rem] md:my-20">
+            <figure className="border-l border-clay pl-6 md:pl-10">
+              <blockquote className="font-display text-[1.6rem] italic leading-[1.4] text-forest md:text-[2.1rem]">
+                <p>
+                  &ldquo;Zeus taught me a lot about not fighting things you can&rsquo;t control. He was basically a side
+                  branch forced into becoming a main trunk, and despite my early mistakes, he never stalled out. He
+                  just rerouted his energy and kept going. Plants don&rsquo;t care about the setback; they just adapt
+                  and put out new leaves. It&rsquo;s been a really good reminder that you can&rsquo;t always pick the
+                  situation, but you can always decide where to put your energy.&rdquo;
+                </p>
+              </blockquote>
+              <figcaption className="mt-6 font-label text-[11px] font-semibold uppercase tracking-[0.2em] text-clay">
+                Landon
+              </figcaption>
+            </figure>
+          </Reveal>
+
+          <Reveal className="mx-auto max-w-[40rem]">
+            <div className="space-y-6 text-lg leading-[1.8] text-soil">
+              <p>
+                For us, a lot of that energy goes into small things, like taking an extra fifteen seconds to look the
+                cashier in the eye, say hello, and really ask how they&rsquo;re doing. At seventeen, Cass worked as a
+                housekeeper and learned firsthand how it feels when people look through you instead of at you. When
+                Landon worked at Dixie State University (now Utah Tech University), he knew everyone by name, from the
+                custodian who emptied his office trash to the vice presidents. People are people. Titles
+                shouldn&rsquo;t matter.
+              </p>
+              <p>
+                Bonsai gives us room to practice that. Some days our ten minutes with the trees is just watering them,
+                or sitting and taking in their beauty. That&rsquo;s often enough to quiet an anxious mind so we can show
+                up a little calmer. Other days, &ldquo;I&rsquo;ll trim this one tree&rdquo; turns into hours of shaping
+                half the collection. Either way, time with a tree, spent reflecting on the blessings we&rsquo;ve been
+                given, makes us a little more whole.
+              </p>
+              <p>
+                This is how we try to show up for our boys, our friends, and the wonderful people at our local gas
+                station, who see us several times a day for our daily dose of Mormon caffeine. And it&rsquo;s what we
+                hope you&rsquo;ll find in a workshop: a little more of the Zion in you.
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      </Section>
+
       {/* 4. Wabi-sabi */}
-      <Section>
+      <Section tone="paper-deep">
         <Reveal className="container-custom text-center">
           <Eyebrow>Wabi-sabi</Eyebrow>
           <p className="mx-auto mt-6 max-w-2xl leading-[1.7] text-soil">

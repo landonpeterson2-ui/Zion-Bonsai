@@ -7,6 +7,7 @@ import Testimonial from '@/components/home/Testimonial'
 import TheWorkshop from '@/components/home/TheWorkshop'
 import TreesWeveShaped from '@/components/home/TreesWeveShaped'
 import WhoYoullLearnFrom from '@/components/home/WhoYoullLearnFrom'
+import WhyZion from '@/components/home/WhyZion'
 
 // The next-workshop block depends on today's date, so refresh hourly.
 export const revalidate = 3600
@@ -22,6 +23,7 @@ export default function Home() {
     <>
       <Hero />
       <Statement />
+      <WhyZion />
       <TheWorkshop />
       <WhoYoullLearnFrom />
       <TreesWeveShaped />

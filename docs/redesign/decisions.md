@@ -104,6 +104,12 @@ The home hero now uses the same soil-washed photo treatment as the private event
 - **Landon & Cass photo:** `workshop-selfie-in-venue.jpg` is Cass (left) and Landon (right). The instructor photo is Landon.
 - **Cheesecake's story:** he's **6 years old**. Landon started him as a cutting in a plastic Cheesecake Factory cup, from one of their kids. Use these facts as given; don't embellish (e.g. don't claim that's where the name came from unless Landon says so).
 
+## 2026-10-23 — "Why Zion?" copy, bark header and footer (Landon)
+
+- **"Why Zion?" copy is final and approved** (source: `scripts/Why Zion — Website Copy.pdf`). Use it exactly as written; don't rephrase or shorten. Short version on Home (`components/home/WhyZion.tsx`); long version on Our Story (`#why-zion`), with Landon's Zeus story as a pull quote. "Mormon caffeine" is intentional. Zeus is a tree, and a he. (The doc's "Montserrat Bold headings" note predates the Cormorant decision; current type rules stand.)
+- **Header and footer use the wide logo's brown** (`bark` #7A623D) with its cream (`parchment` #F1F1EB) for text, buttons and focus rings. Clay and faded linen fail contrast on bark. Header is 80px / 120px tall. Photo heroes sit below a thin strip of stone (`mt-3` / `md:mt-4`). The mobile menu panel stays light stone.
+- The wide logo is served as `public/zb-logo-wide.png`, rendered from `assets/brand-src/ZB- wide Logo.svg` onto the exact bark color so its background disappears.
+
 ## Open items (from Landon & Cass)
 - [ ] Google Form URL(s) for registration
 - [ ] Upcoming workshop dates and prices
