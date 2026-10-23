@@ -71,7 +71,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <p className="mt-14 font-script text-2xl text-linen/90">Come grow with us.</p>
+        <p className="mt-14 font-display text-[1.75rem] italic text-linen/90">Come grow with us.</p>
 
         <div className="mt-6 flex flex-col gap-1 border-t border-linen/20 pt-5 text-sm text-linen/80 sm:flex-row sm:justify-between">
           <p>&copy; {new Date().getFullYear()} Zion Bonsai</p>
