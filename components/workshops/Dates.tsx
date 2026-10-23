@@ -14,17 +14,22 @@ const typeLabel: Record<Workshop['type'], string> = {
 const btn =
   'inline-flex min-h-[44px] items-center rounded-[3px] border border-forest/60 px-6 py-3 font-label text-[11px] font-semibold uppercase tracking-[0.16em] text-forest transition-colors hover:bg-forest hover:text-linen'
 
+const plain = 'font-label text-[11px] font-semibold uppercase tracking-[0.16em] text-soil'
+
+/** full and waitlist behave the same: a waitlist link if there is a URL, otherwise "Full". */
+function statusNote(w: Workshop) {
+  if (w.status === 'open') return ''
+  return w.registrationUrl ? ' · Waitlist' : ' · Full'
+}
+
 function Action({ w }: { w: Workshop }) {
+  const closed = w.status !== 'open'
   if (!w.registrationUrl) {
-    return <p className="font-label text-[11px] font-semibold uppercase tracking-[0.16em] text-soil">Registration opens soon</p>
+    return <p className={plain}>{closed ? 'Full' : 'Registration opens soon'}</p>
   }
-  if (w.status === 'full') {
-    return <p className="font-label text-[11px] font-semibold uppercase tracking-[0.16em] text-soil">Full</p>
-  }
-  const waitlist = w.status === 'waitlist'
   return (
-    <a href={w.registrationUrl} target="_blank" rel="noopener noreferrer" className={waitlist ? btn : 'btn-primary'}>
-      {waitlist ? 'Join the waitlist' : 'Register'}
+    <a href={w.registrationUrl} target="_blank" rel="noopener noreferrer" className={closed ? btn : 'btn-primary'}>
+      {closed ? 'Join the waitlist' : 'Register'}
       <span className="sr-only"> (opens in new tab)</span>
     </a>
   )
@@ -66,7 +71,7 @@ export default function Dates() {
                         {venue?.location ? `, ${venue.location}` : ''}
                         {' · '}
                         {w.price}
-                        {w.status === 'waitlist' ? ' · Waitlist' : ''}
+                        {statusNote(w)}
                       </p>
                     </div>
                     <Action w={w} />
