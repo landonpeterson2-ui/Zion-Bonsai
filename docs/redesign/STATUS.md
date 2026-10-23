@@ -20,8 +20,7 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - [ ] 22 Events — after 20
 - [ ] 23 Our Story — after 20
 - [x] 24 Care Guide — after 20
-- [ ] 25 Partners and Contact — after 20
-- [x] 25 Partners and Contact — after 20. /partners and /contact built from ui primitives; partner links, gift (#gift) and interest-list fallbacks all driven by content/. Gift/interest CTAs are mailto until URLs are set.
+- [x] 25 Partners and Contact — after 20
 - [ ] 26 Gallery and Shop — after 20
 - [ ] **CHECKPOINT — Landon & Cass review all pages**
 
