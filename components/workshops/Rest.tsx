@@ -1,9 +1,10 @@
 import Eyebrow from '@/components/ui/Eyebrow'
+import Quote from '@/components/ui/Quote'
 import Section from '@/components/ui/Section'
 import SectionHeading from '@/components/ui/SectionHeading'
 import TextLink from '@/components/ui/TextLink'
 import { formatDate, formatTime } from '@/components/ui/NextWorkshop'
-import { getFaq, getUpcomingWorkshops } from '@/lib/content'
+import { getFaq, getTestimonials, getUpcomingWorkshops } from '@/lib/content'
 
 export function Shaping() {
   const sessions = getUpcomingWorkshops().filter((w) => w.type === 'shaping')
@@ -46,11 +47,19 @@ const whoFor = [
 ]
 
 export function WhoFor() {
+  const quotes = getTestimonials('workshops')
   return (
     <Section tone="paper-deep">
       <div className="container-custom grid gap-10 md:grid-cols-12 md:gap-16">
         <div className="md:col-span-5">
           <SectionHeading eyebrow="Who it’s for">Anyone who could use a quiet table.</SectionHeading>
+          {quotes.length > 0 ? (
+            <div className="mt-12 hidden space-y-10 border-l border-clay pl-6 md:block">
+              {quotes.map((q) => (
+                <Quote key={q.id} testimonial={q} size="md" align="left" />
+              ))}
+            </div>
+          ) : null}
         </div>
         <div className="md:col-span-7 md:pt-12">
           <ul className="border-t border-forest/15">
@@ -64,6 +73,14 @@ export function WhoFor() {
           <div className="mt-8">
             <TextLink href="/contact#gift">Gift certificates</TextLink>
           </div>
+          {/* Phones: quotes follow the list instead of sitting beside it. */}
+          {quotes.length > 0 ? (
+            <div className="mt-12 space-y-10 border-l border-clay pl-6 md:hidden">
+              {quotes.map((q) => (
+                <Quote key={q.id} testimonial={q} size="md" align="left" />
+              ))}
+            </div>
+          ) : null}
         </div>
       </div>
     </Section>

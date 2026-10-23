@@ -1,0 +1,59 @@
+{
+  "_note": "Source: docs/copy/Testimonials.pdf. Quotes are the attendee's exact words; excerpts are whole consecutive sentences, never reworded. Only edit: Lacee's sprout emoji became a period. 'pages' controls where a quote can appear; Home rotates hourly through its quotes in order.",
+  "testimonials": [
+    {
+      "id": "sierra-unplug",
+      "name": "Sierra",
+      "town": "Ephraim",
+      "note": "Our first workshop",
+      "quote": "There was something so grounding about getting my hands in the soil and reconnecting with nature. It truly felt rejuvenating and helped me unplug from everything else.",
+      "pages": ["home"]
+    },
+    {
+      "id": "sierra-fez",
+      "name": "Sierra",
+      "town": "Ephraim",
+      "note": "Our first workshop",
+      "quote": "One of the best parts was leaving with our own bonsai plant, which we named Fez (yes, a little Doctor Who inspiration!). It’s more than just a plant; it’s something we now get to nurture, care for, and connect with.",
+      "pages": ["home"]
+    },
+    {
+      "id": "sierra-hosts",
+      "name": "Sierra",
+      "town": "Ephraim",
+      "note": "Our first workshop",
+      "quote": "Cassey and Landon are absolutely wonderful. They are not only incredibly knowledgeable but also kind, patient, and genuinely passionate about what they do.",
+      "pages": ["home"]
+    },
+    {
+      "id": "sierra-after",
+      "name": "Sierra",
+      "town": "Ephraim",
+      "note": "Our first workshop",
+      "quote": "What really stood out is how they continue to stay connected even after the workshop. They’re always open to answering follow-up questions, which shows how much they truly care about their students and their plants.",
+      "pages": ["home"]
+    },
+    {
+      "id": "jill",
+      "name": "Jill",
+      "town": "Ephraim",
+      "quote": "Such a fun experience that is different than the usual night out. It’s a relaxed environment for anyone and easy to have conversation. Cassey and Landon were the perfect hosts and their knowledge and talent made this experience so great and memorable!",
+      "pages": ["workshops"]
+    },
+    {
+      "id": "lacee",
+      "name": "Lacee",
+      "town": "Mt Pleasant",
+      "quote": "We had such a fun date night making our Bonsai trees!! It was the cutest environment and we loved learning all about them! Both Landon and Cassey were super knowledgeable and helpful. Now we both have a cute little tree to watch grow. Would definitely recommend for a local date night!",
+      "pages": ["workshops"]
+    },
+    {
+      "id": "sierra-full",
+      "name": "Sierra",
+      "town": "Ephraim",
+      "note": "Our first workshop",
+      "quote": "I had one of the most incredible experiences at the Zion Bonsai succulent workshop. From the moment we walked in, the space felt welcoming, clean, bright, and absolutely beautiful; it instantly set the tone for something special. I went with my husband, and it turned into such a meaningful and fun experience for both of us.\n\nThe class itself was hands-on in the best way. We learned how to plant, grow, and replant succulent bonsai, and I loved being able to actually do everything rather than just watch. There was something so grounding about getting my hands in the soil and reconnecting with nature. It truly felt rejuvenating and helped me unplug from everything else.\n\nOne of the best parts was leaving with our own bonsai plant, which we named Fez (yes, a little Doctor Who inspiration!). It’s more than just a plant; it’s something we now get to nurture, care for, and connect with. There’s a real sense of meaning behind it, especially with the idea of wabi-sabi, imperfectly perfect, which made the experience feel even more special.\n\nCassey and Landon are absolutely wonderful. They are not only incredibly knowledgeable but also kind, patient, and genuinely passionate about what they do. They teach through experience, make everything approachable, and answer every question with care. What really stood out is how they continue to stay connected even after the workshop. They’re always open to answering follow-up questions, which shows how much they truly care about their students and their plants.\n\nThis workshop wasn’t just a class, it was an experience I’ll remember and appreciate for a long time. I can’t recommend it highly enough!",
+      "pages": []
+    }
+  ]
+}

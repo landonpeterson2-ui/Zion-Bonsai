@@ -84,6 +84,20 @@ export const gallerySchema = z.array(galleryItemSchema)
 // Shopify product handles (Shopify Admin > Products > URL handle). Empty = shop shows its empty state.
 export const shopSchema = z.object({ handles: z.array(z.string().min(1)) })
 
+export const testimonialSchema = z.object({
+  id: z.string().min(1),
+  name: z.string().min(1),
+  town: z.string().min(1),
+  note: z.string().optional(),
+  // The attendee's exact words. Excerpts are whole consecutive sentences, never reworded.
+  quote: z.string().min(1),
+  pages: z.array(z.enum(['home', 'workshops', 'events'])),
+})
+export const testimonialsSchema = z.object({
+  _note: z.string().optional(),
+  testimonials: z.array(testimonialSchema),
+})
+
 export const faqItemSchema = z.object({ q: z.string().min(1), a: z.string().min(1) })
 export const faqSchema = z.array(faqItemSchema)
 
@@ -112,6 +126,7 @@ export const contentFiles = {
   'gallery.json': gallerySchema,
   'faq.json': faqSchema,
   'shop.json': shopSchema,
+  'testimonials.json': testimonialsSchema,
 } as const
 
 export type Site = z.infer<typeof siteSchema>
@@ -119,4 +134,5 @@ export type Season = z.infer<typeof seasonEntrySchema>
 export type Workshop = z.infer<typeof workshopSchema>
 export type Partner = z.infer<typeof partnerSchema>
 export type GalleryItem = z.infer<typeof galleryItemSchema>
+export type Testimonial = z.infer<typeof testimonialSchema>
 export type FaqItem = z.infer<typeof faqItemSchema>
