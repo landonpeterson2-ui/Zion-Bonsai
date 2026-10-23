@@ -30,8 +30,8 @@ export default function ShopPage() {
           Trees, ready for <em>a new table.</em>
         </h1>
         <p className="mt-6 max-w-[58ch] text-lg leading-[1.65] text-forest">
-          Every tree here has been trained by hand, one branch at a time. Pick one up and it comes home with you,
-          with a standing invitation to ask us anything.
+          Every tree here has been trained by hand, one branch at a time.
+          Questions? Just ask.
         </p>
       </header>
 
@@ -56,8 +56,7 @@ export default function ShopPage() {
                   Trees come and go. <em>Slowly.</em>
                 </h2>
                 <p className="mt-6 max-w-[56ch] leading-[1.65] text-forest">
-                  Shaping a tree takes time, so we only have a few at a time, and
-                  they tend to find a home quickly. When a new one is ready, it shows up here.
+                  When a tree is ready to go home, it will show up here.
                 </p>
                 <p className="mt-4 max-w-[56ch] leading-[1.65] text-forest">
                   The best way to know first is to follow along on Instagram

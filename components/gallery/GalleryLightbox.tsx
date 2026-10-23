@@ -33,8 +33,14 @@ export default function GalleryLightbox({ items, children }: { items: TreeItem[]
       dialog.showModal()
       closeRef.current?.focus()
     }
-    if (!open && dialog.open) dialog.close()
-    if (!open) return
+    if (!open) {
+      // Single exit point for every close path (Close button, backdrop, Escape, native close).
+      // Close first so the opener is no longer inert, then hand focus back to it.
+      if (dialog.open) dialog.close()
+      openerRef.current?.focus()
+      openerRef.current = null
+      return
+    }
     const previous = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     return () => {
@@ -42,11 +48,8 @@ export default function GalleryLightbox({ items, children }: { items: TreeItem[]
     }
   }, [open])
 
-  const close = useCallback(() => {
-    setIndex(null)
-    // Hand focus back to the photo that opened the lightbox.
-    openerRef.current?.focus()
-  }, [])
+  // State only; the effect above closes the dialog, restores scroll and returns focus.
+  const close = useCallback(() => setIndex(null), [])
 
   const step = useCallback(
     (dir: 1 | -1) => setIndex((i) => (i === null ? i : (i + dir + items.length) % items.length)),
@@ -93,15 +96,22 @@ export default function GalleryLightbox({ items, children }: { items: TreeItem[]
           e.preventDefault()
           close()
         }}
+        // Fires when the browser closes the dialog itself (e.g. a repeated Escape with no
+        // cancelable `cancel`). Setting state resets index; the effect restores scroll and focus.
+        onClose={close}
         onKeyDown={onKeyDown}
-        onClick={(e) => {
-          // Click on the dim area (the dialog element itself) closes; clicks on children don't.
-          if (e.target === e.currentTarget) close()
-        }}
         className="m-0 h-full max-h-none w-full max-w-none bg-soil/95 p-0 text-linen backdrop:bg-soil/80"
       >
         {item && index !== null ? (
-          <div className="flex h-full flex-col px-4 pb-5 pt-3 md:px-10">
+          // Backdrop: clicks on the wrapper or on elements marked data-backdrop (empty space around
+          // the photo) close; clicks on the image, caption or buttons don't.
+          <div
+            className="flex h-full flex-col px-4 pb-5 pt-3 md:px-10"
+            data-backdrop
+            onClick={(e) => {
+              if ((e.target as HTMLElement).hasAttribute('data-backdrop')) close()
+            }}
+          >
             <div className="flex items-center justify-between">
               <p className="font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-linen" aria-live="polite">
                 Photo {index + 1} of {items.length}
@@ -113,13 +123,13 @@ export default function GalleryLightbox({ items, children }: { items: TreeItem[]
               </button>
             </div>
 
-            <div className="flex min-h-0 flex-1 items-center gap-2 md:gap-6">
+            <div data-backdrop className="flex min-h-0 flex-1 items-center gap-2 md:gap-6">
               <button type="button" onClick={() => step(-1)} className={`${navButton} shrink-0`} aria-label="Previous photo">
                 <svg aria-hidden="true" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
                   <path d="M15 5l-7 7 7 7" />
                 </svg>
               </button>
-              <div className="relative h-full min-w-0 flex-1">
+              <div data-backdrop className="relative h-full min-w-0 flex-1">
                 <Image
                   key={item.src}
                   src={item.src}
