@@ -19,7 +19,7 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - [x] 21 Workshops — after 20
 - [ ] 22 Events — after 20
 - [ ] 23 Our Story — after 20
-- [ ] 24 Care Guide — after 20
+- [x] 24 Care Guide — after 20
 - [ ] 25 Partners and Contact — after 20
 - [ ] 26 Gallery and Shop — after 20
 - [ ] **CHECKPOINT — Landon & Cass review all pages**
@@ -48,6 +48,9 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 
 - (task 03) HeaderNav renders `cart` (ShopifyCart) in both the desktop and mobile markup when `shopEnabled`, so two instances mount. Task 26 should check it when the shop goes live.
 
+- (task 24) Care Guide kept ONE generic claim, for Landon to verify: "Give it a bright spot by a window" (light section). Everything else is from handoff section 5. Dropped from the old page: fixed watering schedules, dormant, temperatures, fertilizer, pruning, repotting, pests, emoji, PNG icons, stray zionbonsaiplants@gmail.com. Little Jade topics (propagation, wiring, defoliation) not added since no section 5 facts back them.
+- (task 24) Care Guide placeholders: three middle growth-stage names ([STAGE NAME]) and [PHOTO - snapped jade leaf]. public/icons/*.png are now unused by the care page.
+
 ## Placeholders to fill
 <!-- Filled by task 30. Format: - page: [PLACEHOLDER] -->
 
@@ -59,5 +62,6 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - 05: `npm run photos` (scripts/optimize-photos.mjs) turns public/gallery + photos-inbox into 40 named JPGs in public/photos (~13 MB); original -> name mapping in scripts/photos-map.json. content/gallery.json has specific alt text for all 40 (21 sold trees, 19 workshop), 6 featured. Hero and Gallery page read getGallery().
 - 04: Permanent redirects in next.config.js (/workshops/:slug+ so /workshops does not loop), remotePatterns limited to cdn.shopify.com, sitemap/robots use lib/site-url.ts (fallback https://zionbonsai.com), robots disallows /directions/, app/about moved to app/our-story via git mv. Verified with next start: 308s for all three; sitemap has no localhost.
 - 03: Header split into server Header.tsx (reads getSite) + client HeaderNav.tsx (menu state, aria-current squiggle). Menu open state is keyed to the pathname it opened on, so route changes close it without an effect. Footer reads getSite(); nav items/footer groups live in components/layout/nav.ts; skip link, main#main and global [id] scroll-margin-top added.
+- 24: Care Guide rewritten: quiet text header, jump links, numbered two-column blocks, hairline growth-stage timeline (Cormorant labels, vertical on phones). Only handoff section 5 facts plus one flagged light claim; no primitive changes.
 - 20: Home promoted from the concept. Primitives in components/ui: Eyebrow, TextLink, Photo, Section, SectionHeading, NextWorkshop (+ formatDate/formatTime), PhotoHero (soil-washed hero, reusable on inner pages); lib/photos.ts `getPhoto(name)` reads gallery.json. Home sections in components/home/; Testimonial is a dashed placeholder. Hero photo swaps via HERO_PHOTO in components/home/Hero.tsx. Old Hero/About/WorkshopPreview/ShopByStage deleted.
 - 21: Workshops page rebuilt from ui primitives; sections in components/workshops/. Hero and collage use only faceless photos plus labeled placeholders (attendee permission unconfirmed). Dates, shaping list and FAQ read from content; Shopify button removed.
