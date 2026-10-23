@@ -7,8 +7,13 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { bookHref, getNavItems } from './nav'
 
-function ActiveMark() {
-  return <span aria-hidden="true" className="pointer-events-none absolute -bottom-1.5 left-0 h-px w-full bg-clay" />
+function ActiveMark({ onBark = false }: { onBark?: boolean }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={`pointer-events-none absolute -bottom-1.5 left-0 h-px w-full ${onBark ? 'bg-parchment' : 'bg-clay'}`}
+    />
+  )
 }
 
 export default function HeaderNav({ shopEnabled, cart }: { shopEnabled: boolean; cart: ReactNode }) {
@@ -81,7 +86,7 @@ export default function HeaderNav({ shopEnabled, cart }: { shopEnabled: boolean;
   }, [open, close])
 
   const desktopLink =
-    'relative inline-flex items-center min-h-[44px] font-label font-semibold text-xs uppercase tracking-[0.14em] text-forest hover:text-clay transition-colors'
+    'relative inline-flex items-center min-h-[44px] font-label font-semibold text-xs uppercase tracking-[0.14em] text-parchment hover:text-linen transition-colors'
 
   // Desktop nav splits around the centered logo.
   const split = Math.ceil(items.length / 2)
@@ -94,15 +99,15 @@ export default function HeaderNav({ shopEnabled, cart }: { shopEnabled: boolean;
     >
       <span className="relative">
         {item.label}
-        {isActive(item.href) && <ActiveMark />}
+        {isActive(item.href) && <ActiveMark onBark />}
       </span>
     </Link>
   )
 
   return (
-    <header ref={headerRef} className="sticky top-0 z-50 bg-paper border-b border-forest/10">
+    <header ref={headerRef} className="sticky top-0 z-50 bg-bark [&_:focus-visible]:outline-parchment">
       <nav aria-label="Main" className="container-custom">
-        <div className="grid h-[72px] grid-cols-[1fr_auto_1fr] items-center gap-3 lg:h-[104px] lg:gap-8">
+        <div className="grid h-[80px] grid-cols-[1fr_auto_1fr] items-center gap-3 lg:h-[120px] lg:gap-8">
           {/* Left: menu button (mobile) / first half of nav (desktop) */}
           <div className="flex items-center gap-8">
             <button
@@ -112,7 +117,7 @@ export default function HeaderNav({ shopEnabled, cart }: { shopEnabled: boolean;
               aria-expanded={open}
               aria-controls="mobile-menu"
               onClick={() => (open ? close(true) : setOpen(true))}
-              className="-ml-2 inline-flex h-11 w-11 items-center justify-center text-forest lg:hidden"
+              className="-ml-2 inline-flex h-11 w-11 items-center justify-center text-parchment lg:hidden"
             >
               <svg
                 aria-hidden="true"
@@ -138,11 +143,11 @@ export default function HeaderNav({ shopEnabled, cart }: { shopEnabled: boolean;
             aria-label="Zion Bonsai, home"
           >
             <Image
-              src="/ZB Logo Transparent.png"
+              src="/zb-logo-wide.png"
               alt=""
-              width={192}
-              height={192}
-              className="h-16 w-16 lg:h-[88px] lg:w-[88px]"
+              width={654}
+              height={360}
+              className="h-[60px] w-auto lg:h-[104px]"
               priority
             />
           </Link>
@@ -151,7 +156,7 @@ export default function HeaderNav({ shopEnabled, cart }: { shopEnabled: boolean;
           <div className="flex items-center justify-end gap-8">
             <div className="hidden items-center gap-8 lg:flex">{items.slice(split).map(navLink)}</div>
             {cart}
-            <Link href={bookHref} onClick={() => close(false)} className="btn-primary !px-4 lg:!px-6">
+            <Link href={bookHref} onClick={() => close(false)} className="inline-flex min-h-[44px] items-center justify-center rounded-[3px] bg-parchment px-4 py-3 font-label text-xs font-semibold uppercase tracking-[0.14em] text-soil transition-colors duration-300 hover:bg-linen lg:px-6">
               <span className="lg:hidden">Book</span>
               <span className="hidden lg:inline">Book a workshop</span>
             </Link>
@@ -164,7 +169,7 @@ export default function HeaderNav({ shopEnabled, cart }: { shopEnabled: boolean;
         ref={panelRef}
         id="mobile-menu"
         hidden={!open}
-        className="fixed inset-x-0 bottom-0 top-[72px] overflow-y-auto bg-paper lg:hidden"
+        className="fixed inset-x-0 bottom-0 top-[80px] overflow-y-auto bg-paper lg:hidden"
       >
         <ul className="container-custom flex flex-col py-6">
           {items.map((item) => (

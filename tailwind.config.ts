@@ -13,6 +13,8 @@ const config: Config = {
         paper: 'rgb(var(--color-paper) / <alpha-value>)',
         'paper-deep': 'rgb(var(--color-paper-deep) / <alpha-value>)',
         sandstone: 'rgb(var(--color-sandstone) / <alpha-value>)',
+        bark: 'rgb(var(--color-bark) / <alpha-value>)',
+        parchment: 'rgb(var(--color-parchment) / <alpha-value>)',
         linen: 'rgb(var(--color-linen) / <alpha-value>)',
         clay: 'rgb(var(--color-clay) / <alpha-value>)',
         'clay-dark': 'rgb(var(--color-clay-dark) / <alpha-value>)',

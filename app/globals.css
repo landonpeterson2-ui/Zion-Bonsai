@@ -7,6 +7,8 @@
   --color-paper: 244 238 230; /* #F4EEE6 stone */
   --color-paper-deep: 233 223 210; /* #E9DFD2 stone deep */
   --color-sandstone: 217 174 147; /* #D9AE93 fill only */
+  --color-bark: 122 98 61; /* #7A623D wide-logo brown: header background */
+  --color-parchment: 241 241 235; /* #F1F1EB wide-logo cream: text on bark (5.1:1) */
   --color-linen: 251 248 243; /* #FBF8F3 */
   --color-coral: 221 111 71; /* #DD6F47 decorative only */
   --color-clay: 168 74 43; /* #A84A2B */
@@ -69,7 +71,7 @@
 
   /* Keep anchor targets clear of the sticky header (<= 72px). */
   [id] {
-    scroll-margin-top: 7.5rem;
+    scroll-margin-top: 8.5rem;
   }
 
   @media (prefers-reduced-motion: reduce) {
