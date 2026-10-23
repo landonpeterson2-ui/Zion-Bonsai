@@ -42,7 +42,7 @@ const steps = [
   ['You write to us', 'Tell us who, roughly how many, and when. Rough is fine.'],
   [
     'We plan it together',
-    'Group size, length, and where. We can come to you, or host at Sweet Roots in Manti.',
+    'Group size, length, and where. We can come to you, or host at Sweet Roots Farm & Flora in Manti.',
   ],
   ['Workshop day', 'Phones away, sleeves up. We do the teaching; your people do the making.'],
 ]

@@ -52,7 +52,7 @@ export default function ContactPage() {
               Around <em>Sanpete County.</em>
             </SectionHeading>
             <p className="mt-6 max-w-sm leading-[1.7] text-forest/90">
-              {site.area}. Most public workshops are at Sweet Roots in {site.towns[0]}.
+              {site.area}. Most public workshops are at Sweet Roots Farm & Flora in {site.towns[0]}.
             </p>
           </Reveal>
           <Reveal className="md:col-span-7">

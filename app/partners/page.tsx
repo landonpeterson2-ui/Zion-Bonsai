@@ -10,7 +10,7 @@ import { getPhoto } from '@/lib/photos'
 export const metadata: Metadata = {
   title: 'Partners',
   description:
-    'Zion Bonsai workshops are a local collaboration: handmade pots from Taya, a home at Sweet Roots in Manti, and neighbors who welcomed us early.',
+    'Zion Bonsai workshops are a local collaboration: handmade pots from Taya, a home at Sweet Roots Farm & Flora in Manti, and neighbors who welcomed us early.',
 }
 
 const linkClass =
