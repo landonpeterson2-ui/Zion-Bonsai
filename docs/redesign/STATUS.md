@@ -22,6 +22,7 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - [x] 24 Care Guide — after 20
 - [x] 25 Partners and Contact — after 20
 - [x] 26 Gallery and Shop — after 20
+- [x] 22 Events — after 20. /events built: PhotoHero, ways list, how it works, mailto inquiry form (client component, works without JS), testimonial placeholder. Uses site.eventsInquiryUrl link instead of the form when set.
 - [ ] **CHECKPOINT — Landon & Cass review all pages**
 
 ## Phase 5–6 — Content and polish
@@ -65,3 +66,4 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - (task 23) Our Story: origin photo is a generic tree shot; no solo photo of Cass. Cut the Who-this-is-for and What-makes-us-different lists (covered on Home/Workshops).
 - (task 26) Workshops page still imports ShopifyBuyButton (now clay-styled via components/shopify/styles.ts); decisions.md says remove it there. /shop interest-list link falls back to /contact until interestListUrl is set. Cart toggle icon is now forest (was white) for the paper header; check when shop goes live.
 - 21: Workshops page rebuilt from ui primitives; sections in components/workshops/. Hero and collage use only faceless photos plus labeled placeholders (attendee permission unconfirmed). Dates, shaping list and FAQ read from content; Shopify button removed.
+- (task 22) Events: Groups band on home and "Plan an event" links assume /events; the inquiry form promises a reply but no response time is stated (confirm with Landon and Cass). Testimonial and Sweet Roots hosting wording are unconfirmed.
