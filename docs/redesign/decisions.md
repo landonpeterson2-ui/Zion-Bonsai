@@ -98,6 +98,12 @@ The home hero now uses the same soil-washed photo treatment as the private event
 - Cass wants **a different hero photo**. The current Cheesecake shot has a cool white door and a doorknob. Ideal: a wide (landscape) shot of Cheesecake on wood or in warm light with room around him. Until it arrives, the current photo stays.
 - This faded-photo treatment is reusable for page heroes on inner pages too (with each page's own photo).
 
+## 2026-10-21 — Photos and Cheesecake's story (Landon)
+
+- **Photo permission: confirmed.** Cass asked everyone in the workshop photos, and all agreed. Attendee photos with faces may be used. Still don't name attendees.
+- **Landon & Cass photo:** `workshop-selfie-in-venue.jpg` is Cass (left) and Landon (right). The instructor photo is Landon.
+- **Cheesecake's story:** he's **6 years old**. Landon started him as a cutting in a plastic Cheesecake Factory cup, from one of their kids. Use these facts as given; don't embellish (e.g. don't claim that's where the name came from unless Landon says so).
+
 ## Open items (from Landon & Cass)
 - [ ] Google Form URL(s) for registration
 - [ ] Upcoming workshop dates and prices
@@ -106,4 +112,5 @@ The home hero now uses the same soil-washed photo treatment as the private event
 - [ ] Cass's workshop photos → drop into `photos-inbox/workshop/` (any format; full-size is fine). Featured on the Workshops page.
 - [ ] Real photos still needed: Cheesecake, hands in soil, Taya's pots, workshop tables
 - [ ] 2–3 real testimonials (with permission)
+- [x] Attendee photo permission (confirmed 2026-10-21)
 - [ ] Interest list: Google Form, or something else?
