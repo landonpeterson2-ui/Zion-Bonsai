@@ -16,7 +16,7 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 
 ## Phase 4 — Pages
 - [x] 20 Home
-- [ ] 21 Workshops — after 20
+- [x] 21 Workshops — after 20
 - [ ] 22 Events — after 20
 - [x] 23 Our Story — after 20
 - [x] 24 Care Guide — after 20
@@ -65,3 +65,4 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - 20: Home promoted from the concept. Primitives in components/ui: Eyebrow, TextLink, Photo, Section, SectionHeading, NextWorkshop (+ formatDate/formatTime), PhotoHero (soil-washed hero, reusable on inner pages); lib/photos.ts `getPhoto(name)` reads gallery.json. Home sections in components/home/; Testimonial is a dashed placeholder. Hero photo swaps via HERO_PHOTO in components/home/Hero.tsx. Old Hero/About/WorkshopPreview/ShopByStage deleted.
 - (task 23) Our Story: origin photo is a generic tree shot; no solo photo of Cass. Cut the Who-this-is-for and What-makes-us-different lists (covered on Home/Workshops).
 - (task 26) Workshops page still imports ShopifyBuyButton (now clay-styled via components/shopify/styles.ts); decisions.md says remove it there. /shop interest-list link falls back to /contact until interestListUrl is set. Cart toggle icon is now forest (was white) for the paper header; check when shop goes live.
+- 21: Workshops page rebuilt from ui primitives; sections in components/workshops/. Hero and collage use only faceless photos plus labeled placeholders (attendee permission unconfirmed). Dates, shaping list and FAQ read from content; Shopify button removed.
