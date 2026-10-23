@@ -7,6 +7,20 @@
     "featured": true
   },
   {
+    "src": "/photos/jade-trio-sunlit-shelf.jpg",
+    "alt": "Three dwarf jade bonsai in late sun on a weathered wooden shelf, beside swirled handmade pots and a Zion Bonsai care card",
+    "caption": "",
+    "status": "workshop",
+    "featured": true
+  },
+  {
+    "src": "/photos/jade-shelf-window-display.jpg",
+    "alt": "Sunlit window shelves of dwarf jade bonsai, swirled handmade pots, copper watering cans and bonsai tools",
+    "caption": "",
+    "status": "workshop",
+    "featured": false
+  },
+  {
     "src": "/photos/jade-maroon-bowl-quartz.jpg",
     "alt": "Small jade bonsai leaning over pale quartz in a shallow glossy maroon bowl",
     "caption": "A low, leaning style.",

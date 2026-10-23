@@ -4,8 +4,13 @@ import PhotoHero from '@/components/ui/PhotoHero'
 import TextLink from '@/components/ui/TextLink'
 import { getPhoto } from '@/lib/photos'
 
-// Swap the hero photo here (one place). Cass wants a wider, warmer shot of Cheesecake eventually.
-const HERO_PHOTO = 'cheesecake-blue-pot'
+// Swap the hero photo here (one place). Each photo keeps its own crop so the subject stays in frame.
+const HERO_PHOTO = 'jade-trio-sunlit-shelf'
+const CROPS: Record<string, string> = {
+  'cheesecake-blue-pot': 'object-[60%_30%] md:object-[40%_60%]',
+  'jade-trio-sunlit-shelf': 'object-[30%_50%] md:object-[62%_50%]',
+  'jade-shelf-window-display': 'object-[40%_25%] md:object-[55%_20%]',
+}
 
 export default function Hero() {
   const photo = getPhoto(HERO_PHOTO)
@@ -14,7 +19,7 @@ export default function Hero() {
       src={photo.src}
       alt={photo.alt}
       caption={photo.caption}
-      objectPosition="object-[60%_30%] md:object-[40%_60%]"
+      objectPosition={CROPS[HERO_PHOTO] ?? "object-center"}
     >
       <Eyebrow tone="linen">Bonsai workshops &middot; Manti, Utah</Eyebrow>
       <h1 className="mt-6 text-[2.9rem] leading-[1.02] text-linen md:text-[4.5rem]">
