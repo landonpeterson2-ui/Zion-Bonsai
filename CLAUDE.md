@@ -47,7 +47,7 @@ The site is mid-redesign on the `redesign` branch. The brief is [docs/redesign/h
 - **Display: Cormorant Garamond 500 (600 sparingly), with its italic** — `font-display`. h1–h3 use it by default. Sentence case. Only at ≥24px; it's too delicate below that. An italic second line ("*Pick up a tree.*") is the signature move — use it for emphasis instead of color or weight.
 - **Labels: Montserrat 600** — `font-label`. Nav, buttons, eyebrows, small uppercase labels with wide tracking (0.14–0.22em), h4. Never for big headlines. It echoes the bold "ZION" in the logo.
 - **Body: Open Sans 400/600** — `font-sans`.
-- **Accent: Satisfy** — `font-script`. At most once per page, small, signature-like ("Come grow with us."). Never body text or buttons.
+- **Accent: Satisfy** — `font-script`. At most once per page body (the shared header and footer use none), small, signature-like. Never body text or buttons.
 
 **Logo** — use the files in `public/` (`ZB Logo Transparent.png`, `ZB Logo Hero.png`). Never redraw, recolor or crop the logo.
 

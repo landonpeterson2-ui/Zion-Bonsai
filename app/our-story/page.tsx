@@ -187,10 +187,10 @@ export default function OurStoryPage() {
         <h2 className="text-[2.6rem] leading-[1.05] md:text-[3.75rem]">
           Unplug. Create. <em>Grow.</em>
         </h2>
-        <p className="mt-5 font-script text-2xl text-soil">Come grow with us.</p>
+        <p className="mt-5 font-display text-[1.75rem] italic text-soil">Come grow with us.</p>
         <Link href="/workshops#dates" className="btn-primary mt-9">Book a workshop</Link>
         <div className="mt-8">
-          <TextLink href="/contact">Get in touch</TextLink>
+          <TextLink href="/contact" className="inline-flex min-h-[44px] items-center">Get in touch</TextLink>
         </div>
       </section>
     </>
