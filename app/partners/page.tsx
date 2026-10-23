@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Eyebrow from '@/components/ui/Eyebrow'
 import Photo from '@/components/ui/Photo'
 import Reveal from '@/components/ui/Reveal'
@@ -82,6 +83,18 @@ export default function PartnersPage() {
                 <PhotoSlot partner={p} />
               </Reveal>
               <Reveal className={flip ? 'md:order-1 md:col-span-7' : 'md:col-span-7'}>
+                {p.logo ? (
+                  // Decorative: the h2 below names the partner. Wide wordmarks sit lower than tall marks
+                  // so both read at a similar visual weight.
+                  <Image
+                    src={p.logo.src}
+                    alt=""
+                    width={p.logo.width}
+                    height={p.logo.height}
+                    sizes="240px"
+                    className={`mb-8 w-auto ${p.logo.width / p.logo.height > 2 ? 'h-14 md:h-16' : 'h-32 md:h-40'}`}
+                  />
+                ) : null}
                 <Eyebrow>
                   {String(i + 1).padStart(2, '0')} · {p.role}
                 </Eyebrow>

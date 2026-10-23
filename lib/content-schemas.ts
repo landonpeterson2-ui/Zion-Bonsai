@@ -66,6 +66,8 @@ export const partnerSchema = z.object({
   url: nullableUrl,
   instagram: nullableUrl,
   location: z.string().nullable(),
+  // Logo file in public/partners/ (trimmed, tinted PNG). Width/height are the file's pixel size.
+  logo: z.object({ src: z.string().min(1), width: z.number().int(), height: z.number().int() }).nullable().optional(),
 })
 export const partnersSchema = z.array(partnerSchema)
 

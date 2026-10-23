@@ -6,7 +6,12 @@
     "blurb": "Taya throws a custom pot for every workshop, so your tree goes home in something made by hand.",
     "url": null,
     "instagram": "https://instagram.com/tayasclaycreations",
-    "location": null
+    "location": null,
+    "logo": {
+      "src": "/partners/tayas-clay.png",
+      "width": 247,
+      "height": 320
+    }
   },
   {
     "id": "sweet-roots",
@@ -15,7 +20,12 @@
     "blurb": "Most of our public workshops happen at Sweet Roots in Manti.",
     "url": null,
     "instagram": null,
-    "location": "Manti"
+    "location": "Manti",
+    "logo": {
+      "src": "/partners/sweet-roots.png",
+      "width": 862,
+      "height": 240
+    }
   },
   {
     "id": "thistle-honey",
@@ -24,6 +34,7 @@
     "blurb": "A local partner and one of the first places to welcome us.",
     "url": null,
     "instagram": null,
-    "location": null
+    "location": null,
+    "logo": null
   }
 ]
