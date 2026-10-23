@@ -21,7 +21,7 @@ export default function PhotoHero({
   children: React.ReactNode
 }) {
   return (
-    <section className="relative isolate mt-3 flex min-h-[640px] items-end overflow-hidden bg-soil md:mt-4 md:min-h-[720px] md:items-center">
+    <section className="relative isolate flex min-h-[640px] items-end overflow-hidden bg-soil md:min-h-[720px] md:items-center">
       <div className="absolute inset-0 -z-10 md:left-auto md:w-[55%]">
         <Image
           src={src}
