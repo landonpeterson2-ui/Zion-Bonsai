@@ -21,8 +21,7 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - [x] 23 Our Story — after 20
 - [x] 24 Care Guide — after 20
 - [x] 25 Partners and Contact — after 20
-- [ ] 26 Gallery and Shop — after 20
-- [x] 26 Gallery and Shop — after 20 (asymmetric grid + native-dialog lightbox; content/shop.json; tokenized buy button; lint warnings 0)
+- [x] 26 Gallery and Shop — after 20
 - [ ] **CHECKPOINT — Landon & Cass review all pages**
 
 ## Phase 5–6 — Content and polish
