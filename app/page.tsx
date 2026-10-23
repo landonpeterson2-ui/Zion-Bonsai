@@ -8,6 +8,9 @@ import TheWorkshop from '@/components/home/TheWorkshop'
 import TreesWeveShaped from '@/components/home/TreesWeveShaped'
 import WhoYoullLearnFrom from '@/components/home/WhoYoullLearnFrom'
 
+// The next-workshop block depends on today's date, so refresh hourly.
+export const revalidate = 3600
+
 export const metadata: Metadata = {
   title: 'Zion Bonsai | Beginner Bonsai Workshops in Manti, Utah',
   description:
