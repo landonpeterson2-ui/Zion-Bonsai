@@ -17,12 +17,11 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 ## Phase 4 — Pages
 - [x] 20 Home
 - [x] 21 Workshops — after 20
-- [ ] 22 Events — after 20
+- [x] 22 Events — after 20
 - [x] 23 Our Story — after 20
 - [x] 24 Care Guide — after 20
 - [x] 25 Partners and Contact — after 20
 - [x] 26 Gallery and Shop — after 20
-- [x] 22 Events — after 20. /events built: PhotoHero, ways list, how it works, mailto inquiry form (client component, works without JS), testimonial placeholder. Uses site.eventsInquiryUrl link instead of the form when set.
 - [ ] **CHECKPOINT — Landon & Cass review all pages**
 
 ## Phase 5–6 — Content and polish
