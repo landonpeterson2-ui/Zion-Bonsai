@@ -1,29 +1,4 @@
 {
   "registrationNote": "Register first — we'll send a payment link once we have your info.",
-  "workshops": [
-    {
-      "id": "sample-intro-manti",
-      "type": "intro",
-      "title": "[SAMPLE] Intro to Bonsai",
-      "date": "2026-11-14",
-      "start": "10:00",
-      "end": "12:00",
-      "venue": "sweet-roots",
-      "price": "[PRICE]",
-      "registrationUrl": null,
-      "status": "open"
-    },
-    {
-      "id": "sample-shaping-manti",
-      "type": "shaping",
-      "title": "[SAMPLE] Return Shaping Session",
-      "date": "2026-12-05",
-      "start": "13:00",
-      "end": "15:00",
-      "venue": "sweet-roots",
-      "price": "[PRICE]",
-      "registrationUrl": null,
-      "status": "open"
-    }
-  ]
+  "workshops": []
 }
