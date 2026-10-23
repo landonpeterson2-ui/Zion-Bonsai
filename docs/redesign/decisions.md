@@ -106,7 +106,7 @@ The home hero now uses the same soil-washed photo treatment as the private event
 
 ## 2026-10-23 — "Why Zion?" copy, bark header and footer (Landon)
 
-- **"Why Zion?" copy is final and approved** (source: `scripts/Why Zion — Website Copy.pdf`). Use it exactly as written; don't rephrase or shorten. Short version on Home (`components/home/WhyZion.tsx`); long version on Our Story (`#why-zion`), with Landon's Zeus story as a pull quote. "Mormon caffeine" is intentional. Zeus is a tree, and a he. (The doc's "Montserrat Bold headings" note predates the Cormorant decision; current type rules stand.)
+- **"Why Zion?" copy is final and approved** (source: `docs/copy/Why Zion — Website Copy.pdf`). Use it exactly as written; don't rephrase or shorten. Short version on Home (`components/home/WhyZion.tsx`); long version on Our Story (`#why-zion`), with Landon's Zeus story as a pull quote. "Mormon caffeine" is intentional. Zeus is a tree, and a he. (The doc's "Montserrat Bold headings" note predates the Cormorant decision; current type rules stand.)
 - **Header and footer use the wide logo's brown** (`bark` #7A623D) with its cream (`parchment` #F1F1EB) for text, buttons and focus rings. Clay and faded linen fail contrast on bark. Header is 80px / 120px tall. Photo heroes sit directly under the header with no gap; a stone strip was tried and removed (it cut unnaturally). The mobile menu panel stays light stone.
 - The wide logo is served as `public/zb-logo-wide.png`, rendered from `assets/brand-src/ZB- wide Logo.svg` onto the exact bark color so its background disappears.
 
