@@ -29,7 +29,7 @@ export default function ContactPage() {
     { label: 'Email', value: site.email, href: `mailto:${site.email}` },
     { label: 'Phone', value: site.phone, href: tel },
     { label: 'Instagram', value: handle(site.social.instagram), href: site.social.instagram, external: true },
-    { label: 'Facebook', value: 'Zion Bonsai', href: site.social.facebook, external: true },
+    { label: 'Facebook', value: site.name, href: site.social.facebook, external: true },
   ]
 
   return (
@@ -41,7 +41,7 @@ export default function ContactPage() {
         </h1>
         <p className="mt-6 max-w-xl leading-[1.7] text-forest/90">
           Questions about a workshop, a gift, or a group? Write or call. A real person (probably with soil on their
-          hands) will get back to you.
+          hands) will get back to you. Fair warning: at the workshop, your phone gets the afternoon off.
         </p>
       </header>
 

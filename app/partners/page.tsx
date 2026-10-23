@@ -22,7 +22,7 @@ function partnerPhoto(id: string) {
     return {
       src: p.src,
       alt: p.alt,
-      caption: 'A freshly potted jade in one of Taya’s handmade pots.',
+      caption: 'A workshop tree, freshly potted.',
     }
   }
   return null
@@ -65,7 +65,7 @@ export default function PartnersPage() {
         </h1>
         <p className="mt-6 max-w-xl leading-[1.7] text-forest/90">
           The pot, the room and the people who made us feel welcome all come from right here. Zion Bonsai is a local
-          collaboration.
+          collaboration, and they are why the table is worth sitting at with your phone in your pocket.
         </p>
       </header>
 
