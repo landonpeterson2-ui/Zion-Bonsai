@@ -182,7 +182,6 @@ export default function HeaderNav({ shopEnabled, cart }: { shopEnabled: boolean;
               </Link>
             </li>
           ))}
-          {shopEnabled && cart && <li className="flex min-h-[56px] items-center">{cart}</li>}
         </ul>
       </div>
     </header>

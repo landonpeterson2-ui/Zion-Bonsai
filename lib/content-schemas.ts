@@ -79,6 +79,9 @@ export const galleryItemSchema = z.object({
 })
 export const gallerySchema = z.array(galleryItemSchema)
 
+// Shopify product handles (Shopify Admin > Products > URL handle). Empty = shop shows its empty state.
+export const shopSchema = z.object({ handles: z.array(z.string().min(1)) })
+
 export const faqItemSchema = z.object({ q: z.string().min(1), a: z.string().min(1) })
 export const faqSchema = z.array(faqItemSchema)
 
@@ -106,6 +109,7 @@ export const contentFiles = {
   'partners.json': partnersSchema,
   'gallery.json': gallerySchema,
   'faq.json': faqSchema,
+  'shop.json': shopSchema,
 } as const
 
 export type Site = z.infer<typeof siteSchema>

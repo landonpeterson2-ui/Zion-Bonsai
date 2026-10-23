@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { SHOPIFY_COLORS, shopifyButtonStyle } from './styles';
 
 export function ShopifyCart() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -38,14 +39,7 @@ export function ShopifyCart() {
           options: {
             cart: {
               styles: {
-                button: {
-                  'background-color': '#D8795E',
-                  ':hover': {
-                    'background-color': '#C5624A',
-                  },
-                  'border-radius': '8px',
-                  'font-weight': '600',
-                },
+                button: shopifyButtonStyle,
               },
               text: {
                 total: 'Subtotal',
@@ -57,12 +51,10 @@ export function ShopifyCart() {
               styles: {
                 toggle: {
                   'background-color': 'transparent',
-                  ':hover': {
-                    'background-color': 'rgba(255,255,255,0.1)',
-                  },
                 },
                 icon: {
-                  fill: '#ffffff',
+                  // The header is paper, so the icon is forest (was white on the old dark header).
+                  fill: SHOPIFY_COLORS.forest,
                 },
                 count: {
                   'font-size': '14px',

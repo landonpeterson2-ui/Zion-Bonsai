@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { SHOPIFY_COLORS, shopifyButtonStyle } from './styles';
 
 interface ShopifyBuyButtonProps {
   productHandle: string;
@@ -56,11 +57,14 @@ export function ShopifyBuyButton({ productHandle, buttonText = 'Add to Cart' }: 
                 button: buttonText,
               },
               styles: {
-                button: {
-                  'background-color': '#D8795E',
-                  ':hover': { 'background-color': '#C5624A' },
-                  'border-radius': '8px',
+                button: shopifyButtonStyle,
+                title: {
+                  'font-family': 'Cormorant Garamond, serif',
+                  'font-weight': '500',
+                  'font-size': '24px',
+                  color: SHOPIFY_COLORS.forest,
                 },
+                price: { 'font-family': 'Open Sans, sans-serif', color: SHOPIFY_COLORS.forest },
               },
             },
             cart: {

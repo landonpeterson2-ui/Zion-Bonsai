@@ -22,6 +22,7 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - [x] 24 Care Guide — after 20
 - [x] 25 Partners and Contact — after 20
 - [ ] 26 Gallery and Shop — after 20
+- [x] 26 Gallery and Shop — after 20 (asymmetric grid + native-dialog lightbox; content/shop.json; tokenized buy button; lint warnings 0)
 - [ ] **CHECKPOINT — Landon & Cass review all pages**
 
 ## Phase 5–6 — Content and polish
@@ -33,7 +34,6 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 ## Found while working
 - (task 25) Contact page "Groups" band links to /events and /workshops; /events may not exist until its task lands. Partner photos for Sweet Roots and Thistle & Honey are placeholders; Taya photo is workshop-finished-jade-thank-you-card (pot assumed hers per brief).
 <!-- Out-of-scope issues agents notice. Format: - (task NN) description -->
-- (task 00) types/shopify.d.ts: one lint warning (`import/no-anonymous-default-export`), left as is; revisit in task 26 (Shop).
 - (task 01) Existing pages still use legacy classes (`bg-cream-light`, `text-charcoal`, `.card`, coral-on-paper text) that predate the contrast rules; replace as pages are rebuilt, final sweep in task 42.
 - (task 01) `font-medium` (500) is used in a few places but Open Sans loads only 400/600; browser snaps to the nearest weight.
 - (task 05) Confirm sold/workshop status: all 21 `public/gallery` trees are marked `sold` by default (none confirmed). Some may be unsold or Shop candidates, so Landon to confirm. `status` can be `available` in content/gallery.json.
@@ -46,7 +46,6 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - (task 04) confirm production domain: sitemap/robots fall back to https://zionbonsai.com (guessed from plants@zionbonsai.com) when NEXT_PUBLIC_APP_URL is unset.
 - (task 04) Old links to /about, /gift, /workshops/series remain in Header, Footer, Hero and About (redirects cover them; update in tasks 03/20). /contact, /events, /partners do not exist yet, so /gift lands on a 404 until task 25.
 
-- (task 03) HeaderNav renders `cart` (ShopifyCart) in both the desktop and mobile markup when `shopEnabled`, so two instances mount. Task 26 should check it when the shop goes live.
 
 - (task 24) Care Guide kept ONE generic claim, for Landon to verify: "Give it a bright spot by a window" (light section). Everything else is from handoff section 5. Dropped from the old page: fixed watering schedules, dormant, temperatures, fertilizer, pruning, repotting, pests, emoji, PNG icons, stray zionbonsaiplants@gmail.com. Little Jade topics (propagation, wiring, defoliation) not added since no section 5 facts back them.
 - (task 24) Care Guide placeholders: three middle growth-stage names ([STAGE NAME]) and [PHOTO - snapped jade leaf]. public/icons/*.png are now unused by the care page.
@@ -65,3 +64,4 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - 24: Care Guide rewritten: quiet text header, jump links, numbered two-column blocks, hairline growth-stage timeline (Cormorant labels, vertical on phones). Only handoff section 5 facts plus one flagged light claim; no primitive changes.
 - 20: Home promoted from the concept. Primitives in components/ui: Eyebrow, TextLink, Photo, Section, SectionHeading, NextWorkshop (+ formatDate/formatTime), PhotoHero (soil-washed hero, reusable on inner pages); lib/photos.ts `getPhoto(name)` reads gallery.json. Home sections in components/home/; Testimonial is a dashed placeholder. Hero photo swaps via HERO_PHOTO in components/home/Hero.tsx. Old Hero/About/WorkshopPreview/ShopByStage deleted.
 - (task 23) Our Story: origin photo is a generic tree shot; no solo photo of Cass. Cut the Who-this-is-for and What-makes-us-different lists (covered on Home/Workshops).
+- (task 26) Workshops page still imports ShopifyBuyButton (now clay-styled via components/shopify/styles.ts); decisions.md says remove it there. /shop interest-list link falls back to /contact until interestListUrl is set. Cart toggle icon is now forest (was white) for the paper header; check when shop goes live.
