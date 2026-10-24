@@ -4,21 +4,12 @@ import Section from '@/components/ui/Section'
 import SectionHeading from '@/components/ui/SectionHeading'
 import { getPhoto } from '@/lib/photos'
 
-function Placeholder({ label, aspect, className = '' }: { label: string; aspect: string; className?: string }) {
-  return (
-    <div
-      className={`flex items-center justify-center border border-dashed border-forest/40 bg-paper p-6 text-center text-sm italic text-soil ${aspect} ${className}`}
-    >
-      {label}
-    </div>
-  )
-}
-
 export default function Collage() {
   const group = getPhoto('workshop-group-messy-table')
   const hands = getPhoto('workshop-hands-in-soil-round-table')
   const pair = getPhoto('workshop-pair-holding-trees-brick-wall')
   const roots = getPhoto('workshop-table-soil-and-roots')
+  const pots = getPhoto('tayas-handmade-pots')
   return (
     <Section tone="paper-deep">
       <div className="container-custom">
@@ -32,7 +23,7 @@ export default function Collage() {
             <Photo src={hands.src} alt={hands.alt} aspect="aspect-[4/3] md:aspect-[20/21]" sizes="(min-width: 768px) 42vw, 100vw" />
           </Reveal>
           <Reveal className="md:col-span-4">
-            <Placeholder label="[PHOTO — Taya’s pots lined up]" aspect="aspect-[4/5]" />
+            <Photo src={pots.src} alt={pots.alt} aspect="aspect-[4/5]" sizes="(min-width: 768px) 33vw, 100vw" />
           </Reveal>
           <Reveal className="md:col-span-4">
             <Photo src={pair.src} alt={pair.alt} aspect="aspect-[4/5]" sizes="(min-width: 768px) 33vw, 100vw" />

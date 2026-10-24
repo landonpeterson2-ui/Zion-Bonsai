@@ -6,7 +6,7 @@ import TextLink from '@/components/ui/TextLink'
 import { getPhoto } from '@/lib/photos'
 
 export default function TakeHome() {
-  const photo = getPhoto('workshop-finished-jade-thank-you-card')
+  const photo = getPhoto('dwarf-jade-sample-workshop-tree')
   return (
     <Section>
       <div className="container-custom grid gap-12 md:grid-cols-12 md:items-center md:gap-16">
@@ -30,7 +30,7 @@ export default function TakeHome() {
             src={photo.src}
             alt={photo.alt}
             caption={photo.caption}
-            aspect="aspect-[4/3]"
+            aspect="aspect-[4/5]"
             sizes="(min-width: 768px) 50vw, 100vw"
           />
         </Reveal>

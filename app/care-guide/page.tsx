@@ -1,11 +1,13 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Eyebrow from '@/components/ui/Eyebrow'
+import Photo from '@/components/ui/Photo'
 import Reveal from '@/components/ui/Reveal'
 import Section from '@/components/ui/Section'
 import SectionHeading from '@/components/ui/SectionHeading'
 import TextLink from '@/components/ui/TextLink'
 import { getSite } from '@/lib/content'
+import { getPhoto } from '@/lib/photos'
 
 export const metadata: Metadata = {
   title: 'Dwarf Jade Bonsai Care Guide',
@@ -24,6 +26,8 @@ const jumps = [
 ]
 
 // Stage names are placeholders until Landon supplies them.
+const substrates = ['Lava rock', 'Akadama clay', 'Pumice', 'Vermiculite', 'Pine bark fines']
+
 const stages = ['Plantlet', '[STAGE NAME]', '[STAGE NAME]', '[STAGE NAME]', 'Established']
 
 /** Two-column block: numbered label left, content right. */
@@ -59,6 +63,9 @@ function DropIcon() {
 
 export default function CareGuidePage() {
   const site = getSite()
+  const hydrated = getPhoto('leaf-snap-hydrated')
+  const dry = getPhoto('leaf-snap-dry')
+  const soil = getPhoto('soil-mix-substrates')
 
   return (
     <>
@@ -122,11 +129,15 @@ export default function CareGuidePage() {
               <p className="mt-1">Time to water.</p>
             </li>
           </ul>
-          <div className="relative !mt-8 border border-dashed border-forest/30 px-6 py-12 text-center">
-            <span className="absolute -top-2.5 left-6 bg-paper px-2 font-label text-[10px] font-semibold uppercase tracking-[0.2em] text-soil">
-              Placeholder
-            </span>
-            <p className="font-display text-xl italic text-forest">[PHOTO &mdash; snapped dwarf jade leaf]</p>
+          <div className="!mt-8 grid grid-cols-2 gap-4">
+            <div>
+              <Photo src={hydrated.src} alt={hydrated.alt} aspect="aspect-[5/4]" sizes="(min-width: 768px) 22vw, 45vw" />
+              <p className="mt-2 font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-moss">Wait</p>
+            </div>
+            <div>
+              <Photo src={dry.src} alt={dry.alt} aspect="aspect-[5/4]" sizes="(min-width: 768px) 22vw, 45vw" />
+              <p className="mt-2 font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-clay">Water</p>
+            </div>
           </div>
         </Block>
       </Section>
@@ -185,6 +196,18 @@ export default function CareGuidePage() {
             It&apos;s our own custom mix, engineered to hold just enough moisture without staying
             soggy.
           </p>
+          {/* Substrates listed by Landon (2026-10-23). */}
+          <p>What goes into it:</p>
+          <ul className="divide-y divide-forest/15 border-y border-forest/15">
+            {substrates.map((s) => (
+              <li key={s} className="py-3 font-display text-[1.35rem] italic text-forest">
+                {s}
+              </li>
+            ))}
+          </ul>
+          <div className="!mt-8 max-w-md">
+            <Photo src={soil.src} alt={soil.alt} aspect="aspect-[4/5]" sizes="(min-width: 768px) 30vw, 90vw" />
+          </div>
         </Block>
       </Section>
 

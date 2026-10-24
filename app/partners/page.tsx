@@ -19,12 +19,8 @@ const linkClass =
 /** Only partners with a genuine photo of their work get one; everyone else gets a labeled placeholder. */
 function partnerPhoto(id: string) {
   if (id === 'tayas-clay') {
-    const p = getPhoto('workshop-finished-jade-thank-you-card')
-    return {
-      src: p.src,
-      alt: p.alt,
-      caption: 'A workshop tree, freshly potted.',
-    }
+    const p = getPhoto('tayas-handmade-pots')
+    return { src: p.src, alt: p.alt, caption: p.caption }
   }
   return null
 }

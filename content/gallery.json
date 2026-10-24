@@ -299,5 +299,40 @@
     "caption": "",
     "status": "workshop",
     "featured": false
+  },
+  {
+    "src": "/photos/dwarf-jade-sample-workshop-tree.jpg",
+    "alt": "A sample workshop dwarf jade bonsai with agate stones in a striped handmade pot and green-glazed saucer on a wooden table",
+    "caption": "A sample workshop tree, in one of Taya’s handmade pots.",
+    "status": "workshop",
+    "featured": false
+  },
+  {
+    "src": "/photos/tayas-handmade-pots.jpg",
+    "alt": "Dozens of Taya's handmade swirled clay pots with green, blue, black and terracotta glazed interiors spread across a table",
+    "caption": "Taya’s handmade pots, waiting for their trees.",
+    "status": "workshop",
+    "featured": false
+  },
+  {
+    "src": "/photos/soil-mix-substrates.jpg",
+    "alt": "Bonsai soil components in a tub: tan akadama clay, dark lava rock and white pumice in piles beside the mixed blend",
+    "caption": "",
+    "status": "workshop",
+    "featured": false
+  },
+  {
+    "src": "/photos/leaf-snap-hydrated.jpg",
+    "alt": "Fingers holding a dwarf jade leaf snapped in half, firm and bright green inside",
+    "caption": "",
+    "status": "workshop",
+    "featured": false
+  },
+  {
+    "src": "/photos/leaf-snap-dry.jpg",
+    "alt": "A limp, wrinkled dwarf jade leaf resting on an open palm",
+    "caption": "",
+    "status": "workshop",
+    "featured": false
   }
 ]
