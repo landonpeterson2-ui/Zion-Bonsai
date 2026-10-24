@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function OurStoryPage() {
   const origin = getPhoto('jade-white-origami-pot-porch')
-  const landon = getPhoto('workshop-instructor-holding-jade-roots')
+  const together = getPhoto('workshop-display-table-doorway')
   const both = getPhoto('workshop-selfie-in-venue')
   const soil = getPhoto('workshop-hands-in-soil-round-table')
   const cheesecake = getPhoto('cheesecake-blue-pot')
@@ -95,11 +95,11 @@ export default function OurStoryPage() {
           <div className="mt-12 grid gap-12 md:grid-cols-2 md:gap-16">
             <div>
               <Photo
-                src={landon.src}
-                alt={landon.alt}
+                src={together.src}
+                alt={together.alt}
                 sizes="(min-width: 768px) 40vw, 100vw"
                 aspect="aspect-[4/5]"
-                caption="Landon, showing a dwarf jade cutting with bare roots."
+                caption={together.caption}
               />
               <h3 className="mt-6 font-display text-3xl">Landon</h3>
               <p className="mt-3 leading-[1.7] text-soil">
