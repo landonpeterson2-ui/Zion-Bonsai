@@ -18,11 +18,11 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <Image
-              src="/zb-logo-wide.png"
+              src="/ZB Logo Transparent.png"
               alt="Zion Bonsai"
-              width={654}
-              height={360}
-              className="-ml-1 mb-4 h-20 w-auto"
+              width={160}
+              height={160}
+              className="mb-3 h-24 w-24"
             />
             <p className="font-label text-xs font-semibold uppercase tracking-[0.2em] text-parchment">
               Dirt. Creativity. Connection.
