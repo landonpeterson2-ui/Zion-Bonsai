@@ -13,8 +13,8 @@ export default function TakeHome() {
         <div className="md:col-span-6">
           <SectionHeading eyebrow="What you take home">A tree, in a pot made by hand.</SectionHeading>
           <p className="mt-6 max-w-xl leading-[1.7] text-soil">
-            You go home with your own jade bonsai (<em>Portulacaria afra</em>, the dwarf jade, or a <em>Crassula</em> jade)
-            in a handmade pot from Taya&rsquo;s Clay Creations, plus the care basics to keep it happy.
+            You go home with your own dwarf jade bonsai (<em>Portulacaria afra</em>) in a handmade pot from Taya&rsquo;s
+            Clay Creations, plus the care basics to keep it happy.
           </p>
           <p className="mt-4 max-w-xl leading-[1.7] text-soil">
             <strong className="font-semibold text-forest">About tools:</strong> we provide them to use during the

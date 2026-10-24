@@ -110,6 +110,11 @@ The home hero now uses the same soil-washed photo treatment as the private event
 - **Header and footer use the wide logo's brown** (`bark` #7A623D) with its cream (`parchment` #F1F1EB) for text, buttons and focus rings. Clay and faded linen fail contrast on bark. Header is 80px / 120px tall. Photo heroes sit directly under the header with no gap; a stone strip was tried and removed (it cut unnaturally). The mobile menu panel stays light stone.
 - The wide logo is served as `public/zb-logo-wide.png`, rendered from `assets/brand-src/ZB- wide Logo.svg` onto the exact bark color so its background disappears.
 
+## 2026-10-23 — Plant names (Landon)
+
+- Workshop trees are **always dwarf jade** (*Portulacaria afra*), never *Crassula*. Say "dwarf jade" in captions, alt text and copy about our trees. Other common name: elephant bush. Around the house: "ports".
+- The Care Guide's "Dwarf jade (*Portulacaria*) and jade (*Crassula*) thrive indoors" line is a general fact from handoff section 5 and stays as written.
+
 ## Open items (from Landon & Cass)
 - [ ] Google Form URL(s) for registration
 - [ ] Upcoming workshop dates and prices
