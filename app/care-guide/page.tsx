@@ -151,8 +151,7 @@ export default function CareGuidePage() {
       <Section id="light" tone="paper-deep">
         <Block n="03" title={<>Light, and <em>where to keep it</em></>}>
           <p>
-            Dwarf jade (<em>Portulacaria</em>) and jade (<em>Crassula</em>) thrive indoors,
-            year-round, in Central Utah. That&apos;s a real advantage over outdoor bonsai here.
+            Dwarf jade (<em>Portulacaria</em>) thrives indoors, year-round, in Central Utah. That&apos;s a real advantage over outdoor bonsai here.
           </p>
           <p>Give it a bright spot by a window.</p>
         </Block>

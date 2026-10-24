@@ -113,7 +113,7 @@ The home hero now uses the same soil-washed photo treatment as the private event
 ## 2026-10-23 — Plant names (Landon)
 
 - Workshop trees are **always dwarf jade** (*Portulacaria afra*), never *Crassula*. Say "dwarf jade" in captions, alt text and copy about our trees. Other common name: elephant bush. Around the house: "ports".
-- The Care Guide's "Dwarf jade (*Portulacaria*) and jade (*Crassula*) thrive indoors" line is a general fact from handoff section 5 and stays as written.
+- *Crassula* is not mentioned anywhere on the site. The Care Guide's light section says only "Dwarf jade (*Portulacaria*) thrives indoors…" (Landon, 2026-10-23).
 
 ## Open items (from Landon & Cass)
 - [ ] Google Form URL(s) for registration
