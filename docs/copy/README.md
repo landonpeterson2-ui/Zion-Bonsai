@@ -10,4 +10,5 @@ Drop website copy here: PDF, Word, Google Doc export, or plain text. Anything go
 |---|---|---|
 | Why Zion — Website Copy.pdf | "Why Zion?" short (Home) and long (Our Story) | Final, live |
 | Our Story - How it started.md | "It started during COVID" (Our Story) | Final, live |
+| Growth Journey.svg | Growth stages: Plantlet to Year 4 (Care Guide). "it’s journey" typo fixed to "its" | Live |
 | Testimonials.pdf | Sierra (Home, rotating excerpts), Jill and Lacee (Workshops) | Live via content/testimonials.json |

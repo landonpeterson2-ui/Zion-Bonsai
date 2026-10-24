@@ -25,10 +25,16 @@ const jumps = [
   { id: 'return', label: 'Come back' },
 ]
 
-// Stage names are placeholders until Landon supplies them.
 const substrates = ['Lava rock', 'Akadama clay', 'Pumice', 'Vermiculite', 'Pine bark fines']
 
-const stages = ['Plantlet', '[STAGE NAME]', '[STAGE NAME]', '[STAGE NAME]', 'Established']
+// From Landon's "The Growth Journey" card (2026-10-23).
+const stages = [
+  { when: 'Plantlet', name: 'First Branch', about: 'The propagated cutting, just beginning its journey' },
+  { when: 'Year 1', name: 'Sprout', about: 'Still establishing, learning to grow' },
+  { when: 'Year 2', name: 'Sapling', about: 'Developing character, early training visible' },
+  { when: 'Year 3', name: 'Young Tree', about: 'Clear style emerging, recognizable form' },
+  { when: 'Year 4', name: 'Established', about: 'Mature enough to show refined technique' },
+]
 
 /** Two-column block: numbered label left, content right. */
 function Block({
@@ -173,19 +179,21 @@ export default function CareGuidePage() {
                 aria-hidden="true"
                 className="absolute bottom-2 left-[5px] top-2 w-px bg-forest/30 md:bottom-auto md:left-0 md:right-0 md:top-[5px] md:h-px md:w-auto"
               />
-              {stages.map((s, i) => (
-                <li key={i} className="relative pb-10 pl-9 last:pb-0 md:pb-0 md:pl-0 md:pr-4 md:pt-9">
+              {stages.map((s) => (
+                <li key={s.name} className="relative pb-10 pl-9 last:pb-0 md:pb-0 md:pl-0 md:pr-6 md:pt-9">
                   <span
                     aria-hidden="true"
                     className="absolute left-0 top-[5px] h-px w-[11px] bg-forest md:top-0 md:h-[11px] md:w-px"
                   />
                   <span className="font-label text-[11px] font-semibold uppercase tracking-[0.2em] text-moss">
-                    {String(i + 1).padStart(2, '0')}
+                    {s.when}
                   </span>
-                  <p className="mt-1 font-display text-2xl italic text-forest md:text-[1.7rem]">{s}</p>
+                  <p className="mt-1 font-display text-2xl italic text-forest md:text-[1.7rem]">{s.name}</p>
+                  <p className="mt-2 max-w-[16rem] text-[15px] leading-[1.6] text-soil">{s.about}</p>
                 </li>
               ))}
             </ol>
+            <p className="mt-12 font-display text-[1.75rem] italic text-forest md:mt-16">Grow at your own pace.</p>
           </Reveal>
         </div>
       </Section>
