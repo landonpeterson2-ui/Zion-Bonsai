@@ -6,9 +6,9 @@ import { getPhoto } from '@/lib/photos'
 
 export default function Collage() {
   const group = getPhoto('workshop-group-messy-table')
-  const hands = getPhoto('workshop-hands-in-soil-round-table')
+  const seated = getPhoto('workshop-four-seated-at-table')
   const pair = getPhoto('workshop-pair-holding-trees-brick-wall')
-  const roots = getPhoto('workshop-table-soil-and-roots')
+  const finished = getPhoto('workshop-four-holding-finished-trees')
   const pots = getPhoto('tayas-handmade-pots')
   return (
     <Section tone="paper-deep">
@@ -20,16 +20,16 @@ export default function Collage() {
           </Reveal>
           {/* 20/21 keeps this 5-column tile the same height as the 7-column 4:3 tile beside it */}
           <Reveal className="md:col-span-5">
-            <Photo src={hands.src} alt={hands.alt} aspect="aspect-[4/3] md:aspect-[20/21]" sizes="(min-width: 768px) 42vw, 100vw" />
+            <Photo src={seated.src} alt={seated.alt} aspect="aspect-[4/3] md:aspect-[20/21]" sizes="(min-width: 768px) 42vw, 100vw" />
           </Reveal>
           <Reveal className="md:col-span-4">
-            <Photo src={pots.src} alt={pots.alt} aspect="aspect-[4/5]" sizes="(min-width: 768px) 33vw, 100vw" />
+            <Photo src={pots.src} alt={pots.alt} aspect="aspect-square" sizes="(min-width: 768px) 33vw, 100vw" />
           </Reveal>
           <Reveal className="md:col-span-4">
-            <Photo src={pair.src} alt={pair.alt} aspect="aspect-[4/5]" sizes="(min-width: 768px) 33vw, 100vw" />
+            <Photo src={pair.src} alt={pair.alt} aspect="aspect-square" sizes="(min-width: 768px) 33vw, 100vw" />
           </Reveal>
           <Reveal className="md:col-span-4">
-            <Photo src={roots.src} alt={roots.alt} aspect="aspect-[4/5]" sizes="(min-width: 768px) 33vw, 100vw" />
+            <Photo src={finished.src} alt={finished.alt} aspect="aspect-square" sizes="(min-width: 768px) 33vw, 100vw" />
           </Reveal>
         </div>
       </div>

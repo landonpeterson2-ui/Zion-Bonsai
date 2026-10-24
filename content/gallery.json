@@ -7,6 +7,20 @@
     "featured": true
   },
   {
+    "src": "/photos/dwarf-jade-white-rectangle-pot.jpg",
+    "alt": "Dwarf jade bonsai with a leaning trunk and open, branching canopy in a white rectangular pot on a wooden stand",
+    "caption": "",
+    "status": "collection",
+    "featured": false
+  },
+  {
+    "src": "/photos/dwarf-jade-cascade-swirled-pot.jpg",
+    "alt": "Cascading dwarf jade bonsai spilling from a swirled handmade pot over the edge of a wooden shelf",
+    "caption": "",
+    "status": "collection",
+    "featured": false
+  },
+  {
     "src": "/photos/jade-trio-sunlit-shelf.jpg",
     "alt": "Three dwarf jade bonsai in late sun on a weathered wooden shelf, beside swirled handmade pots and a Zion Bonsai care card",
     "caption": "",
@@ -331,6 +345,20 @@
   {
     "src": "/photos/leaf-snap-dry.jpg",
     "alt": "A limp, wrinkled dwarf jade leaf resting on an open palm",
+    "caption": "",
+    "status": "workshop",
+    "featured": false
+  },
+  {
+    "src": "/photos/workshop-four-seated-at-table.jpg",
+    "alt": "Four participants sit around a round workshop table with soil, tools and a black nursery pot in a bright studio",
+    "caption": "",
+    "status": "workshop",
+    "featured": false
+  },
+  {
+    "src": "/photos/workshop-four-holding-finished-trees.jpg",
+    "alt": "Four smiling participants stand together, each holding a finished dwarf jade bonsai in a handmade pot",
     "caption": "",
     "status": "workshop",
     "featured": false
