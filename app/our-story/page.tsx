@@ -99,7 +99,7 @@ export default function OurStoryPage() {
                 alt={landon.alt}
                 sizes="(min-width: 768px) 40vw, 100vw"
                 aspect="aspect-[4/5]"
-                caption="Landon, showing a jade cutting with bare roots."
+                caption="Landon, showing a dwarf jade cutting with bare roots."
               />
               <h3 className="mt-6 font-display text-3xl">Landon</h3>
               <p className="mt-3 leading-[1.7] text-soil">

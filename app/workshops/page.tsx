@@ -13,7 +13,7 @@ import { getPhoto } from '@/lib/photos'
 export const metadata: Metadata = {
   title: 'Bonsai Workshops in Manti & Central Utah',
   description:
-    'Beginner bonsai workshops in Sanpete County, Utah. Two screen-free hours, your hands in the soil, and a jade bonsai in a handmade pot. No experience needed.',
+    'Beginner bonsai workshops in Sanpete County, Utah. Two screen-free hours, your hands in the soil, and a dwarf jade bonsai in a handmade pot. No experience needed.',
 }
 
 // Re-render hourly so past dates drop off without a redeploy.

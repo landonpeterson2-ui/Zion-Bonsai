@@ -8,9 +8,9 @@ import TextLink from '@/components/ui/TextLink'
 import { getSite } from '@/lib/content'
 
 export const metadata: Metadata = {
-  title: 'Jade Bonsai Care Guide',
+  title: 'Dwarf Jade Bonsai Care Guide',
   description:
-    'How to water a jade bonsai, plus dwarf jade care for Central Utah: the leaf snap test, light, seasons, soil and growth stages.',
+    'How to water a dwarf jade bonsai, plus care for Central Utah: the leaf snap test, light, seasons, soil and growth stages.',
 }
 
 const jumps = [
@@ -65,11 +65,12 @@ export default function CareGuidePage() {
       <header className="container-custom pb-14 pt-16 md:pb-20 md:pt-24">
         <Eyebrow>Care guide</Eyebrow>
         <h1 className="mt-5 max-w-3xl text-[2.9rem] leading-[1.02] md:text-[5rem]">
-          Keeping your jade <em>happy</em>
+          Keeping your dwarf jade <em>happy</em>
         </h1>
         <p className="mt-6 max-w-xl text-lg leading-relaxed text-forest">
-          For past attendees and the curious. Good news: jades are forgiving. Get the watering right
-          and the rest is easy.
+          For past attendees and the curious. Good news: dwarf jades are forgiving. You may also hear them
+          called elephant bush, or by their scientific name, <em>Portulacaria afra</em>. Around our house, we
+          just call them ports.
         </p>
         <nav aria-label="On this page" className="mt-10 border-y border-forest/15 py-3">
           <ul className="flex flex-wrap gap-x-6">
@@ -97,7 +98,7 @@ export default function CareGuidePage() {
           <p className="flex items-start gap-3 border-l border-clay pl-4">
             <span className="mt-0.5 shrink-0 text-moss"><DropIcon /></span>
             <span>
-              Bonsai hate wet feet. Never let the roots sit in water. Jades store water in their
+              Bonsai hate wet feet. Never let the roots sit in water. Dwarf jades store water in their
               stems and leaves, so they can wait.
             </span>
           </p>
@@ -125,7 +126,7 @@ export default function CareGuidePage() {
             <span className="absolute -top-2.5 left-6 bg-paper px-2 font-label text-[10px] font-semibold uppercase tracking-[0.2em] text-soil">
               Placeholder
             </span>
-            <p className="font-display text-xl italic text-forest">[PHOTO &mdash; snapped jade leaf]</p>
+            <p className="font-display text-xl italic text-forest">[PHOTO &mdash; snapped dwarf jade leaf]</p>
           </div>
         </Block>
       </Section>

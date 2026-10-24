@@ -15,7 +15,7 @@ export const revalidate = 3600
 export const metadata: Metadata = {
   title: 'Zion Bonsai | Beginner Bonsai Workshops in Manti, Utah',
   description:
-    'Screen-free beginner bonsai workshops in Sanpete County, Utah: two hours at the table, and you take home a jade bonsai in a handmade pot.',
+    'Screen-free beginner bonsai workshops in Sanpete County, Utah: two hours at the table, and you take home a dwarf jade bonsai in a handmade pot.',
 }
 
 export default function Home() {

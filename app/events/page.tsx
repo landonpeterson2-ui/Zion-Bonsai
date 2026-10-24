@@ -117,7 +117,7 @@ export default function EventsPage() {
               alt={landon.alt}
               sizes="(min-width: 768px) 38vw, 100vw"
               aspect="aspect-[4/5]"
-              caption="Landon, with a freshly lifted jade."
+              caption="Landon, with a freshly lifted dwarf jade."
             />
           </div>
           <div className="md:col-span-7">
