@@ -8,8 +8,8 @@ export default function Collage() {
   const group = getPhoto('workshop-group-messy-table')
   const seated = getPhoto('workshop-four-seated-at-table')
   const pair = getPhoto('workshop-pair-holding-trees-brick-wall')
-  const finished = getPhoto('workshop-four-holding-finished-trees')
-  const pots = getPhoto('tayas-handmade-pots')
+  const chalkFour = getPhoto('workshop-four-with-trees-chalkboard')
+  const chalkPair = getPhoto('workshop-pair-with-trees-chalkboard-b')
   return (
     <Section tone="paper-deep">
       <div className="container-custom">
@@ -23,13 +23,13 @@ export default function Collage() {
             <Photo src={seated.src} alt={seated.alt} aspect="aspect-[4/3] md:aspect-[20/21]" sizes="(min-width: 768px) 42vw, 100vw" />
           </Reveal>
           <Reveal className="md:col-span-4">
-            <Photo src={pots.src} alt={pots.alt} aspect="aspect-square" sizes="(min-width: 768px) 33vw, 100vw" />
+            <Photo src={chalkPair.src} alt={chalkPair.alt} aspect="aspect-[4/5]" sizes="(min-width: 768px) 33vw, 100vw" />
           </Reveal>
           <Reveal className="md:col-span-4">
-            <Photo src={pair.src} alt={pair.alt} aspect="aspect-square" sizes="(min-width: 768px) 33vw, 100vw" />
+            <Photo src={pair.src} alt={pair.alt} aspect="aspect-[4/5]" sizes="(min-width: 768px) 33vw, 100vw" />
           </Reveal>
           <Reveal className="md:col-span-4">
-            <Photo src={finished.src} alt={finished.alt} aspect="aspect-square" sizes="(min-width: 768px) 33vw, 100vw" />
+            <Photo src={chalkFour.src} alt={chalkFour.alt} aspect="aspect-[4/5]" sizes="(min-width: 768px) 33vw, 100vw" />
           </Reveal>
         </div>
       </div>
