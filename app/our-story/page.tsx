@@ -49,22 +49,35 @@ export default function OurStoryPage() {
               It started during <em>COVID.</em>
             </SectionHeading>
             <div className="mt-6 space-y-4 leading-[1.7] text-soil">
+              {/* Cass's approved copy (2026-10-23). Use exactly as written. */}
               <p>
-                My husband fell down a bonsai rabbit hole on YouTube &mdash; the kind where it&rsquo;s suddenly 2am and
-                you&rsquo;re watching someone wire a juniper in Japan.
+                My husband, Landon, fell down a bonsai rabbit hole on YouTube &mdash; the kind where it&rsquo;s suddenly
+                2am and you&rsquo;re watching Peter Chan wire a juniper in the UK.
               </p>
               <p>
-                In 2021 he ordered his first tree from Little Jade Bonsai, a succulent forgiving enough to grow indoors.
-                One plant turned into two, then a small collection taking over our living room.
+                In 2021 he ordered his first tree from Amazon. Inspired by Gilbert Cantu of Little Jade Bonsai, he
+                started with a dwarf jade, forgiving enough to grow indoors. One plant turned into two, then a small
+                collection quietly taking over our back room.
               </p>
               <p>
-                Our second son was born in 2022, and life got beautifully chaotic. In the middle of sleepless nights, I
-                watched him tend those little trees. It was the calmest thing in our house.
+                The wiring, the ancient technique, the soil science? Information overload for me. I just wanted
+                something pretty to look at, and I wasn&rsquo;t too keen on the &ldquo;rules.&rdquo;
               </p>
               <p>
-                Eventually I joined in. He learned the traditional art. I just wanted to make things that felt good. And
-                that&rsquo;s when it clicked: what if other people could experience this too?
+                Then our youngest was born in 2022. Postpartum complications blindsided me, and some days all I could
+                do was sit and watch Landon trim his trees.
               </p>
+              <p>
+                Somewhere in that fog, I started sitting with them myself. Not to learn anything or get it right. Just
+                to be near something quiet and alive. The trees didn&rsquo;t ask anything of me. They kept growing, at
+                their own pace, on their own terms. Slowly, so did I.
+              </p>
+              <p>Bonsai taught me to give myself the same grace I gave those trees.</p>
+              <p>
+                Landon brought the knowledge. I found the heart of it. And eventually I wondered: what if other people
+                could have this too?
+              </p>
+              <p>If you&rsquo;re in a hard season of your own, there&rsquo;s a seat for you at our table.</p>
             </div>
           </div>
           <Reveal className="md:col-span-5 md:col-start-8">

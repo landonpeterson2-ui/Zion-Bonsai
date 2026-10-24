@@ -9,4 +9,5 @@ Drop website copy here: PDF, Word, Google Doc export, or plain text. Anything go
 | File | What | Status |
 |---|---|---|
 | Why Zion — Website Copy.pdf | "Why Zion?" short (Home) and long (Our Story) | Final, live |
+| Our Story - How it started.md | "It started during COVID" (Our Story) | Final, live |
 | Testimonials.pdf | Sierra (Home, rotating excerpts), Jill and Lacee (Workshops) | Live via content/testimonials.json |
