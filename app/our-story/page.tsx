@@ -203,21 +203,6 @@ export default function OurStoryPage() {
         </div>
       </Section>
 
-      {/* 4. Wabi-sabi */}
-      <Section tone="paper-deep">
-        <Reveal className="container-custom text-center">
-          <Eyebrow>Wabi-sabi</Eyebrow>
-          <p className="mx-auto mt-6 max-w-2xl leading-[1.7] text-soil">
-            The crooked trunk, the branch that went its own way: that&rsquo;s the beauty. Nobody&rsquo;s tree is supposed
-            to look perfect, and yours won&rsquo;t.
-          </p>
-          <p className="mx-auto mt-8 max-w-2xl font-script text-3xl leading-snug text-forest md:text-4xl">
-            &ldquo;You don&rsquo;t force a flower &mdash; the flower tells you where it wants to go.&rdquo;
-          </p>
-          <p className="mt-4 text-sm italic text-soil/80">Cass</p>
-        </Reveal>
-      </Section>
-
       {/* 5. Why unplug: the one dark band */}
       <section className="bg-soil py-20 text-linen md:py-28">
         <div className="container-custom grid items-center gap-12 md:grid-cols-12 md:gap-16">
