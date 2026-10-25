@@ -91,7 +91,7 @@ export const testimonialSchema = z.object({
   note: z.string().optional(),
   // The attendee's exact words. Excerpts are whole consecutive sentences, never reworded.
   quote: z.string().min(1),
-  pages: z.array(z.enum(['home', 'workshops', 'events'])),
+  pages: z.array(z.enum(['home', 'workshops', 'workshops-top', 'events'])),
 })
 export const testimonialsSchema = z.object({
   _note: z.string().optional(),

@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Eyebrow from '@/components/ui/Eyebrow'
+import Quote from '@/components/ui/Quote'
+import Reveal from '@/components/ui/Reveal'
+import Section from '@/components/ui/Section'
 import PhotoHero from '@/components/ui/PhotoHero'
 import TextLink from '@/components/ui/TextLink'
 import Dates from '@/components/workshops/Dates'
@@ -8,6 +11,7 @@ import Expect from '@/components/workshops/Expect'
 import TakeHome from '@/components/workshops/TakeHome'
 import Collage from '@/components/workshops/Collage'
 import { Faq, GroupsLine, Shaping, WhoFor } from '@/components/workshops/Rest'
+import { getTestimonials } from '@/lib/content'
 import { getPhoto } from '@/lib/photos'
 
 export const metadata: Metadata = {
@@ -21,6 +25,7 @@ export const revalidate = 3600
 
 export default function WorkshopsPage() {
   const photo = getPhoto('workshop-tables-set-for-class')
+  const [topQuote] = getTestimonials('workshops-top')
   return (
     <>
       <PhotoHero src={photo.src} alt={photo.alt} objectPosition="object-[40%_50%]">
@@ -37,6 +42,13 @@ export default function WorkshopsPage() {
           <TextLink href="/events" tone="linen">Plan a private event</TextLink>
         </div>
       </PhotoHero>
+      {topQuote ? (
+        <Section tone="paper-deep">
+          <Reveal className="container-custom">
+            <Quote testimonial={topQuote} className="max-w-3xl" />
+          </Reveal>
+        </Section>
+      ) : null}
       <Dates />
       <Expect />
       <TakeHome />

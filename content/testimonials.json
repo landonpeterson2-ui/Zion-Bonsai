@@ -1,5 +1,5 @@
 {
-  "_note": "Source: docs/copy/Testimonials.pdf. Quotes are the attendee's exact words; excerpts are whole consecutive sentences, never reworded. Only edit: Lacee's sprout emoji became a period. 'pages' controls where a quote can appear; Home rotates hourly through its quotes in order.",
+  "_note": "Source: docs/copy/Testimonials.pdf. Quotes are the attendee's exact words; excerpts are whole consecutive sentences, never reworded. Only edit: Lacee's sprout emoji became a period. 'pages' controls where a quote can appear ('workshops-top' is the one quote under the Workshops hero); Home rotates hourly through its quotes in order.",
   "testimonials": [
     {
       "id": "sierra-unplug",
@@ -38,7 +38,7 @@
       "name": "Jill",
       "town": "Ephraim",
       "quote": "Such a fun experience that is different than the usual night out. It’s a relaxed environment for anyone and easy to have conversation. Cassey and Landon were the perfect hosts and their knowledge and talent made this experience so great and memorable!",
-      "pages": ["workshops"]
+      "pages": ["workshops-top"]
     },
     {
       "id": "lacee",
