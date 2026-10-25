@@ -18,7 +18,6 @@ export default function OurStoryPage() {
   const origin = getPhoto('jade-shelf-window-display')
   const together = getPhoto('workshop-display-table-doorway')
   const both = getPhoto('workshop-selfie-in-venue')
-  const soil = getPhoto('workshop-hands-in-soil-round-table')
   const cheesecake = getPhoto('cheesecake-blue-pot')
 
   return (
@@ -203,33 +202,8 @@ export default function OurStoryPage() {
         </div>
       </Section>
 
-      {/* 5. Why unplug: the one dark band */}
-      <section className="bg-soil py-20 text-linen md:py-28">
-        <div className="container-custom grid items-center gap-12 md:grid-cols-12 md:gap-16">
-          <Reveal className="md:col-span-5">
-            <Photo src={soil.src} alt={soil.alt} sizes="(min-width: 768px) 40vw, 100vw" aspect="aspect-[4/5]" />
-          </Reveal>
-          <div className="md:col-span-6 md:col-start-7">
-            <SectionHeading eyebrow="Why unplug" tone="linen" headingClassName="text-linen">
-              Two hours. <em>Hands full of soil.</em>
-            </SectionHeading>
-            <div className="mt-6 space-y-4 leading-[1.7] text-linen/90">
-              <p>
-                Central Utah is full of beautiful outdoor recreation, but not many places to unplug, work with your
-                hands and make something living.
-              </p>
-              <p>
-                So that&rsquo;s the table we built. Phones away, no pressure to be perfect, just soil, tools, good
-                company and a tree that&rsquo;s yours to grow. You don&rsquo;t need a green thumb. You just need to show
-                up.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 6. Cheesecake */}
-      <Section id="cheesecake">
+      {/* 4. Cheesecake */}
+      <Section id="cheesecake" tone="paper-deep">
         <div className="container-custom grid items-center gap-12 md:grid-cols-12 md:gap-16">
           <Reveal className="md:order-2 md:col-span-6">
             <Photo
@@ -251,7 +225,7 @@ export default function OurStoryPage() {
         </div>
       </Section>
 
-      {/* 7. Close */}
+      {/* 5. Close */}
       <section className="container-custom pb-24 pt-8 text-center md:pb-32">
         <h2 className="text-[2.6rem] leading-[1.05] md:text-[3.75rem]">
           Unplug. Create. <em>Grow.</em>

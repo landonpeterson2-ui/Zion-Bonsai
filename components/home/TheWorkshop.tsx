@@ -3,38 +3,52 @@ import Photo from '@/components/ui/Photo'
 import Reveal from '@/components/ui/Reveal'
 import Section from '@/components/ui/Section'
 import SectionHeading from '@/components/ui/SectionHeading'
+import TextLink from '@/components/ui/TextLink'
 import { getPhoto } from '@/lib/photos'
 
-const beats = [
-  { title: 'The phone goes face-down.', body: 'The table is screen-free. Nothing to check, nothing to post. Just your hands and what is in front of you.' },
-  { title: 'You choose your tree and your pot.', body: 'A dwarf jade, and a pot thrown by hand by Taya’s Clay Creations. No two are alike.' },
-  { title: 'We shape it together.', body: 'Landon walks you through soil, roots and your first cuts. No jargon, no wrong answers.' },
-  { title: 'It goes home with you.', body: 'Your tree keeps growing. Come back in six to nine months and we’ll shape it again.' },
+const expect = [
+  'Phones face-down for two hours.',
+  'No experience needed. Never touched a bonsai? Perfect.',
+  'We bring the trees, the handmade pots, the soil and the tools to use.',
+  'You leave with your own dwarf jade in a handmade pot, plus the care basics.',
+  'Come back in six to nine months and we’ll shape it again.',
 ]
 
 export default function TheWorkshop() {
-  const photo = getPhoto('workshop-tables-set-for-class')
+  const photo = getPhoto('workshop-hands-in-soil-round-table')
   return (
     <Section tone="paper-deep">
       <div className="container-custom grid gap-12 md:grid-cols-12 md:gap-16">
         <Reveal className="md:col-span-5">
-          <Photo src={photo.src} alt={photo.alt} caption="Tables set, before anyone arrives." sizes="(min-width: 768px) 40vw, 100vw" />
+          <Photo src={photo.src} alt={photo.alt} caption={photo.caption} sizes="(min-width: 768px) 40vw, 100vw" aspect="aspect-[4/5]" />
         </Reveal>
         <div className="md:col-span-7">
-          <SectionHeading eyebrow="The workshop">Two hours at the table.</SectionHeading>
-          <ol className="mt-10 border-t border-forest/15">
-            {beats.map((b, i) => (
-              <li key={b.title} className="grid grid-cols-[2.5rem_1fr] gap-4 border-b border-forest/15 py-6 md:grid-cols-[3.5rem_1fr]">
-                <span className="font-display text-2xl italic text-soil md:text-3xl" aria-hidden="true">
-                  {i + 1}
-                </span>
-                <div>
-                  <h3 className="text-[1.45rem] leading-snug md:text-[1.65rem]">{b.title}</h3>
-                  <p className="mt-1.5 max-w-xl leading-[1.7] text-soil">{b.body}</p>
-                </div>
+          <SectionHeading eyebrow="Why unplug">
+            Two hours. <em>Hands full of soil.</em>
+          </SectionHeading>
+          <div className="mt-6 max-w-xl space-y-4 leading-[1.7] text-soil">
+            <p>
+              Central Utah is full of beautiful outdoor recreation, but not many places to unplug, work with your hands
+              and make something living.
+            </p>
+            <p>
+              So that&rsquo;s the table we built. Phones away, no pressure to be perfect, just soil, tools, good company
+              and a tree that&rsquo;s yours to grow. You don&rsquo;t need a green thumb. You just need to show up.
+            </p>
+          </div>
+          <h3 className="mt-10 font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-moss">
+            What to expect
+          </h3>
+          <ul className="mt-4 border-t border-forest/15">
+            {expect.map((e) => (
+              <li key={e} className="max-w-xl border-b border-forest/15 py-4 leading-[1.7] text-forest">
+                {e}
               </li>
             ))}
-          </ol>
+          </ul>
+          <TextLink href="/workshops" className="mt-8 inline-flex min-h-[44px] items-center">
+            How the workshop runs
+          </TextLink>
           <NextWorkshop className="mt-10" />
         </div>
       </div>

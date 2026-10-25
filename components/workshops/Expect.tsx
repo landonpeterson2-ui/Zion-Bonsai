@@ -4,12 +4,11 @@ import Section from '@/components/ui/Section'
 import SectionHeading from '@/components/ui/SectionHeading'
 import { getPhoto } from '@/lib/photos'
 
-const steps = [
-  { time: 'Arrive', title: 'Phones face-down.', body: 'Find a seat, say hi, and set your phone aside. It will survive without you for two hours.' },
-  { time: 'First half hour', title: 'Meet your tree.', body: 'Pick a dwarf jade and a handmade pot that suits it. We show you what a bonsai actually is, and what it isn’t.' },
-  { time: 'The middle', title: 'Hands in the soil.', body: 'Loosen the roots, trim, and pot it up. Landon walks the room and answers every question, including the small ones.' },
-  { time: 'Near the end', title: 'Shape it your way.', body: 'Step back, look, make one more cut. There’s no wrong answer, only a tree that’s yours.' },
-  { time: 'Goodbye', title: 'Carry it out.', body: 'You leave with your tree, the care basics, and a little more quiet than you came in with.' },
+const beats = [
+  { title: 'The phone goes face-down.', body: 'The table is screen-free. Nothing to check, nothing to post. Just your hands and what is in front of you.' },
+  { title: 'You choose your tree and your pot.', body: 'A dwarf jade, and a pot thrown by hand by Taya’s Clay Creations. No two are alike.' },
+  { title: 'We shape it together.', body: 'Landon walks you through soil, roots and your first cuts. No jargon, no wrong answers.' },
+  { title: 'It goes home with you.', body: 'Your tree keeps growing. Come back in six to nine months and we’ll shape it again.' },
 ]
 
 export default function Expect() {
@@ -23,12 +22,14 @@ export default function Expect() {
             No experience, no gear, no homework. Just a table, a tree and some good company.
           </p>
           <ol className="mt-10 border-t border-forest/15">
-            {steps.map((s) => (
-              <li key={s.title} className="grid gap-1 border-b border-forest/15 py-6 md:grid-cols-[9rem_1fr] md:gap-6">
-                <p className="font-label text-[11px] font-semibold uppercase tracking-[0.16em] text-moss md:pt-2">{s.time}</p>
+            {beats.map((b, i) => (
+              <li key={b.title} className="grid grid-cols-[2.5rem_1fr] gap-4 border-b border-forest/15 py-6 md:grid-cols-[3.5rem_1fr]">
+                <span className="font-display text-2xl italic text-soil md:text-3xl" aria-hidden="true">
+                  {i + 1}
+                </span>
                 <div>
-                  <h3 className="text-[1.45rem] leading-snug md:text-[1.65rem]">{s.title}</h3>
-                  <p className="mt-1.5 max-w-xl leading-[1.7] text-soil">{s.body}</p>
+                  <h3 className="text-[1.45rem] leading-snug md:text-[1.65rem]">{b.title}</h3>
+                  <p className="mt-1.5 max-w-xl leading-[1.7] text-soil">{b.body}</p>
                 </div>
               </li>
             ))}
