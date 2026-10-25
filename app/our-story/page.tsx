@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 }
 
 export default function OurStoryPage() {
-  const origin = getPhoto('jade-white-origami-pot-porch')
+  const origin = getPhoto('jade-shelf-window-display')
   const together = getPhoto('workshop-display-table-doorway')
   const both = getPhoto('workshop-selfie-in-venue')
   const soil = getPhoto('workshop-hands-in-soil-round-table')
@@ -81,7 +81,7 @@ export default function OurStoryPage() {
             </div>
           </div>
           <Reveal className="md:col-span-5 md:col-start-8">
-            <Photo src={origin.src} alt={origin.alt} sizes="(min-width: 768px) 40vw, 100vw" aspect="aspect-[4/5]" />
+            <Photo src={origin.src} alt={origin.alt} sizes="(min-width: 768px) 40vw, 100vw" aspect="aspect-[4/3]" />
           </Reveal>
         </div>
       </Section>
