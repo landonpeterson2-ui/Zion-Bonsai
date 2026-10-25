@@ -151,7 +151,7 @@ export default function CareGuidePage() {
       <Section id="light" tone="paper-deep">
         <Block n="03" title={<>Light, and <em>where to keep it</em></>}>
           <p>
-            Dwarf jade (<em>Portulacaria</em>) thrives indoors, year-round, in Central Utah. That&apos;s a real advantage over outdoor bonsai here.
+            Dwarf jade (<em>Portulacaria</em>) can live indoors year-round in Central Utah. That&apos;s a real advantage over outdoor bonsai here.
           </p>
           <p>Give it a bright spot by a window.</p>
         </Block>
@@ -160,7 +160,11 @@ export default function CareGuidePage() {
       <Section id="seasons">
         <Block n="04" title={<>Seasons, <em>paced</em></>}>
           <p>Summer is the faster growth season.</p>
+          <p>
+            Your tree can go outside for the warm months, and it can take the higher temperatures.
+          </p>
           <p>Fall and winter are slower. Not dormant, just paced.</p>
+          <p>Bring it indoors for Utah winters.</p>
         </Block>
       </Section>
 
