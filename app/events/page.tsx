@@ -117,7 +117,7 @@ export default function EventsPage() {
 
       <Section tone="paper-deep">
         <div className="container-custom grid items-center gap-12 md:grid-cols-12 md:gap-16">
-          <div className="md:col-span-5">
+          <div className="md:order-2 md:col-span-5">
             <Photo
               src={team.src}
               alt={team.alt}
@@ -126,7 +126,7 @@ export default function EventsPage() {
               caption="Workshop day, done: every tree going home."
             />
           </div>
-          <div className="md:col-span-7">
+          <div className="md:order-1 md:col-span-7">
             <SectionHeading eyebrow="How it works">
               Easy on you, <em>start to finish.</em>
             </SectionHeading>
