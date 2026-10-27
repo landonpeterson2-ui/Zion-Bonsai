@@ -96,8 +96,8 @@ export function getTestimonials(page: Testimonial['pages'][number]): Testimonial
 }
 
 /**
- * One quote for a page, advancing each hour. Pages that use it revalidate hourly,
- * so each regeneration shows the next quote with no client-side JS.
+ * One quote for a page, advancing each hour. Pages that use it render per request
+ * (force-dynamic), so each hour shows the next quote with no client-side JS.
  */
 export function getRotatingTestimonial(page: Testimonial['pages'][number]): Testimonial | undefined {
   const list = getTestimonials(page)

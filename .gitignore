@@ -46,3 +46,9 @@ photos-inbox/
 
 # Local screenshots from scripts/shot.mjs
 .shots/
+
+# Cloudflare / OpenNext
+.open-next/
+.wrangler/
+.dev.vars
+cloudflare-env.d.ts

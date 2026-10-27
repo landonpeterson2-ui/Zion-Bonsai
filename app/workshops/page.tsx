@@ -20,8 +20,8 @@ export const metadata: Metadata = {
     'Beginner bonsai workshops in Sanpete County, Utah. Two screen-free hours, your hands in the soil, and a dwarf jade bonsai in a handmade pot. No experience needed.',
 }
 
-// Re-render hourly so past dates drop off without a redeploy.
-export const revalidate = 3600
+// Render per request so past dates drop off without a redeploy.
+export const dynamic = 'force-dynamic'
 
 export default function WorkshopsPage() {
   const photo = getPhoto('workshop-tables-set-for-class')

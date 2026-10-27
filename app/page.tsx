@@ -9,8 +9,8 @@ import TreesWeveShaped from '@/components/home/TreesWeveShaped'
 import WhoYoullLearnFrom from '@/components/home/WhoYoullLearnFrom'
 import WhyZion from '@/components/home/WhyZion'
 
-// The next-workshop block depends on today's date, so refresh hourly.
-export const revalidate = 3600
+// The next-workshop block and the quote depend on today's date, so render per request.
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Zion Bonsai | Beginner Bonsai Workshops in Manti, Utah',

@@ -28,6 +28,7 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - [ ] 30 Copy pass
 - [ ] 40 SEO and sharing
 - [ ] 41 Accessibility, performance, mobile QA
+- [x] 43 Run the site on Cloudflare Workers (adapter, images binding, per-request pages, docs/deploy-cloudflare.md). Local Workers preview verified; not deployed.
 - [ ] 42 Cleanup and PR
 
 ## Found while working
