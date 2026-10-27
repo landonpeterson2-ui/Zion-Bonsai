@@ -123,19 +123,19 @@
   }
 
   /* Scroll reveal: fade/rise once (see components/ui/Reveal.tsx). */
-  .reveal {
+  .js .reveal {
     opacity: 0;
     translate: 0 12px;
     transition: opacity 0.6s ease, translate 0.6s ease;
   }
 
-  .reveal.is-visible {
+  .js .reveal.is-visible {
     opacity: 1;
     translate: 0 0;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .reveal {
+    .js .reveal {
       opacity: 1;
       translate: 0 0;
     }

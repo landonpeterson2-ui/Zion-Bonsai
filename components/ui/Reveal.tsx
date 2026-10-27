@@ -14,6 +14,7 @@ export default function Reveal({
   useEffect(() => {
     const el = ref.current
     if (!el) return
+    ;(window as unknown as { __revealReady?: boolean }).__revealReady = true
     if (typeof IntersectionObserver === 'undefined') {
       el.classList.add('is-visible')
       return
@@ -27,7 +28,7 @@ export default function Reveal({
           }
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0, rootMargin: '0px 0px -10% 0px' }
     )
     observer.observe(el)
     return () => observer.disconnect()
