@@ -51,6 +51,7 @@ export default function EventsPage() {
   const [eventQuote] = getTestimonials('events')
   const hero = getPhoto('workshop-barn-tables-ready')
   const landon = getPhoto('workshop-instructor-holding-jade-roots')
+  const retreat = getPhoto('event-hr-retreat-repotting-table')
 
   return (
     <>
@@ -88,16 +89,13 @@ export default function EventsPage() {
               Every event is the same idea: put the phones down and be with a tree. We shape the rest around you.
             </p>
             <Reveal className="mt-10">
-              <div
-                role="img"
-                aria-label="Photo placeholder: the Snow College HR retreat"
-                className="flex aspect-[4/3] items-center justify-center bg-sandstone/40 p-8 text-center"
-              >
-                <p className="font-label text-[11px] font-semibold uppercase leading-relaxed tracking-[0.18em] text-soil">
-                  [PHOTO &mdash; Snow College HR retreat]
-                </p>
-              </div>
-              <p className="mt-3 text-sm italic text-soil/80">Your people, at the table.</p>
+              <Photo
+                src={retreat.src}
+                alt={retreat.alt}
+                sizes="(min-width: 768px) 40vw, 100vw"
+                aspect="aspect-[4/3]"
+                caption="Your people, at the table."
+              />
             </Reveal>
           </div>
           <ol className="md:col-span-7">
