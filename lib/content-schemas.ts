@@ -87,7 +87,7 @@ export const shopSchema = z.object({ handles: z.array(z.string().min(1)) })
 export const testimonialSchema = z.object({
   id: z.string().min(1),
   name: z.string().min(1),
-  town: z.string().min(1),
+  town: z.string().min(1).optional(),
   note: z.string().optional(),
   // The attendee's exact words. Excerpts are whole consecutive sentences, never reworded.
   quote: z.string().min(1),

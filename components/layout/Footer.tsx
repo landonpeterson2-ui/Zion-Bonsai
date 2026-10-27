@@ -71,7 +71,9 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col gap-1 border-t border-parchment/25 pt-5 text-sm text-parchment sm:flex-row sm:justify-between">
+        <p className="mt-14 font-display text-[1.75rem] italic text-parchment">Come grow with us.</p>
+
+        <div className="mt-6 flex flex-col gap-1 border-t border-parchment/25 pt-5 text-sm text-parchment sm:flex-row sm:justify-between">
           <p>&copy; {new Date().getFullYear()} Zion Bonsai</p>
           <p>{site.area}</p>
         </div>

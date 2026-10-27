@@ -5,7 +5,7 @@ const sizes = {
   md: 'text-[1.35rem] leading-[1.4] md:text-[1.55rem]',
 }
 
-/** An attendee's words, exactly as given in content/testimonials.json, with a name/town credit. */
+/** An attendee's words, exactly as given in content/testimonials.json, with a name (and town) credit. */
 export default function Quote({
   testimonial,
   size = 'lg',
@@ -24,7 +24,8 @@ export default function Quote({
         <p>&ldquo;{t.quote}&rdquo;</p>
       </blockquote>
       <figcaption className="mt-5 font-label text-[11px] font-semibold uppercase tracking-[0.22em] text-moss">
-        {t.name}, {t.town}
+        {t.name}
+        {t.town ? `, ${t.town}` : null}
         {t.note ? <span className="text-soil"> &middot; {t.note}</span> : null}
       </figcaption>
     </figure>

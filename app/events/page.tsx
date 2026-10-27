@@ -3,10 +3,11 @@ import InquiryForm from '@/components/events/InquiryForm'
 import Eyebrow from '@/components/ui/Eyebrow'
 import Photo from '@/components/ui/Photo'
 import PhotoHero from '@/components/ui/PhotoHero'
+import Quote from '@/components/ui/Quote'
 import Reveal from '@/components/ui/Reveal'
 import Section from '@/components/ui/Section'
 import SectionHeading from '@/components/ui/SectionHeading'
-import { getSite } from '@/lib/content'
+import { getSite, getTestimonials } from '@/lib/content'
 import { getPhoto } from '@/lib/photos'
 
 export const metadata: Metadata = {
@@ -47,6 +48,7 @@ const link = 'font-semibold text-clay underline underline-offset-2'
 
 export default function EventsPage() {
   const site = getSite()
+  const [eventQuote] = getTestimonials('events')
   const hero = getPhoto('workshop-barn-tables-ready')
   const landon = getPhoto('workshop-instructor-holding-jade-roots')
 
@@ -68,22 +70,13 @@ export default function EventsPage() {
         </div>
       </PhotoHero>
 
-      {/* Del's quote goes here, word for word, once we have it. Never paraphrase or invent it. */}
-      <Section tone="paper-deep">
-        <Reveal className="container-custom">
-          <figure className="relative mx-auto max-w-3xl border border-dashed border-forest/30 px-6 py-12 text-center md:px-12">
-            <span className="absolute -top-2.5 left-6 bg-paper-deep px-2 font-label text-[10px] font-semibold uppercase tracking-[0.2em] text-soil">
-              Placeholder
-            </span>
-            <blockquote className="font-display text-[1.7rem] italic leading-[1.3] text-forest md:text-[2.2rem]">
-              [TESTIMONIAL &mdash; Del&rsquo;s words, exactly as given]
-            </blockquote>
-            <figcaption className="mt-5 font-label text-[11px] font-semibold uppercase tracking-[0.22em] text-moss">
-              [DEL, ORGANIZATION]
-            </figcaption>
-          </figure>
-        </Reveal>
-      </Section>
+      {eventQuote ? (
+        <Section tone="paper-deep">
+          <Reveal className="container-custom">
+            <Quote testimonial={eventQuote} size="md" className="max-w-3xl" />
+          </Reveal>
+        </Section>
+      ) : null}
 
       <Section>
         <div className="container-custom grid gap-12 md:grid-cols-12 md:gap-16">
