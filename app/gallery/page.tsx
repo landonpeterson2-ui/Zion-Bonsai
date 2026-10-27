@@ -26,7 +26,7 @@ export default function GalleryPage() {
         </h1>
         <p className="mt-6 max-w-[58ch] text-lg leading-[1.65] text-forest">
           Every one of these was shaped by hand, one branch at a time, and most have found a home. No two
-          came out alike. That&rsquo;s the point.
+          are alike, and that&rsquo;s what keeps it interesting.
         </p>
       </header>
 

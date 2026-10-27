@@ -57,6 +57,7 @@
   },
   {
     "src": "/photos/jade-grey-faceted-pot.jpg",
+    "focus": "top",
     "alt": "Small dwarf jade bonsai with red-tinged branches in a glossy grey faceted pot",
     "caption": "",
     "status": "sold",
@@ -65,13 +66,6 @@
   {
     "src": "/photos/jade-terracotta-tall-stem.jpg",
     "alt": "Tall-stemmed dwarf jade bonsai with green leaves in a plain terracotta pot",
-    "caption": "",
-    "status": "sold",
-    "featured": false
-  },
-  {
-    "src": "/photos/jade-ochre-two-tone-pot.jpg",
-    "alt": "Branching dwarf jade bonsai with coral-pink stems and a small stone in an ochre and cream pot",
     "caption": "",
     "status": "sold",
     "featured": false
@@ -86,20 +80,6 @@
   {
     "src": "/photos/jade-grey-rectangle-pot.jpg",
     "alt": "Dwarf jade bonsai with spotted leaves and a red agate at the base in a grey rectangular pot",
-    "caption": "",
-    "status": "sold",
-    "featured": false
-  },
-  {
-    "src": "/photos/jade-black-matte-pot.jpg",
-    "alt": "Upright dwarf jade bonsai with variegated leaves and a stone in a matte black pot with saucer",
-    "caption": "",
-    "status": "sold",
-    "featured": false
-  },
-  {
-    "src": "/photos/jade-broad-leaf-white-hex-pot.jpg",
-    "alt": "Dwarf jade with broad red-edged leaves in a white hexagonal pot with a gold rim and gravel",
     "caption": "",
     "status": "sold",
     "featured": false
@@ -168,14 +148,8 @@
     "featured": true
   },
   {
-    "src": "/photos/jade-striped-pot-porch.jpg",
-    "alt": "Tall dwarf jade with a forked trunk and glossy leaves in a white pot with grey stripes, porch behind",
-    "caption": "",
-    "status": "sold",
-    "featured": false
-  },
-  {
     "src": "/photos/jade-drip-glaze-pot.jpg",
+    "hideInGallery": true,
     "alt": "Dwarf jade bonsai with glossy leaves in a white pot with a dark drip glaze, in front of a wooden crate",
     "caption": "",
     "status": "sold",

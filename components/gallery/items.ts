@@ -7,6 +7,7 @@ export type TreeItem = {
   /** Short status label shown under the photo and in the lightbox. */
   label: string
   featured: boolean
+  focus?: 'top' | 'bottom'
 }
 
 function labelFor(status: GalleryItem['status']): string {
@@ -20,13 +21,14 @@ function labelFor(status: GalleryItem['status']): string {
  */
 export function getTreeItems(): TreeItem[] {
   const all = getGallery()
-    .filter((g) => g.status === 'sold' || g.status === 'collection')
+    .filter((g) => (g.status === 'sold' || g.status === 'collection') && !g.hideInGallery)
     .map((g) => ({
       src: g.src,
       alt: g.alt,
       caption: g.caption,
       label: labelFor(g.status),
       featured: g.featured,
+      focus: g.focus,
       collection: g.status === 'collection',
     }))
 
@@ -42,11 +44,12 @@ export function getTreeItems(): TreeItem[] {
     const pick = wantsBig || r >= rest.length ? featured[f++] : rest[r++]
     out.push(pick)
   }
-  return out.map(({ src, alt, caption, label, featured: isFeatured }) => ({
+  return out.map(({ src, alt, caption, label, featured: isFeatured, focus }) => ({
     src,
     alt,
     caption,
     label,
     featured: isFeatured,
+    focus,
   }))
 }

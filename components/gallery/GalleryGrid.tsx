@@ -34,7 +34,7 @@ export default function GalleryGrid({ items }: { items: TreeItem[] }) {
                   alt={item.alt}
                   fill
                   sizes={slot.sizes}
-                  className="object-cover"
+                  className={`object-cover ${item.focus === 'top' ? 'object-top' : item.focus === 'bottom' ? 'object-bottom' : ''}`}
                 />
               </span>
               <span className="mt-3 block font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-moss">

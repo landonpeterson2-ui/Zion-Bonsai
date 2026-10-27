@@ -78,6 +78,10 @@ export const galleryItemSchema = z.object({
   // collection = our own trees (e.g. Cheesecake), not for sale
   status: z.enum(['sold', 'available', 'workshop', 'collection']),
   featured: z.boolean(),
+  // Keeps the photo out of the Gallery page while other pages can still use it.
+  hideInGallery: z.boolean().optional(),
+  // Which edge to keep when a gallery tile crops the photo.
+  focus: z.enum(['top', 'bottom']).optional(),
 })
 export const gallerySchema = z.array(galleryItemSchema)
 
