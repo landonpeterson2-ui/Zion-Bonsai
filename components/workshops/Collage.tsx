@@ -11,7 +11,7 @@ export default function Collage() {
   const chalkFour = getPhoto('workshop-four-with-trees-chalkboard')
   const chalkPair = getPhoto('workshop-pair-with-trees-chalkboard-b')
   return (
-    <Section tone="paper-deep">
+    <Section>
       <div className="container-custom">
         <SectionHeading eyebrow="Photos from the table">What it looks like in the room.</SectionHeading>
         <div className="mt-12 grid gap-6 md:grid-cols-12 md:gap-8">

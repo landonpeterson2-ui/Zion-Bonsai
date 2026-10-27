@@ -20,8 +20,8 @@ export default function WhoYoullLearnFrom() {
           <div className="mt-6 space-y-4 leading-[1.7] text-soil">
             <p>Bonsai has a thousand years of tradition behind it. We love that, and we skip the gatekeeping.</p>
             <p>
-              Landon brings the soil, the roots and the technique. Cass brings a floral designer&rsquo;s eye and the belief
-              that you don&rsquo;t force a tree, you listen to where it wants to go.
+              Landon and Cass, co-founders of Zion Bonsai, will be your guides to a more contemporary take on bonsai.
+              Landon concentrates on technique, and Cass brings the aesthetic.
             </p>
           </div>
           <TextLink href="/our-story" className="mt-8 inline-block">Our story</TextLink>

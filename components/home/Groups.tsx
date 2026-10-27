@@ -16,8 +16,8 @@ export default function Groups() {
           Bring your people <em>to the table.</em>
         </h2>
         <p className="mt-6 max-w-xl leading-[1.7] text-linen/90">
-          Wellness retreats, team days, school programs, private parties. We bring the trees, the pots and the tools;
-          you bring the people who could use two hours away from their screens.
+          Wellness retreats, team building, private parties. We bring the trees, the pots and the tools; you bring the
+          people who could use two hours to disconnect from technology and reconnect with themselves.
         </p>
         <Link
           href="/events"

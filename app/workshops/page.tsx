@@ -10,7 +10,7 @@ import Dates from '@/components/workshops/Dates'
 import Expect from '@/components/workshops/Expect'
 import TakeHome from '@/components/workshops/TakeHome'
 import Collage from '@/components/workshops/Collage'
-import { Faq, GroupsLine, Shaping, WhoFor } from '@/components/workshops/Rest'
+import { Faq, GroupsLine, WhoFor } from '@/components/workshops/Rest'
 import { getTestimonials } from '@/lib/content'
 import { getPhoto } from '@/lib/photos'
 
@@ -34,8 +34,8 @@ export default function WorkshopsPage() {
           Two hours. No notifications. <em>Just you, some soil, and a tree.</em>
         </h1>
         <p className="mt-6 max-w-md text-[17px] leading-[1.7] text-linen/90">
-          A beginner-friendly bonsai workshop in Sanpete County. Your phone stays in your bag, your hands get dirty, and
-          the tree is going to be yours.
+          A beginner-friendly bonsai workshop in Sanpete County, introducing you to a ritual you&rsquo;ll return to when
+          the world gets too loud.
         </p>
         <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-5">
           <Link href="#dates" className="btn-primary">See dates</Link>
@@ -51,10 +51,9 @@ export default function WorkshopsPage() {
       ) : null}
       <Dates />
       <Expect />
+      <WhoFor />
       <TakeHome />
       <Collage />
-      <Shaping />
-      <WhoFor />
       <Faq />
       <GroupsLine />
     </>

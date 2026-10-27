@@ -7,11 +7,10 @@ import TextLink from '@/components/ui/TextLink'
 import { getPhoto } from '@/lib/photos'
 
 const expect = [
-  'Phones face-down for two hours.',
   'No experience needed. Never touched a bonsai? Perfect.',
   'We bring the trees, the handmade pots, the soil and the tools to use.',
   'You leave with your own dwarf jade in a handmade pot, plus the care basics.',
-  'Come back in six to nine months and we’ll shape it again.',
+  'Come back in nine months to a year for Bonsai Level 2: more advanced shaping and pruning techniques.',
 ]
 
 export default function TheWorkshop() {
@@ -32,8 +31,8 @@ export default function TheWorkshop() {
               and make something living.
             </p>
             <p>
-              So that&rsquo;s the table we built. Phones away, no pressure to be perfect, just soil, tools, good company
-              and a tree that&rsquo;s yours to grow. You don&rsquo;t need a green thumb. You just need to show up.
+              So that&rsquo;s the table we built. No pressure to be perfect, just soil, tools, good company and a tree
+              that&rsquo;s yours to grow. You don&rsquo;t need a green thumb. You just need to show up.
             </p>
           </div>
           <h3 className="mt-10 font-label text-[11px] font-semibold uppercase tracking-[0.18em] text-moss">

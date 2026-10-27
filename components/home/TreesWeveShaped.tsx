@@ -7,7 +7,7 @@ import { getPhoto } from '@/lib/photos'
 export default function TreesWeveShaped() {
   const big = getPhoto('jade-white-origami-pot-porch')
   const a = getPhoto('variegated-jade-grey-pot')
-  const b = getPhoto('workshop-finished-jade-thank-you-card')
+  const b = getPhoto('jade-drip-glaze-pot')
   return (
     <Section tone="paper-deep">
       <div className="container-custom">
@@ -29,7 +29,6 @@ export default function TreesWeveShaped() {
             <Photo src={b.src} alt={b.alt} sizes="(min-width: 768px) 38vw, 50vw" aspect="aspect-square md:aspect-auto md:min-h-[308px]" />
           </div>
         </div>
-        <p className="mt-4 text-sm italic text-soil/80">Pots by Taya&rsquo;s Clay Creations, thrown by hand for every workshop.</p>
       </div>
     </Section>
   )
