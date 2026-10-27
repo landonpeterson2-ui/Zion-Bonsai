@@ -50,7 +50,7 @@ export default function EventsPage() {
   const site = getSite()
   const [eventQuote] = getTestimonials('events')
   const hero = getPhoto('workshop-barn-tables-ready')
-  const landon = getPhoto('workshop-instructor-holding-jade-roots')
+  const team = getPhoto('event-hr-retreat-team-with-trees')
   const retreat = getPhoto('event-hr-retreat-repotting-table')
 
   return (
@@ -119,11 +119,11 @@ export default function EventsPage() {
         <div className="container-custom grid items-center gap-12 md:grid-cols-12 md:gap-16">
           <div className="md:col-span-5">
             <Photo
-              src={landon.src}
-              alt={landon.alt}
+              src={team.src}
+              alt={team.alt}
               sizes="(min-width: 768px) 38vw, 100vw"
-              aspect="aspect-[4/5]"
-              caption="Landon, with a freshly lifted dwarf jade."
+              aspect="aspect-[3/2]"
+              caption="Workshop day, done: every tree going home."
             />
           </div>
           <div className="md:col-span-7">
