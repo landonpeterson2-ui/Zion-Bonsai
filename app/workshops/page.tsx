@@ -10,7 +10,7 @@ import Dates from '@/components/workshops/Dates'
 import Expect from '@/components/workshops/Expect'
 import TakeHome from '@/components/workshops/TakeHome'
 import Collage from '@/components/workshops/Collage'
-import { Faq, GroupsLine, WhoFor } from '@/components/workshops/Rest'
+import { Faq, WhoFor } from '@/components/workshops/Rest'
 import { getTestimonials } from '@/lib/content'
 import { getPhoto } from '@/lib/photos'
 
@@ -55,7 +55,6 @@ export default function WorkshopsPage() {
       <TakeHome />
       <Collage />
       <Faq />
-      <GroupsLine />
     </>
   )
 }

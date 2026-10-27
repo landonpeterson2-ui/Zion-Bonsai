@@ -5,7 +5,6 @@ import { useState, useSyncExternalStore } from 'react'
 export const EVENT_TYPES = [
   'Corporate wellness or retreat',
   'Private party',
-  'School program',
   'Private tutoring',
   'Pop-up or market',
   'Something else',

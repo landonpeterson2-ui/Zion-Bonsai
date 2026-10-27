@@ -12,7 +12,7 @@ import { getPhoto } from '@/lib/photos'
 export const metadata: Metadata = {
   title: { absolute: 'Corporate Wellness & Private Bonsai Events | Central Utah' },
   description:
-    'Team building, wellness retreats, private parties and school programs with Zion Bonsai. Screen-free, hands-on bonsai workshops for your group in Sanpete County, Utah.',
+    'Team building, wellness retreats and private parties with Zion Bonsai. Screen-free, hands-on bonsai workshops for your group in Sanpete County, Utah.',
 }
 
 const ways = [
@@ -25,16 +25,12 @@ const ways = [
     body: 'Birthdays, showers, friend groups, date nights. Everyone makes their own tree, and nobody checks their phone to see what time it is.',
   },
   {
-    title: 'School programs',
-    body: 'Hands in soil, a living thing to look after, and a good reason to look up from the screen for a while. We tailor the session to the age group.',
-  },
-  {
     title: 'Private tutoring',
     body: 'One-on-one or a small group, for people who want to go deeper, or who have a tree of their own that needs shaping.',
   },
   {
     title: 'Pop-ups & markets',
-    body: 'We set up a table and let people try it, like we do at the Sanpete Harvest Market. Invite us to yours.',
+    body: 'We set up a table and let people try it. Invite us to yours.',
   },
 ]
 
@@ -52,7 +48,6 @@ const link = 'font-semibold text-clay underline underline-offset-2'
 export default function EventsPage() {
   const site = getSite()
   const hero = getPhoto('workshop-barn-tables-ready')
-  const group = getPhoto('workshop-group-around-soil-table')
   const landon = getPhoto('workshop-instructor-holding-jade-roots')
 
   return (
@@ -65,13 +60,30 @@ export default function EventsPage() {
           <em>to your people.</em>
         </h1>
         <p className="mt-6 max-w-md text-[17px] leading-[1.7] text-linen/90">
-          Two hours, no notifications, and a table full of soil. Your team, your friends or your classroom, making
-          something with their hands, together.
+          Two hours, no notifications, and a table full of tiny trees. Your team or your friends, making something with
+          their hands, together.
         </p>
         <div className="mt-9">
           <a href="#inquire" className="btn-primary">Start an inquiry</a>
         </div>
       </PhotoHero>
+
+      {/* Del's quote goes here, word for word, once we have it. Never paraphrase or invent it. */}
+      <Section tone="paper-deep">
+        <Reveal className="container-custom">
+          <figure className="relative mx-auto max-w-3xl border border-dashed border-forest/30 px-6 py-12 text-center md:px-12">
+            <span className="absolute -top-2.5 left-6 bg-paper-deep px-2 font-label text-[10px] font-semibold uppercase tracking-[0.2em] text-soil">
+              Placeholder
+            </span>
+            <blockquote className="font-display text-[1.7rem] italic leading-[1.3] text-forest md:text-[2.2rem]">
+              [TESTIMONIAL &mdash; Del&rsquo;s words, exactly as given]
+            </blockquote>
+            <figcaption className="mt-5 font-label text-[11px] font-semibold uppercase tracking-[0.22em] text-moss">
+              [DEL, ORGANIZATION]
+            </figcaption>
+          </figure>
+        </Reveal>
+      </Section>
 
       <Section>
         <div className="container-custom grid gap-12 md:grid-cols-12 md:gap-16">
@@ -83,13 +95,16 @@ export default function EventsPage() {
               Every event is the same idea: put the phones down and be with a tree. We shape the rest around you.
             </p>
             <Reveal className="mt-10">
-              <Photo
-                src={group.src}
-                alt={group.alt}
-                sizes="(min-width: 768px) 40vw, 100vw"
-                aspect="aspect-[4/3]"
-                caption="Your people, at the table."
-              />
+              <div
+                role="img"
+                aria-label="Photo placeholder: the Snow College HR retreat"
+                className="flex aspect-[4/3] items-center justify-center bg-sandstone/40 p-8 text-center"
+              >
+                <p className="font-label text-[11px] font-semibold uppercase leading-relaxed tracking-[0.18em] text-soil">
+                  [PHOTO &mdash; Snow College HR retreat]
+                </p>
+              </div>
+              <p className="mt-3 text-sm italic text-soil/80">Your people, at the table.</p>
             </Reveal>
           </div>
           <ol className="md:col-span-7">
@@ -146,9 +161,11 @@ export default function EventsPage() {
               Tell us about <em>your group.</em>
             </SectionHeading>
             <p className="mt-6 leading-[1.7] text-soil">
-              A few details is plenty. We&rsquo;ll write back to plan the rest together. Prefer to talk? Email{' '}
-              <a href={`mailto:${site.email}`} className={link}>{site.email}</a> or call{' '}
-              <a href={`tel:${site.phone}`} className={link}>{site.phone}</a>.
+              A few details is plenty. We&rsquo;ll write back to plan the rest together. You can also email{' '}
+              <a href={`mailto:${site.email}`} className={link}>{site.email}</a>.
+            </p>
+            <p className="mt-4 leading-[1.7] text-soil">
+              Prefer to talk? Call <a href={`tel:${site.phone}`} className={link}>{site.phone}</a>.
             </p>
           </div>
           <div className="md:col-span-8">
@@ -166,21 +183,6 @@ export default function EventsPage() {
         </div>
       </Section>
 
-      <Section tone="paper-deep">
-        <Reveal className="container-custom">
-          <figure className="relative mx-auto max-w-3xl border border-dashed border-forest/30 px-6 py-12 text-center md:px-12">
-            <span className="absolute -top-2.5 left-6 bg-paper-deep px-2 font-label text-[10px] font-semibold uppercase tracking-[0.2em] text-soil">
-              Placeholder
-            </span>
-            <blockquote className="font-display text-[1.7rem] italic leading-[1.3] text-forest md:text-[2.2rem]">
-              [TESTIMONIAL &mdash; from an event organizer]
-            </blockquote>
-            <figcaption className="mt-5 font-label text-[11px] font-semibold uppercase tracking-[0.22em] text-moss">
-              [NAME, ORGANIZATION]
-            </figcaption>
-          </figure>
-        </Reveal>
-      </Section>
     </>
   )
 }

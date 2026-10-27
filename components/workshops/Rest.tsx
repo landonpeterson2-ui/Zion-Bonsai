@@ -1,4 +1,3 @@
-import Eyebrow from '@/components/ui/Eyebrow'
 import Quote from '@/components/ui/Quote'
 import Section from '@/components/ui/Section'
 import SectionHeading from '@/components/ui/SectionHeading'
@@ -73,22 +72,6 @@ export function Faq() {
             ))}
           </div>
         </div>
-      </div>
-    </Section>
-  )
-}
-
-export function GroupsLine() {
-  return (
-    <Section>
-      <div className="container-custom flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-        <div>
-          <Eyebrow>Groups?</Eyebrow>
-          <p className="mt-3 max-w-xl font-display text-[1.9rem] leading-tight text-forest">
-            Bringing a team, a party or a class? We&rsquo;ll set up a private table.
-          </p>
-        </div>
-        <TextLink href="/events">Plan a private event</TextLink>
       </div>
     </Section>
   )
