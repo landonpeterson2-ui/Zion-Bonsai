@@ -33,7 +33,7 @@ const satisfy = Satisfy({
   variable: '--font-script',
 })
 
-const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://zionbonsai.com'
 const title = 'Zion Bonsai | Unplug. Create. Grow.'
 const description = 'Beginner bonsai workshops in Sanpete County, Central Utah. Put the phone down, get your hands in the soil, and take home a dwarf jade in a handmade pot.'
 
