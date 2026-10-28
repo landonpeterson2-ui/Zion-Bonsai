@@ -35,6 +35,10 @@
     "url": null,
     "instagram": null,
     "location": null,
-    "logo": null
+    "logo": {
+      "src": "/partners/thistle-honey.png",
+      "width": 800,
+      "height": 762
+    }
   }
 ]

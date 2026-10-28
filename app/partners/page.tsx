@@ -17,12 +17,17 @@ const linkClass =
   'inline-flex min-h-[44px] items-center border-b border-forest/60 font-label text-[11px] font-semibold uppercase tracking-[0.16em] text-forest transition-colors hover:border-forest'
 
 /** Only partners with a genuine photo of their work get one; everyone else gets a labeled placeholder. */
+const partnerPhotos: Record<string, string> = {
+  'tayas-clay': 'tayas-handmade-pots',
+  'sweet-roots': 'partner-sweet-roots-garden',
+  'thistle-honey': 'partner-thistle-honey-shelf',
+}
+
 function partnerPhoto(id: string) {
-  if (id === 'tayas-clay') {
-    const p = getPhoto('tayas-handmade-pots')
-    return { src: p.src, alt: p.alt, caption: p.caption }
-  }
-  return null
+  const name = partnerPhotos[id]
+  if (!name) return null
+  const p = getPhoto(name)
+  return { src: p.src, alt: p.alt, caption: p.caption }
 }
 
 function PhotoSlot({ partner }: { partner: Partner }) {
