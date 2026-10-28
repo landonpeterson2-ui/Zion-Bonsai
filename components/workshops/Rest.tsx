@@ -51,6 +51,19 @@ export function WhoFor() {
   )
 }
 
+/** FAQ answers are plain text; `[label](url)` inside one becomes a link. */
+function withLinks(text: string) {
+  return text.split(/(\[[^\]]+\]\([^)\s]+\))/).map((part, i) => {
+    const m = part.match(/^\[([^\]]+)\]\(([^)\s]+)\)$/)
+    if (!m) return part
+    return (
+      <a key={i} href={m[2]} className="text-forest underline decoration-forest/40 underline-offset-4 hover:decoration-forest">
+        {m[1]}
+      </a>
+    )
+  })
+}
+
 export function Faq() {
   const faq = getFaq()
   return (
@@ -67,7 +80,7 @@ export function Faq() {
                   {f.q}
                   <span aria-hidden="true" className="font-label text-xl text-moss transition-transform group-open:rotate-45">+</span>
                 </summary>
-                <p className="max-w-xl pb-6 leading-[1.7] text-soil">{f.a}</p>
+                <p className="max-w-xl pb-6 leading-[1.7] text-soil">{withLinks(f.a)}</p>
               </details>
             ))}
           </div>
