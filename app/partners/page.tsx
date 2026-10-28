@@ -61,8 +61,9 @@ export default function PartnersPage() {
           A workshop built by <em>the neighbors.</em>
         </h1>
         <p className="mt-6 max-w-xl leading-[1.7] text-forest/90">
-          The pot, the room and the people who made us feel welcome all come from right here. Zion Bonsai is a local
-          collaboration, and they are why the table is worth sitting at with your phone in your pocket.
+          The pot, the room and the people who made us feel welcome all come from right here in Utah. Zion Bonsai is a
+          local collaboration, and they are why the table is worth sitting at to connect with tiny trees and those
+          around you.
         </p>
       </header>
 

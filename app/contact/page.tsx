@@ -3,7 +3,6 @@ import Eyebrow from '@/components/ui/Eyebrow'
 import Reveal from '@/components/ui/Reveal'
 import Section from '@/components/ui/Section'
 import SectionHeading from '@/components/ui/SectionHeading'
-import TextLink from '@/components/ui/TextLink'
 import { getSite } from '@/lib/content'
 
 export const metadata: Metadata = {
@@ -40,8 +39,8 @@ export default function ContactPage() {
           Say hello. <em>We answer.</em>
         </h1>
         <p className="mt-6 max-w-xl leading-[1.7] text-forest/90">
-          Questions about a workshop, a gift, or a group? Write or call. A real person (probably with soil on their
-          hands) will get back to you. Fair warning: at the workshop, your phone gets the afternoon off.
+          Questions about a workshop, a gift, or a group? Text, call or email. A real person (probably with soil on
+          their hands) will get back to you.
         </p>
       </header>
 
@@ -131,21 +130,6 @@ export default function ContactPage() {
                   Email to join the list
                 </a>
               )}
-            </div>
-          </Reveal>
-        </div>
-      </Section>
-
-      <Section tone="paper-deep" bordered>
-        <div className="container-custom">
-          <Reveal>
-            <Eyebrow>Groups</Eyebrow>
-            <p className="mt-5 max-w-xl font-display text-3xl leading-tight text-forest md:text-4xl">
-              Planning something for a team, a class or a party?
-            </p>
-            <div className="mt-8 flex flex-wrap gap-x-8 gap-y-2">
-              <TextLink href="/events">Private &amp; corporate events</TextLink>
-              <TextLink href="/workshops">See public workshops</TextLink>
             </div>
           </Reveal>
         </div>

@@ -33,7 +33,7 @@ export default function OurStoryPage() {
       {/* 1. Opening: mission */}
       <Section bordered tone="paper-deep">
         <Reveal className="container-custom text-center">
-          <Eyebrow>Zion Bonsai</Eyebrow>
+          <Eyebrow>Our mission</Eyebrow>
           <p className="mx-auto mt-6 max-w-3xl font-display text-[1.9rem] font-medium leading-[1.25] text-forest md:text-[2.6rem]">
             Zion Bonsai cultivates stillness, curiosity, and connection &mdash; <em>one tree at a time.</em>
           </p>
@@ -100,29 +100,29 @@ export default function OurStoryPage() {
                 aspect="aspect-[4/5]"
                 caption={together.caption}
               />
-              <h3 className="mt-6 font-display text-3xl">Landon</h3>
+            </div>
+            <div className="md:mt-16">
+              <h3 className="font-display text-3xl">Landon</h3>
               <p className="mt-3 leading-[1.7] text-soil">
                 Soil, roots and technique. He learned the traditional art and brings that knowledge to the table, minus
                 the jargon.
               </p>
-            </div>
-            <div className="md:mt-16">
-              <h3 className="font-display text-3xl">Cass</h3>
+              <h3 className="mt-10 font-display text-3xl">Cass</h3>
               <p className="mt-3 leading-[1.7] text-soil">
-                A floral designer&rsquo;s eye, and the aesthetic and feel of it all. She likes making something
-                beautiful without needing to know all the rules.
+                She has a floral designer&rsquo;s eye and loves the aesthetic and feel of it all. She enjoys making
+                the trees beautiful without needing to know all the rules.
               </p>
               <p className="mt-6 leading-[1.7] text-soil">
                 Together we made workshops that respect the art form and stay approachable for real people with real
-                lives. We live here, and we&rsquo;re raising our family here.
+                lives.
               </p>
-              <div className="mt-8 max-w-md">
+              <div className="mt-12 max-w-md md:mt-16">
                 <Photo
                   src={both.src}
                   alt={both.alt}
                   sizes="(min-width: 768px) 30vw, 90vw"
                   aspect="aspect-[4/3]"
-                  caption="Cass and Landon."
+                  caption="Cass & Landon, ready for a workshop."
                   objectPosition="object-[50%_35%]"
                 />
               </div>
@@ -228,9 +228,8 @@ export default function OurStoryPage() {
       {/* 5. Close */}
       <section className="container-custom pb-24 pt-8 text-center md:pb-32">
         <h2 className="text-[2.6rem] leading-[1.05] md:text-[3.75rem]">
-          Unplug. Create. <em>Grow.</em>
+          Come grow <em>with us.</em>
         </h2>
-        <p className="mt-5 font-display text-[1.75rem] italic text-soil">Come grow with us.</p>
         <Link href="/workshops#dates" className="btn-primary mt-9">Book a workshop</Link>
         <div className="mt-8">
           <TextLink href="/contact" className="inline-flex min-h-[44px] items-center">Get in touch</TextLink>
