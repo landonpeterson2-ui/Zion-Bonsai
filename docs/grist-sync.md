@@ -44,3 +44,16 @@ Optional: a **Schedule** trigger (e.g. hourly) into the same Wait/SSH nodes, as 
 
 - Self-hosted Grist only calls allowed hosts, and only over https unless the setting is `*`. n8n on the NUC is plain http, so `ALLOWED_WEBHOOK_DOMAINS=*` is set on the Grist container (CasaOS app settings). The webhook URL is `http://172.17.0.1:5678/webhook/zion-bonsai-sync` (the NUC as seen from Grist's container); the n8n SSH credential uses the same `172.17.0.1` to reach the host.
 - In Grist, open Settings → Webhooks and add one webhook per table: **Workshops**, **Registrations** (seats sold change sold-out status; Attended feeds Brevo), **Contacts** (Email_OK feeds Brevo), **Organizations**, **Feedback**, each pointing to the n8n Webhook URL, event types add and update.
+
+## Registration form → Grist
+
+n8n workflow "Zion Bonsai: registration form to Grist", every 15 minutes. The Google Form's responses go to the sheet `Zion Bonsai registrations`. n8n reads it with the "Google Sheets account" credential, an OAuth client named `n8n` in the Google Cloud project `Zion Bonsai n8n`. The client is internal to the business account. A service-account key isn't an option because the organization policy blocks key creation. To sign in again, open n8n through `ssh -L 5678:localhost:5678 nuc` at http://localhost:5678, because Google only accepts the localhost callback.
+
+- Only rows submitted after the workflow went live (2026-10-27 23:37, Utah time) are read. Earlier registrations were entered by hand.
+- **Workshop:** the soonest workshop dated on or after the submission whose `Registration_Form` is exactly the form's link (`https://forms.gle/zUgmpDQrtbPmVvhD7`) and whose Status is On sale, Sold out or Waitlist. A new form means a new link in the workflow's "Tidy new rows" step.
+- **Contact:** matched by email, ignoring case.
+  - A new contact gets the name, phone, `Attendee`, Lead_Source (best guess from "How did you hear", else Other) and Email_OK from the "Stay rooted with us" checkbox.
+  - An existing contact only gains Email_OK when ticked, plus a phone if Grist has none. An unticked box never removes an opt-in.
+- **Registration:** Seats 1 or 2 (pair), Guest_Name, Notes from the questions box. Status is Pending, or Waitlist when the workshop isn't On sale or has fewer seats left. Cass fills in payment and changes the status.
+- If the contact already has a registration for that workshop (for example, one entered by hand), nothing is added.
+- A row with no matching workshop or a broken email is emailed once ("A registration needs a look") and is picked up automatically once fixed. A failed run emails through the "Zion Bonsai: error alert" workflow.
