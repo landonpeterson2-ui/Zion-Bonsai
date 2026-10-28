@@ -41,7 +41,7 @@ function PhotoSlot({ partner }: { partner: Partner }) {
         src={photo.src}
         alt={photo.alt}
         caption={photo.caption}
-        aspect={photo.wide ? 'aspect-[5/4]' : 'aspect-[4/5]'}
+        aspect={photo.wide ? 'aspect-[3/2]' : 'aspect-[4/5]'}
         sizes={photo.wide ? '(min-width: 768px) 58vw, 100vw' : '(min-width: 768px) 40vw, 100vw'}
       />
     )
