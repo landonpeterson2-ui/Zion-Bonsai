@@ -34,8 +34,8 @@ const satisfy = Satisfy({
 })
 
 const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
-const title = 'Zion Bonsai | Nurturing bonsai Nurtures the soul'
-const description = 'Unplug, create and grow together. Hands-on bonsai workshops and living art for wellness-focused individuals in Central Utah. Portulacaria afra (Dwarf Jade) bonsai at every stage.'
+const title = 'Zion Bonsai | Unplug. Create. Grow.'
+const description = 'Beginner bonsai workshops in Sanpete County, Central Utah. Put the phone down, get your hands in the soil, and take home a dwarf jade in a handmade pot.'
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     description,
     url: siteUrl,
     siteName: 'Zion Bonsai',
-    images: [{ url: '/gallery/1.jpeg', width: 1200, height: 1200 }],
+    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Zion Bonsai logo beside dwarf jade bonsai on a sunlit shelf' }],
     locale: 'en_US',
     type: 'website',
   },
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title,
     description,
-    images: ['/gallery/1.jpeg'],
+    images: ['/og-image.jpg'],
   },
   robots: {
     index: true,
