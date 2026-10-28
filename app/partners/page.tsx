@@ -16,18 +16,21 @@ export const metadata: Metadata = {
 const linkClass =
   'inline-flex min-h-[44px] items-center border-b border-forest/60 font-label text-[11px] font-semibold uppercase tracking-[0.16em] text-forest transition-colors hover:border-forest'
 
-/** Only partners with a genuine photo of their work get one; everyone else gets a labeled placeholder. */
-const partnerPhotos: Record<string, string> = {
-  'tayas-clay': 'tayas-handmade-pots',
-  'sweet-roots': 'partner-sweet-roots-garden',
-  'thistle-honey': 'partner-thistle-honey-shelf',
+/**
+ * Only partners with a genuine photo of their work get one; everyone else gets a labeled placeholder.
+ * Wide photos take the larger column (7/5) instead of the usual 5/7.
+ */
+const partnerPhotos: Record<string, { name: string; wide?: boolean }> = {
+  'tayas-clay': { name: 'tayas-handmade-pots' },
+  'sweet-roots': { name: 'partner-sweet-roots-garden' },
+  'thistle-honey': { name: 'partner-thistle-honey-shelf', wide: true },
 }
 
 function partnerPhoto(id: string) {
-  const name = partnerPhotos[id]
-  if (!name) return null
-  const p = getPhoto(name)
-  return { src: p.src, alt: p.alt, caption: p.caption }
+  const entry = partnerPhotos[id]
+  if (!entry) return null
+  const p = getPhoto(entry.name)
+  return { src: p.src, alt: p.alt, caption: p.caption, wide: entry.wide ?? false }
 }
 
 function PhotoSlot({ partner }: { partner: Partner }) {
@@ -38,8 +41,8 @@ function PhotoSlot({ partner }: { partner: Partner }) {
         src={photo.src}
         alt={photo.alt}
         caption={photo.caption}
-        aspect="aspect-[4/5]"
-        sizes="(min-width: 768px) 40vw, 100vw"
+        aspect={photo.wide ? 'aspect-[5/4]' : 'aspect-[4/5]'}
+        sizes={photo.wide ? '(min-width: 768px) 58vw, 100vw' : '(min-width: 768px) 40vw, 100vw'}
       />
     )
   }
@@ -74,6 +77,9 @@ export default function PartnersPage() {
 
       {partners.map((p, i) => {
         const flip = i % 2 === 1
+        const wide = partnerPhoto(p.id)?.wide ?? false
+        const photoCols = wide ? 'md:col-span-7' : 'md:col-span-5'
+        const textCols = wide ? 'md:col-span-5' : 'md:col-span-7'
         const links = [
           p.url ? { label: 'Website', href: p.url } : null,
           p.instagram ? { label: 'Instagram', href: p.instagram } : null,
@@ -81,10 +87,10 @@ export default function PartnersPage() {
         return (
           <Section key={p.id} id={p.id} tone={flip ? 'paper-deep' : 'paper'} bordered={!flip}>
             <div className="container-custom grid items-center gap-10 md:grid-cols-12 md:gap-16">
-              <Reveal className={flip ? 'md:order-2 md:col-span-5' : 'md:col-span-5'}>
+              <Reveal className={flip ? `md:order-2 ${photoCols}` : photoCols}>
                 <PhotoSlot partner={p} />
               </Reveal>
-              <Reveal className={flip ? 'md:order-1 md:col-span-7' : 'md:col-span-7'}>
+              <Reveal className={flip ? `md:order-1 ${textCols}` : textCols}>
                 {p.logo ? (
                   // Decorative: the h2 below names the partner. Wide wordmarks sit lower than tall marks
                   // so both read at a similar visual weight.
