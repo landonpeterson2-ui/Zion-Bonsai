@@ -4,7 +4,10 @@ Workshops, partners and quotes can be edited in the Grist doc on the NUC. `npm r
 
 ```
 Grist row edited ─webhook─▶ n8n ─wait 2 min─▶ SSH to NUC host ─▶ scripts/sync-and-push.sh ─push─▶ Cloudflare deploy
+                                                                 └▶ npm run sync:brevo ─▶ Brevo lists
 ```
+
+The same run also copies workshop guests and newsletter consent to Brevo (`scripts/sync-brevo.mjs`, see the comment at its top): someone whose latest attended workshop (Paid or Comped, **Attended** ticked) was in the last 30 days joins the **Workshop guests** list, which starts the welcome series; anyone with **Email_OK** ticked on their contact joins **Newsletter**, and leaves it when it's unticked. Email_OK is the newsletter opt-in: tick it only when the person said yes (the registration form's newsletter question).
 
 ## What Grist decides
 
@@ -24,7 +27,7 @@ The site-facing logic lives in Grist formulas, so the script stays simple and pr
 2. A dedicated clone used only by the sync, e.g. `~/zion-bonsai-sync`. Don't edit files in it by hand.
    - GitHub: add a **deploy key with write access** to this repo, and clone over SSH with it.
    - In that clone, set `git config user.name` / `user.email` to Landon's GitHub identity. (Vercel-only: the Hobby plan skips deploys from commit authors who aren't on the team. Remove this note at launch, once Vercel is gone.)
-   - Put `GRIST_API_KEY=...` in `.env.local` in the clone.
+   - Put `GRIST_API_KEY=...` and `BREVO_API_KEY=...` in `.env.local` in the clone.
    - Test: `scripts/sync-and-push.sh` should print "No content changes." or "Pushed: <sha>".
 3. A host user n8n can SSH in as (key-only login), able to run the script in that clone.
 
@@ -32,7 +35,7 @@ The site-facing logic lives in Grist formulas, so the script stays simple and pr
 
 1. **Webhook** node (POST). Copy its production URL.
 2. **Wait** 2 minutes, so a burst of edits becomes one run. Extra runs are harmless: the script locks, and a run with nothing new does nothing.
-3. **SSH** node → Execute command: `~/zion-bonsai-sync/scripts/sync-and-push.sh`. Host: the NUC as seen from the container (add `extra_hosts: ["host.docker.internal:host-gateway"]` to the n8n service and use `host.docker.internal`).
+3. **SSH** node → Execute command: `s=0; ~/zion-bonsai-sync/scripts/sync-and-push.sh || s=1; cd ~/zion-bonsai-sync && npm run -s sync:brevo || s=1; exit $s` (both run every time; a failure in either reaches step 4). Host: the NUC as seen from the container (add `extra_hosts: ["host.docker.internal:host-gateway"]` to the n8n service and use `host.docker.internal`).
 4. On failure (non-zero exit), send yourself the output (n8n Error Workflow or the node's error output → email). A failed run pushes nothing; the message names the Grist row to fix.
 
 Optional: a **Schedule** trigger (e.g. hourly) into the same Wait/SSH nodes, as a backstop for missed webhooks.
@@ -40,4 +43,4 @@ Optional: a **Schedule** trigger (e.g. hourly) into the same Wait/SSH nodes, as 
 ## Grist webhook
 
 - Self-hosted Grist only calls allowed hosts: set `ALLOWED_WEBHOOK_DOMAINS` on the Grist container to the n8n host and restart Grist.
-- In Grist, open Settings → Webhooks and add one webhook per table: **Workshops**, **Registrations** (seats sold change sold-out status), **Organizations**, **Feedback**, each pointing to the n8n Webhook URL, event types add and update.
+- In Grist, open Settings → Webhooks and add one webhook per table: **Workshops**, **Registrations** (seats sold change sold-out status; Attended feeds Brevo), **Contacts** (Email_OK feeds Brevo), **Organizations**, **Feedback**, each pointing to the n8n Webhook URL, event types add and update.
