@@ -42,5 +42,5 @@ Optional: a **Schedule** trigger (e.g. hourly) into the same Wait/SSH nodes, as 
 
 ## Grist webhook
 
-- Self-hosted Grist only calls allowed hosts: set `ALLOWED_WEBHOOK_DOMAINS` on the Grist container to the n8n host and restart Grist.
+- Self-hosted Grist only calls allowed hosts, and only over https unless the setting is `*`. n8n on the NUC is plain http, so `ALLOWED_WEBHOOK_DOMAINS=*` is set on the Grist container (CasaOS app settings). The webhook URL is `http://172.17.0.1:5678/webhook/zion-bonsai-sync` (the NUC as seen from Grist's container); the n8n SSH credential uses the same `172.17.0.1` to reach the host.
 - In Grist, open Settings → Webhooks and add one webhook per table: **Workshops**, **Registrations** (seats sold change sold-out status; Attended feeds Brevo), **Contacts** (Email_OK feeds Brevo), **Organizations**, **Feedback**, each pointing to the n8n Webhook URL, event types add and update.
