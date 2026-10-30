@@ -1,6 +1,6 @@
 // `npm run sync:grist` — pulls public workshops, partners and quotes from the
 // Zion Bonsai Grist doc into content/*.json. Run it on a machine on the tailnet,
-// check the diff, then commit. Vercel never talks to Grist.
+// check the diff, then commit. Cloudflare never talks to Grist.
 // `npm run sync:grist -- --check` does everything except write the files.
 //
 // Grist decides what goes on the site: Show_On_Site / Site_Status are formulas there,

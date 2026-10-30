@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Runs on the NUC, called by n8n over SSH (see docs/grist-sync.md).
-# Pulls main, runs the Grist sync, and pushes if content/ changed. Vercel deploys the push.
+# Pulls main, runs the Grist sync, and pushes if content/ changed. Cloudflare deploys the push.
 # Safe to call many times in a row: runs wait for each other and only real changes are pushed.
 # Each outcome Cass needs to see is logged to the Site_Sync table in Grist (scripts/grist-log.mjs).
 set -euo pipefail

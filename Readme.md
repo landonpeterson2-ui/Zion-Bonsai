@@ -112,7 +112,7 @@ zion-bonsai/
 - **Email**: Resend
 - **Date Handling**: date-fns
 - **Calendar**: react-big-calendar
-- **Deployment**: Vercel (recommended)
+- **Deployment**: Cloudflare Workers (see docs/deploy-cloudflare.md)
 
 ## 🎯 Next Steps
 
@@ -212,81 +212,9 @@ Brand colors are defined in [tailwind.config.ts](tailwind.config.ts). Modify the
 
 Add custom fonts in [app/layout.tsx](app/layout.tsx) using `next/font`.
 
-## 🚀 Deployment to Vercel
+## 🚀 Deployment
 
-Your site is ready to deploy! Follow these steps:
-
-### Step 1: Push to GitHub
-
-1. **Initialize git** (if not already done):
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit - Zion Bonsai website"
-   ```
-
-2. **Create a GitHub repository**:
-   - Go to [github.com](https://github.com) and create a new repository
-   - Name it "zion-bonsai" (or your preferred name)
-   - Don't initialize with README (we already have one)
-
-3. **Push your code**:
-   ```bash
-   git remote add origin https://github.com/YOUR-USERNAME/zion-bonsai.git
-   git branch -M main
-   git push -u origin main
-   ```
-
-### Step 2: Deploy to Vercel
-
-1. **Sign up for Vercel**:
-   - Go to [vercel.com](https://vercel.com)
-   - Sign up with your GitHub account (recommended)
-
-2. **Import your project**:
-   - Click "Add New..." → "Project"
-   - Select your `zion-bonsai` repository
-   - Vercel will auto-detect Next.js settings
-
-3. **Configure environment variables** (in Vercel dashboard):
-   ```
-   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_live_...
-   STRIPE_SECRET_KEY=sk_live_...
-   STRIPE_WEBHOOK_SECRET=whsec_...
-   RESEND_API_KEY=re_...
-   FROM_EMAIL=zionbonsaiplants@gmail.com
-   NEXT_PUBLIC_APP_URL=https://zionbonsai.com
-   ```
-
-4. **Deploy**:
-   - Click "Deploy"
-   - Wait 1-2 minutes for build to complete
-   - Your site will be live at `https://your-project.vercel.app`
-
-### Step 3: Add Custom Domain
-
-1. In Vercel dashboard, go to your project → "Settings" → "Domains"
-2. Add your domain (e.g., `zionbonsai.com`)
-3. Follow Vercel's instructions to configure DNS
-4. SSL certificate is automatically provisioned
-
-### Automatic Deployments
-
-Once connected, Vercel automatically:
-- Deploys your main branch to production
-- Creates preview deployments for every commit/PR
-- Rebuilds when you push changes to GitHub
-
-### Quick Deploy Command
-
-After initial setup, deploying updates is as simple as:
-```bash
-git add .
-git commit -m "Your update message"
-git push
-```
-
-Vercel will automatically build and deploy!
+The site runs on Cloudflare Workers at https://zionbonsai.com. Every push to `main` builds and deploys automatically. Setup and commands: [docs/deploy-cloudflare.md](docs/deploy-cloudflare.md).
 
 ## 📱 Contact
 

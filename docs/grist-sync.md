@@ -1,6 +1,6 @@
 # Grist → site sync
 
-Workshops, partners and quotes can be edited in the Grist doc on the NUC. `npm run sync:grist` copies the rows marked for the site into `content/*.json`; `scripts/sync-and-push.sh` wraps it with git pull/commit/push so n8n can run it on its own. Cloudflare (and Vercel before it) can't reach Grist (it's only on the tailnet), so the site still builds from the JSON in the repo.
+Workshops, partners and quotes can be edited in the Grist doc on the NUC. `npm run sync:grist` copies the rows marked for the site into `content/*.json`; `scripts/sync-and-push.sh` wraps it with git pull/commit/push so n8n can run it on its own. Cloudflare can't reach Grist (it's only on the tailnet), so the site still builds from the JSON in the repo.
 
 ```
 Grist row edited ─webhook─▶ n8n ─wait 2 min─▶ SSH to NUC host ─▶ scripts/sync-and-push.sh ─push─▶ Cloudflare deploy
@@ -26,7 +26,7 @@ The site-facing logic lives in Grist formulas, so the script stays simple and pr
 1. Node 22.18+ and git on the host (not in the n8n container).
 2. A dedicated clone used only by the sync, e.g. `~/zion-bonsai-sync`. Don't edit files in it by hand.
    - GitHub: add a **deploy key with write access** to this repo, and clone over SSH with it.
-   - In that clone, set `git config user.name` / `user.email` to Landon's GitHub identity. (Vercel-only: the Hobby plan skips deploys from commit authors who aren't on the team. Remove this note at launch, once Vercel is gone.)
+   - In that clone, set `git config user.name` / `user.email` to Landon's GitHub identity.
    - Put `GRIST_API_KEY=...` and `BREVO_API_KEY=...` in `.env.local` in the clone.
    - Test: `scripts/sync-and-push.sh` should print "No content changes." or "Pushed: <sha>".
 3. A host user n8n can SSH in as (key-only login), able to run the script in that clone.

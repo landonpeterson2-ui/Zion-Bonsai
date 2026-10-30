@@ -28,13 +28,13 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - [ ] 30 Copy pass
 - [ ] 40 SEO and sharing
 - [ ] 41 Accessibility, performance, mobile QA
-- [x] 43 Run the site on Cloudflare Workers (adapter, images binding, per-request pages, docs/deploy-cloudflare.md). Local Workers preview verified; not deployed.
+- [x] 43 Run the site on Cloudflare Workers (adapter, images binding, per-request pages, docs/deploy-cloudflare.md). Live at zionbonsai.com; Vercel project retired.
 - [ ] 42 Cleanup and PR
 
 ## Found while working
 - (task 25) Contact page "Groups" band links to /events and /workshops; /events may not exist until its task lands. Partner photos for Sweet Roots and Thistle & Honey are placeholders; Taya photo is workshop-finished-jade-thank-you-card (pot assumed hers per brief).
 <!-- Out-of-scope issues agents notice. Format: - (task NN) description -->
-- (grist) Added `npm run sync:grist` (scripts/sync-grist.mjs): pulls workshops, partners and OK-to-quote feedback marked for the site from the Grist doc into content/*.json. Run locally on the tailnet; Vercel can't reach Grist. Grist rows still need Slugs, Start/End, Price Label, Registration Form, venues and Show On Site filled before the sync replaces anything.
+- (grist) Added `npm run sync:grist` (scripts/sync-grist.mjs): pulls workshops, partners and OK-to-quote feedback marked for the site from the Grist doc into content/*.json. Run locally on the tailnet; Cloudflare can't reach Grist. Grist rows still need Slugs, Start/End, Price Label, Registration Form, venues and Show On Site filled before the sync replaces anything.
 - (task 01) Existing pages still use legacy classes (`bg-cream-light`, `text-charcoal`, `.card`, coral-on-paper text) that predate the contrast rules; replace as pages are rebuilt, final sweep in task 42.
 - (task 01) `font-medium` (500) is used in a few places but Open Sans loads only 400/600; browser snaps to the nearest weight.
 - (task 05) Confirm sold/workshop status: all 21 `public/gallery` trees are marked `sold` by default (none confirmed). Some may be unsold or Shop candidates, so Landon to confirm. `status` can be `available` in content/gallery.json.

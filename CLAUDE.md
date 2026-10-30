@@ -6,7 +6,7 @@ The site is mid-redesign on the `redesign` branch. The brief is [docs/redesign/h
 
 ## Stack
 
-- Next.js 16 (App Router, Turbopack), React 19, TypeScript, Tailwind CSS 3. Deployed on Vercel from `main`.
+- Next.js 16 (App Router, Turbopack), React 19, TypeScript, Tailwind CSS 3. Deployed on Cloudflare Workers (OpenNext) from `main` at zionbonsai.com; see `docs/deploy-cloudflare.md`.
 - Do not add UI or animation libraries (no framer-motion, no component kits). CSS transitions and a small IntersectionObserver hook are enough.
 - `zod` is available for validating content files.
 - Server components by default. Add `'use client'` only for real interactivity (menu toggle, lightbox).

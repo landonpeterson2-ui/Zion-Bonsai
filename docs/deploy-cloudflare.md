@@ -1,6 +1,6 @@
 # Deploying on Cloudflare Workers
 
-The site runs on Cloudflare Workers (free plan) through `@opennextjs/cloudflare`. Vercel keeps building until launch (`vercel.json` stays); remove it at cutover.
+The site runs on Cloudflare Workers (free plan) through `@opennextjs/cloudflare`, live at https://zionbonsai.com. Cloudflare builds and deploys every push to `main`. The old Vercel project is gone.
 
 ## Files
 - `wrangler.jsonc` — Worker `zion-bonsai`, `nodejs_compat`, assets from `.open-next/assets`, `IMAGES` binding (powers `next/image` resizing).
@@ -8,7 +8,7 @@ The site runs on Cloudflare Workers (free plan) through `@opennextjs/cloudflare`
 - `public/_headers` — long cache for `/_next/static/*`.
 
 ## Commands
-- `npm run build` — plain `next build` (still what Vercel runs).
+- `npm run build` — plain `next build` (local check; must pass before every commit).
 - `npm run preview` — OpenNext build, then local Workers preview (port 8787).
 - `npm run deploy` — OpenNext build and deploy (needs `wrangler login`; Cloudflare's Git build runs this for you).
 - `npm run cf-typegen` — regenerates `cloudflare-env.d.ts` (git-ignored).
