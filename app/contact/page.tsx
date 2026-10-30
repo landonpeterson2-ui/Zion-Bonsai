@@ -1,14 +1,17 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/metadata'
 import Eyebrow from '@/components/ui/Eyebrow'
 import Reveal from '@/components/ui/Reveal'
 import Section from '@/components/ui/Section'
 import SectionHeading from '@/components/ui/SectionHeading'
 import { getSite } from '@/lib/content'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: '/contact',
   title: 'Contact',
-  description: 'Get in touch with Zion Bonsai: email, phone, gift certificates, and how to hear about the next workshop.',
-}
+  description:
+    'Get in touch with Zion Bonsai: email, phone, gift certificates, and how to hear about the next workshop.',
+})
 
 const buttonClass =
   'inline-flex min-h-[44px] items-center rounded-[3px] bg-clay px-6 py-3 font-label text-[11px] font-semibold uppercase tracking-[0.16em] text-linen transition-colors hover:bg-clay-dark'

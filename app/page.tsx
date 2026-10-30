@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/metadata'
 import Close from '@/components/home/Close'
 import Groups from '@/components/home/Groups'
 import Hero from '@/components/home/Hero'
@@ -12,11 +13,13 @@ import WhyZion from '@/components/home/WhyZion'
 // The next-workshop block and the quote depend on today's date, so render per request.
 export const dynamic = 'force-dynamic'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: '/',
+  absoluteTitle: true,
   title: 'Zion Bonsai | Beginner Bonsai Workshops in Manti, Utah',
   description:
     'Screen-free beginner bonsai workshops in Sanpete County, Utah: two hours at the table, and you take home a dwarf jade bonsai in a handmade pot.',
-}
+})
 
 export default function Home() {
   return (

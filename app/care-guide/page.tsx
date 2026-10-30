@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/metadata'
 import Link from 'next/link'
 import Eyebrow from '@/components/ui/Eyebrow'
 import Photo from '@/components/ui/Photo'
@@ -9,11 +10,12 @@ import TextLink from '@/components/ui/TextLink'
 import { getSite } from '@/lib/content'
 import { getPhoto } from '@/lib/photos'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: '/care-guide',
   title: 'Dwarf Jade Bonsai Care Guide',
   description:
     'How to water a dwarf jade bonsai, plus care for Central Utah: the leaf snap test, light, seasons, soil and growth stages.',
-}
+})
 
 const jumps = [
   { id: 'watering', label: 'Watering' },

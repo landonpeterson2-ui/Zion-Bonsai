@@ -26,7 +26,7 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 
 ## Phase 5–6 — Content and polish
 - [ ] 30 Copy pass
-- [ ] 40 SEO and sharing
+- [x] 40 SEO and sharing (per-page og/twitter/canonical via lib/metadata.ts; LocalBusiness + Event JSON-LD in lib/json-ld.ts; Rich Results Test pending after deploy)
 - [ ] 41 Accessibility, performance, mobile QA
 - [x] 43 Run the site on Cloudflare Workers (adapter, images binding, per-request pages, docs/deploy-cloudflare.md). Live at zionbonsai.com; Vercel project retired.
 - [ ] 42 Cleanup and PR

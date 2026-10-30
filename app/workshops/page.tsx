@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/metadata'
 import Link from 'next/link'
 import Eyebrow from '@/components/ui/Eyebrow'
 import Quote from '@/components/ui/Quote'
@@ -11,14 +12,16 @@ import Expect from '@/components/workshops/Expect'
 import TakeHome from '@/components/workshops/TakeHome'
 import Collage from '@/components/workshops/Collage'
 import { Faq, WhoFor } from '@/components/workshops/Rest'
-import { getTestimonials } from '@/lib/content'
+import { getPartner, getSite, getTestimonials, getUpcomingWorkshops } from '@/lib/content'
+import { jsonLdScript, workshopEventJsonLd } from '@/lib/json-ld'
 import { getPhoto } from '@/lib/photos'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: '/workshops',
   title: 'Bonsai Workshops in Manti & Central Utah',
   description:
     'Beginner bonsai workshops in Sanpete County, Utah. Two screen-free hours, your hands in the soil, and a dwarf jade bonsai in a handmade pot. No experience needed.',
-}
+})
 
 // Render per request so past dates drop off without a redeploy.
 export const dynamic = 'force-dynamic'
@@ -26,8 +29,13 @@ export const dynamic = 'force-dynamic'
 export default function WorkshopsPage() {
   const photo = getPhoto('workshop-tables-set-for-class')
   const [topQuote] = getTestimonials('workshops-top')
+  const site = getSite()
+  const events = getUpcomingWorkshops().map((w) => workshopEventJsonLd(w, getPartner(w.venue), site, photo.src))
   return (
     <>
+      {events.length ? (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(events) }} />
+      ) : null}
       <PhotoHero src={photo.src} alt={photo.alt} objectPosition="object-[40%_50%]">
         <Eyebrow tone="linen">Workshops &middot; Manti, Utah</Eyebrow>
         <h1 className="mt-6 text-[2.9rem] leading-[1.02] text-linen md:text-[4.5rem]">

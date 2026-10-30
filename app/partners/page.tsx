@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/metadata'
 import Image from 'next/image'
 import Eyebrow from '@/components/ui/Eyebrow'
 import Photo from '@/components/ui/Photo'
@@ -7,11 +8,12 @@ import Section from '@/components/ui/Section'
 import { getPartners, type Partner } from '@/lib/content'
 import { getPhoto } from '@/lib/photos'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: '/partners',
   title: 'Partners',
   description:
     'Zion Bonsai workshops are a local collaboration: handmade pots from Taya, a home at Sweet Roots Farm & Flora in Manti, and neighbors who welcomed us early.',
-}
+})
 
 const linkClass =
   'inline-flex min-h-[44px] items-center border-b border-forest/60 font-label text-[11px] font-semibold uppercase tracking-[0.16em] text-forest transition-colors hover:border-forest'

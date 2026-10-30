@@ -3,6 +3,9 @@ import { Cormorant_Garamond, Montserrat, Open_Sans, Satisfy } from 'next/font/go
 import './globals.css'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
+import { SITE_URL } from '@/lib/site-url'
+import { getSite } from '@/lib/content'
+import { jsonLdScript, localBusinessJsonLd } from '@/lib/json-ld'
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -33,7 +36,7 @@ const satisfy = Satisfy({
   variable: '--font-script',
 })
 
-const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://zionbonsai.com'
+const siteUrl = SITE_URL
 const title = 'Zion Bonsai | Unplug. Create. Grow.'
 const description = 'Beginner bonsai workshops in Sanpete County, Central Utah. Put the phone down, get your hands in the soil, and take home a dwarf jade in a handmade pot.'
 
@@ -44,7 +47,6 @@ export const metadata: Metadata = {
     template: '%s | Zion Bonsai',
   },
   description,
-  keywords: 'bonsai, dwarf jade, portulacaria afra, workshops, mindfulness, creativity, wellness, plant care, Central Utah',
   openGraph: {
     title,
     description,
@@ -83,6 +85,10 @@ export default function RootLayout({
         />
       </head>
       <body className={`${cormorant.variable} ${montserrat.variable} ${openSans.variable} ${satisfy.variable} font-sans antialiased bg-paper text-forest`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLdScript(localBusinessJsonLd(getSite(), description)) }}
+        />
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-[3px] focus:bg-clay focus:px-5 focus:py-3 focus:font-semibold focus:text-linen"

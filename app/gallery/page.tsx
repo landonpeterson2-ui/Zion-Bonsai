@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/metadata'
 import GalleryGrid from '@/components/gallery/GalleryGrid'
 import GalleryLightbox from '@/components/gallery/GalleryLightbox'
 import { getTreeItems } from '@/components/gallery/items'
@@ -7,11 +8,12 @@ import Section from '@/components/ui/Section'
 import TextLink from '@/components/ui/TextLink'
 import { getSite } from '@/lib/content'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: '/gallery',
   title: 'Gallery',
   description:
     'Trees we’ve shaped: dwarf jade bonsai in handmade pots, grown and trained by hand in Sanpete County, Utah.',
-}
+})
 
 export default function GalleryPage() {
   const items = getTreeItems()

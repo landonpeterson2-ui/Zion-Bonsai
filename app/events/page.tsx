@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/metadata'
 import InquiryForm from '@/components/events/InquiryForm'
 import Eyebrow from '@/components/ui/Eyebrow'
 import Photo from '@/components/ui/Photo'
@@ -10,11 +11,13 @@ import SectionHeading from '@/components/ui/SectionHeading'
 import { getSite, getTestimonials } from '@/lib/content'
 import { getPhoto } from '@/lib/photos'
 
-export const metadata: Metadata = {
-  title: { absolute: 'Corporate Wellness & Private Bonsai Events | Central Utah' },
+export const metadata: Metadata = pageMetadata({
+  path: '/events',
+  title: 'Corporate Wellness & Private Bonsai Events | Central Utah',
   description:
     'Team building, wellness retreats and private parties with Zion Bonsai. Screen-free, hands-on bonsai workshops for your group in Sanpete County, Utah.',
-}
+  absoluteTitle: true,
+})
 
 const ways = [
   {

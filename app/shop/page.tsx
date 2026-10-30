@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/metadata'
 import { ShopifyBuyButton } from '@/components/shopify'
 import Eyebrow from '@/components/ui/Eyebrow'
 import Photo from '@/components/ui/Photo'
@@ -9,13 +10,14 @@ import { getPhoto } from '@/lib/photos'
 
 const { shopEnabled } = getSite()
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: '/shop',
   title: 'Shop Dwarf Jade Bonsai',
   description:
     'Dwarf jade bonsai shaped by hand in Sanpete County, Utah, ready to come home with you. Trees come and go, so check back.',
   // The shop is hidden from the nav until shopEnabled is true; keep it out of search too.
   robots: shopEnabled ? undefined : { index: false, follow: true },
-}
+})
 
 export default function ShopPage() {
   const handles = getShopHandles()

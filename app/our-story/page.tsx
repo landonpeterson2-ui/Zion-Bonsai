@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/metadata'
 import Link from 'next/link'
 import Eyebrow from '@/components/ui/Eyebrow'
 import Photo from '@/components/ui/Photo'
@@ -8,11 +9,12 @@ import SectionHeading from '@/components/ui/SectionHeading'
 import TextLink from '@/components/ui/TextLink'
 import { getPhoto } from '@/lib/photos'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: '/our-story',
   title: 'Our Story',
   description:
     'Landon fell down a bonsai rabbit hole, Cass joined in, and now they teach beginner, screen-free bonsai workshops in Sanpete County, Central Utah.',
-}
+})
 
 export default function OurStoryPage() {
   const origin = getPhoto('jade-shelf-window-display')
