@@ -4,6 +4,8 @@
 // - A contact whose latest attended workshop (Registrations: Paid or Comped, Attended ticked) was in the last
 //   WELCOME_DAYS days joins the "Workshop guests" list. Brevo's welcome series starts when someone joins it.
 // - A contact with Email_OK ticked joins "Newsletter"; untick it and they leave it. Email_OK is the opt-in.
+//   Exception: someone who opted in from the companion app (Brevo attribute APP_NEWSLETTER true) is never taken
+//   off here; the app manages their membership.
 // - Everyone else is left alone. Only first name, email and the last workshop date are copied.
 // - Someone who unsubscribed in Brevo stays unsubscribed: this never sets emailBlacklisted.
 // Needs GRIST_API_KEY and BREVO_API_KEY in .env.local. Node 22.18+.
@@ -44,6 +46,21 @@ for (const r of registrations) {
   if (date && date > (lastAttended.get(r.Contact) ?? 0)) lastAttended.set(r.Contact, date)
 }
 
+// Newsletter members who opted in from the app. The app sets APP_NEWSLETTER and manages their membership.
+async function appOptIns() {
+  const emails = new Set()
+  for (let offset = 0; ; offset += 500) {
+    const res = await fetch(`https://api.brevo.com/v3/contacts/lists/${NEWSLETTER}/contacts?limit=500&offset=${offset}`, {
+      headers: { 'api-key': BREVO_KEY, accept: 'application/json' },
+    })
+    if (!res.ok) throw new Error(`Brevo newsletter list: ${res.status}`)
+    const { contacts = [] } = await res.json()
+    for (const c of contacts) if (c.attributes?.APP_NEWSLETTER === true) emails.add(c.email.toLowerCase())
+    if (contacts.length < 500) return emails
+  }
+}
+const appNewsletter = await appOptIns()
+
 const welcomeCutoff = Date.now() / 1000 - WELCOME_DAYS * 86400
 const counts = { guests: 0, newsletter: 0, newsletterOff: 0, skippedNoEmail: 0, failed: 0 }
 for (const c of contacts) {
@@ -57,7 +74,7 @@ for (const c of contacts) {
   const unlinkListIds = []
   if (attended && attended >= welcomeCutoff) listIds.push(WORKSHOP_GUESTS)
   if (c.Email_OK) listIds.push(NEWSLETTER)
-  else unlinkListIds.push(NEWSLETTER)
+  else if (!appNewsletter.has(c.Email.trim().toLowerCase())) unlinkListIds.push(NEWSLETTER)
 
   const attributes = {}
   if (c.First_Name) attributes.FIRSTNAME = c.First_Name
