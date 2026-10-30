@@ -58,10 +58,6 @@ function todayInDenver(): string {
   }).format(new Date())
 }
 
-export function getWorkshopsNote(): string {
-  return workshopsFile.registrationNote
-}
-
 /** Workshops dated today or later (America/Denver), soonest first. */
 export function getUpcomingWorkshops(): Workshop[] {
   const today = todayInDenver()

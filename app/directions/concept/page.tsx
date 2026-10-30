@@ -17,7 +17,7 @@ const beats = [
   { title: 'The phone goes face-down.', body: 'The table is screen-free. Nothing to check, nothing to post. Just your hands and what is in front of you.' },
   { title: 'You choose your tree and your pot.', body: 'A dwarf jade, and a pot thrown by hand by Taya’s Clay Creations. No two are alike.' },
   { title: 'We shape it together.', body: 'Landon walks you through soil, roots and your first cuts. No jargon, no wrong answers.' },
-  { title: 'It goes home with you.', body: 'Your tree keeps growing. Come back in six to nine months and we’ll shape it again.' },
+  { title: 'It goes home with you.', body: 'Your tree keeps growing. Come back in nine to twelve months and we’ll shape it again.' },
 ]
 
 function formatDate(iso: string) {

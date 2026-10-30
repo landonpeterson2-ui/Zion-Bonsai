@@ -2,7 +2,7 @@ import Eyebrow from '@/components/ui/Eyebrow'
 import Section from '@/components/ui/Section'
 import SectionHeading from '@/components/ui/SectionHeading'
 import { formatDate, formatTime } from '@/components/ui/NextWorkshop'
-import { getPartner, getSite, getUpcomingWorkshops, getWorkshopsNote } from '@/lib/content'
+import { getPartner, getSite, getUpcomingWorkshops } from '@/lib/content'
 import type { Workshop } from '@/lib/content'
 
 const typeLabel: Record<Workshop['type'], string> = {
@@ -79,7 +79,6 @@ export default function Dates() {
                 )
               })}
             </ul>
-            <p className="mt-6 max-w-xl text-soil">{getWorkshopsNote()}</p>
           </>
         ) : (
           <div className="mt-10 max-w-xl border-t border-forest/15 pt-8">

@@ -227,7 +227,7 @@ export default function CareGuidePage() {
       <Section id="return" tone="paper-deep">
         <Block n="07" title={<>When to <em>come back</em></>}>
           <p>
-            Six to nine months after your workshop, come back for a return shaping session. We&apos;ll
+            Nine to twelve months after your workshop, come back for a return shaping session. We&apos;ll
             shape and train your tree together.
           </p>
           <p>

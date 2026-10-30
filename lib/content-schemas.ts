@@ -54,7 +54,6 @@ export const workshopSchema = z.object({
   status: z.enum(['open', 'full', 'waitlist']),
 })
 export const workshopsSchema = z.object({
-  registrationNote: z.string().min(1),
   workshops: z.array(workshopSchema),
 })
 

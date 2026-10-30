@@ -34,7 +34,7 @@ If someone lands on the site and feels a little calmer and a little more curious
 - **Who we are:** A husband-and-wife team. **Landon** brings the technical side — soil, roots, technique, the "how." **Cass** brings the aesthetic and emotional side from her floral design background — the "why" and the feel.
 - **Where:** Most public workshops are hosted at **Sweet Roots** in Manti. We also do corporate wellness sessions (our first was an HR retreat for Snow College), school programs, private events, and pop-ups like the Sanpete Harvest Market.
 - **Market:** We serve the Spanish Fork-to-Richfield corridor (~70–80k people). There's no other bonsai workshop within ~90 miles. People regularly drive 15 minutes to 1.5 hours to attend.
-- **The model:** A workshop is the beginning, not a one-time purchase. Trees mature, and participants come back in 6–9 months for shaping and training sessions.
+- **The model:** A workshop is the beginning, not a one-time purchase. Trees mature, and participants come back in 9–12 months for shaping and training sessions.
 - **Partners:**
   - **Taya's Clay Creations** (@tayasclaycreations) — handthrown custom pots for every workshop
   - **Sweet Roots** (Manti) — our primary workshop venue
