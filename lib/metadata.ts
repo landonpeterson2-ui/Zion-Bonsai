@@ -14,6 +14,8 @@ type PageMetadataInput = {
   description: string
   /** Use the title as written, without the " | Zion Bonsai" template suffix. */
   absoluteTitle?: boolean
+  /** Title for link previews when it should differ from the page title. */
+  shareTitle?: string
   robots?: Metadata['robots']
 }
 
@@ -21,9 +23,9 @@ type PageMetadataInput = {
  * Per-page metadata: title, description, canonical, and matching Open Graph / Twitter tags.
  * Pages that set openGraph replace the layout's wholesale, so the shared image is repeated here.
  */
-export function pageMetadata({ path, title, description, absoluteTitle, robots }: PageMetadataInput): Metadata {
+export function pageMetadata({ path, title, description, absoluteTitle, shareTitle: shareTitleOverride, robots }: PageMetadataInput): Metadata {
   const url = path === '/' ? '/' : path
-  const shareTitle = absoluteTitle ? title : `${title} | Zion Bonsai`
+  const shareTitle = shareTitleOverride ?? (absoluteTitle ? title : `${title} | Zion Bonsai`)
   return {
     title: absoluteTitle ? { absolute: title } : title,
     description,

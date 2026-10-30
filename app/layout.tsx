@@ -4,6 +4,7 @@ import './globals.css'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { SITE_URL } from '@/lib/site-url'
+import { OG_IMAGE } from '@/lib/metadata'
 import { getSite } from '@/lib/content'
 import { jsonLdScript, localBusinessJsonLd } from '@/lib/json-ld'
 
@@ -52,7 +53,7 @@ export const metadata: Metadata = {
     description,
     url: siteUrl,
     siteName: 'Zion Bonsai',
-    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Zion Bonsai logo beside dwarf jade bonsai on a sunlit shelf' }],
+    images: [OG_IMAGE],
     locale: 'en_US',
     type: 'website',
   },
@@ -60,7 +61,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title,
     description,
-    images: ['/og-image.jpg'],
+    images: [OG_IMAGE.url],
   },
   robots: {
     index: true,
