@@ -23,7 +23,7 @@ The site is mid-redesign on the `redesign` branch. The brief is [docs/redesign/h
 - `app/` — routes. One folder per page.
 - `components/layout/` — Header, Footer. `components/ui/` — small shared pieces (Button, Section, PhotoFrame, etc.). `components/<page>/` — page-specific sections.
 - `content/*.json` — everything Landon and Cass edit without touching layout: workshops, site info, partners, gallery, seasonal hero. Loaded and validated through `lib/content.ts`. Never hardcode dates, prices, links, emails or phone numbers in components.
-- `public/photos/` — optimized photos (task 05). `public/gallery/` holds the 4032px originals; don't reference them directly once task 05 lands.
+- `public/photos/` — optimized photos (task 05). The 4032px originals live in `photos-originals/gallery/` (outside `public/`, so they don't deploy); `npm run photos` reads them.
 
 ## Brand rules (do not change)
 
@@ -73,7 +73,7 @@ Motion: fades/rises under 600ms, triggered once on scroll. Everything must be st
 
 ## Building pages (Phase 4 onward)
 
-The approved look is the home page (`app/page.tsx` + `components/home/`), originally `app/directions/concept/page.tsx`. Every page should feel like it belongs next to it. Where an older task file says "the chosen direction", read it as this.
+The approved look is the home page (`app/page.tsx` + `components/home/`). Every page should feel like it belongs next to it. Where an older task file says "the chosen direction", read it as this.
 
 - Build pages from `components/ui/`: `PhotoHero` (soil-washed photo hero, one per page, linen text), `Section` (vertical rhythm, `paper` / `paper-deep`), `SectionHeading` (eyebrow + Cormorant h2), `Eyebrow`, `TextLink`, `Photo` (plain rectangle + optional caption), `NextWorkshop`. Extend a primitive with a prop rather than forking it; don't restyle it for one page.
 - Photos and alt text come from `content/gallery.json` via `getPhoto(name)` in `lib/photos.ts`.

@@ -21,7 +21,7 @@ Then:
 - Use tokens, never raw hex. Use content getters from `lib/content.ts`, never hardcoded dates/links/contact info.
 - Never invent testimonials, facts, prices, dates, or quotes. Use `[BRACKETED PLACEHOLDERS]`.
 - **Look at your work.** Serve it (`npm run build && npx next start -p 31NN` with a free port; never 3000/3001), then `node scripts/shot.mjs http://localhost:31NN/<route>` and open the 375 and 1280 PNGs in `.shots/` with Read. Fix what looks wrong, then stop the server.
-- The approved visual reference is `app/directions/concept/page.tsx` (once approved — see decisions.md). Match its spacing, type sizes, label style and photo treatment.
+- The approved visual reference is the home page (`app/page.tsx` + `components/home/`). Match its spacing, type sizes, label style and photo treatment.
 - If you need a photo's contents, open it with Read.
 - Before committing, run `npm run build` and `npm run lint`. Both must pass. Fix the failures instead of disabling checks.
 - Make small commits with imperative messages. Tick the task in STATUS.md and add a 2–3 line milestone note in the final commit.

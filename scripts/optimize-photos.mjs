@@ -2,7 +2,7 @@
 //
 //   npm run photos
 //
-// Reads:  public/gallery/*.jpeg  and  photos-inbox/**/*.{jpg,jpeg,png,heic,webp}
+// Reads:  photos-originals/gallery/*.jpeg  and  photos-inbox/**/*.{jpg,jpeg,png,heic,webp}
 // Writes: public/photos/<name>.jpg  (max 2000px long edge, EXIF-rotated, metadata stripped, mozjpeg q74)
 //
 // Output names come from scripts/photos-map.json (original -> new name), so the
@@ -31,7 +31,7 @@ function walk(dir) {
 }
 
 const inputs = [
-  ...walk(path.join(root, 'public', 'gallery')).map((f) => ({ file: f, key: 'gallery/' + path.basename(f) })),
+  ...walk(path.join(root, 'photos-originals', 'gallery')).map((f) => ({ file: f, key: 'gallery/' + path.basename(f) })),
   ...walk(path.join(root, 'photos-inbox')).map((f) => ({
     file: f,
     key: path.relative(path.join(root, 'photos-inbox'), f).split(path.sep).join('/'),

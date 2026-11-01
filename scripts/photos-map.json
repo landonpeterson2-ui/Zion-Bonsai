@@ -1,5 +1,5 @@
 {
-  "_note": "Original (relative to public/ for gallery/, photos-inbox/ for workshop/) -> public/photos name. Rename here, then run npm run photos.",
+  "_note": "Original (gallery/ is photos-originals/gallery/, the rest is relative to photos-inbox/) -> public/photos name. Rename here, then run npm run photos.",
   "map": {
     "gallery/1.jpeg": "jade-maroon-bowl-quartz.jpg",
     "gallery/2.jpeg": "jade-coral-speckle-pot.jpg",

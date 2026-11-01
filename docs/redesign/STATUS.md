@@ -35,13 +35,11 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - (task 25) Contact page "Groups" band links to /events and /workshops; /events may not exist until its task lands. Partner photos for Sweet Roots and Thistle & Honey are placeholders; Taya photo is workshop-finished-jade-thank-you-card (pot assumed hers per brief).
 <!-- Out-of-scope issues agents notice. Format: - (task NN) description -->
 - (grist) `npm run sync:grist` (scripts/sync-grist.mjs) pulls workshops, partners and OK-to-quote feedback marked for the site from the Grist doc into content/*.json; n8n runs it on the NUC on Grist edits and daily (docs/grist-sync.md). Cloudflare can't reach Grist. Checked 2026-10-30: content matches Grist (1 workshop, 3 partners).
-- (task 01) Existing pages still use legacy classes (`bg-cream-light`, `text-charcoal`, `.card`, coral-on-paper text) that predate the contrast rules; replace as pages are rebuilt, final sweep in task 42.
-- (task 01) `font-medium` (500) is used in a few places but Open Sans loads only 400/600; browser snaps to the nearest weight.
-- (task 05) Confirm sold/workshop status: all 21 `public/gallery` trees are marked `sold` by default (none confirmed). Some may be unsold or Shop candidates, so Landon to confirm. `status` can be `available` in content/gallery.json.
+- (task 01) Existing pages still use legacy classes (`text-charcoal`, coral-on-paper text; `.card` and `.bg-grain-legacy` removed 2026-11-01) that predate the contrast rules; replace as pages are rebuilt, final sweep in task 42.
+- (task 05) Confirm sold/workshop status: all 21 gallery trees (originals now in `photos-originals/gallery/`) are marked `sold` by default (none confirmed). Some may be unsold or Shop candidates, so Landon to confirm. `status` can be `available` in content/gallery.json.
 - (task 05) Possible Cheesecake sightings, NOT labeled as such: `jade-dark-tray-wide-canopy.jpg` (orig gallery/15, thick gnarled trunk, dark tray) is the most established tree in the set; also the large tree in the blue pot on the table in `workshop-display-table-doorway.jpg` (IMG_6492) and `workshop-tables-set-for-class.jpg` (IMG_7454). Landon to confirm which, if any.
 - (task 05) Privacy: 16 workshop photos show identifiable attendees' faces, including minors in IMG_6550 and IMG_6541. Confirm attendee permission before the photos go public. Alt text is generic, no names. `featured` is only on `workshop-hands-in-soil-round-table` and `workshop-finished-jade-thank-you-card` (no posed faces).
 - (task 05) Handoff wishlist shots still missing: Cheesecake (unconfirmed), clean hands-in-soil close-up (only the group shots IMG_6047/6048), Taya's pots close-up (handmade pots appear only small in workshop shots), Landon & Cass portrait, a phone face-down on the table.
-- (task 05) app/layout.tsx still uses OG image `/gallery/1.jpeg` (tasks 03/40); originals in public/gallery can be deleted after that.
 - (task 05) Hero and Gallery page now show only non-`workshop` items; workshop photos (19) are for the Workshops page (task 21). Gallery page lightbox still has legacy a11y issues (no focus trap, non-semantic buttons), for task 26.
 - (task 05) Photo budget: public/photos is ~13 MB at q74 / 2000px. Adding more photos to photos-inbox needs an entry in scripts/photos-map.json and content/gallery.json.
 - (task 04) confirm production domain: sitemap/robots fall back to https://zionbonsai.com (guessed from plants@zionbonsai.com) when NEXT_PUBLIC_APP_URL is unset.
@@ -49,7 +47,7 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 
 
 - (task 24) Care Guide kept ONE generic claim, for Landon to verify: "Give it a bright spot by a window" (light section). Everything else is from handoff section 5. Dropped from the old page: fixed watering schedules, dormant, temperatures, fertilizer, pruning, repotting, pests, emoji, PNG icons, stray zionbonsaiplants@gmail.com. Little Jade topics (propagation, wiring, defoliation) not added since no section 5 facts back them.
-- (task 24) Care Guide placeholders: three middle growth-stage names ([STAGE NAME]) and [PHOTO - snapped jade leaf]. public/icons/*.png are now unused by the care page.
+- (task 24) Care Guide placeholders: three middle growth-stage names ([STAGE NAME]) and [PHOTO - snapped jade leaf].
 
 ## Placeholders to fill
 <!-- Filled by task 30. Format: - page: [PLACEHOLDER] -->

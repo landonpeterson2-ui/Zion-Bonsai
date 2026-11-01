@@ -6,8 +6,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const routes = ['', '/workshops', '/events', '/our-story', '/care-guide', '/gallery', '/partners', '/contact']
   if (getSite().shopEnabled) routes.push('/shop')
 
-  return routes.map((route) => ({
-    url: `${SITE_URL}${route}`,
-    lastModified: new Date(),
-  }))
+  return routes.map((route) => ({ url: `${SITE_URL}${route}` }))
 }
