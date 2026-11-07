@@ -14,7 +14,7 @@ flock 9
 
 git checkout -q main
 git pull -q --ff-only origin main
-npm install --no-audit --no-fund --silent
+npm ci --no-audit --no-fund --silent  # ci, not install: install rewrites package-lock.json and the next pull fails
 
 if ! out=$(npm run -s sync:grist 2>&1); then
   trap - ERR
