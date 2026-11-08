@@ -1,16 +1,3 @@
 {
-  "workshops": [
-    {
-      "id": "2026-11-07-sweet-roots-5",
-      "type": "intro",
-      "title": "Beginner Bonsai Workshop",
-      "date": "2026-11-07",
-      "start": "13:00",
-      "end": "15:00",
-      "venue": "sweet-roots",
-      "price": "$65 solo · $100 pair",
-      "registrationUrl": "https://forms.gle/zUgmpDQrtbPmVvhD7",
-      "status": "open"
-    }
-  ]
+  "workshops": []
 }
