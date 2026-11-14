@@ -16,5 +16,7 @@
   ],
   "images": {
     "binding": "IMAGES"
-  }
+  },
+  // Logs in the dashboard, to see which requests hit the free plan's CPU limit.
+  "observability": { "enabled": true }
 }
