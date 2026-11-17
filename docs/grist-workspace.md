@@ -17,7 +17,17 @@ The Zion Bonsai doc opens on **Home**. The day-to-day pages come next, and the r
 
 Tick **Attended** on a card as people arrive, or press **Check everyone in** beside the checklist to tick every Paid and Comped booking at once, then untick anyone who didn't come (Ctrl+Z undoes the button too). The button only works from the workshop's date on, because ticking Attended starts the welcome emails. Add a registration here and it lands on the right workshop automatically.
 
+**Plan a workshop.** The workshop list on the left and one workshop as a form on the right, so you can fill in everything without scrolling sideways. New workshops start pre-filled from the last one and in Planning.
+
 **People.** Pick a person on the left to see their details, the workshops they've booked, their trees, their feedback and any agreements they're the contact for.
+
+**Quick add.** Three short forms, easiest on a phone: **New task**, **Add a tree**, **Log feedback**. They're published, so each has its own link that opens without the rest of Grist (only on the tailnet, like Grist itself):
+
+- New task: http://nuc.pug-scylla.ts.net:8484/forms/e15KbpcguFa7PY8NKpRBnx/65
+- Add a tree: http://nuc.pug-scylla.ts.net:8484/forms/e15KbpcguFa7PY8NKpRBnx/66
+- Log feedback: http://nuc.pug-scylla.ts.net:8484/forms/e15KbpcguFa7PY8NKpRBnx/67
+
+Save them to your phone's home screen. Unpublish from the form's page if you ever want them off.
 
 **Landon's tasks** and **Cass's tasks.** Each person's open tasks, plus anything marked **Both**, soonest due first. Tick **Done** and the task drops off the list (it's still in the Tasks table).
 
@@ -69,3 +79,15 @@ The colors are rules, not data. They update by themselves and you can't break an
 New locked columns that feed these pages: Workshops **Upcoming** and **Check-in button**, Tasks **Due soon**, Agreements **Needs a look**, Inventory **Needed for upcoming** and **Short by**. Short by counts one of each kit item per seat taken (Paid, Comped, Pending) across all upcoming workshops, against **On hand**. Keep On hand current or it will flag everything as short. Kit rows turn red when short.
 
 The check-in button is Grist's Action Button widget (gristlabs.github.io), reading the Check-in button column.
+
+## Smoother typing (Nov 2026)
+
+- **Paid by Square / Venmo / Cash.** Select a Pending or Waitlist booking (a card on Workshop day, or a row on the Registrations page) and press one button. It sets Status to Paid, Amount paid to the expected price and the payment method. If the workshop has no price, Amount paid stays blank and the row turns red until you fill it in.
+- **Shorter dropdowns.** Picking a workshop on a registration or a task only lists workshops that are Planning, On sale, Sold out or Waitlist. To file something against a finished workshop, change its Status back for a moment, or type in the Registrations table's Workshop column after clearing the condition in column settings.
+- **Sorted tables.** Workshops newest first, Contacts and Organizations A–Z, Registrations by workshop then name, Tasks open first by due date, Site_Sync newest first. The first column stays put when you scroll sideways, and long text (Notes, Comment, Check…) wraps.
+
+## Undo and history
+
+- **Ctrl+Z** (Cmd+Z on a Mac) undoes the last change, including button presses. Ctrl+Shift+Z redoes.
+- **Document history** (the clock icon at the top right, or the doc menu): the **Activity** tab shows every recent change and who made it; **Snapshots** has automatic saved copies of the whole doc. Open one to look around, and **Replace original** puts it back. Nothing is lost by looking.
+- Landon also keeps a copy before each big change in `~/zion-bonsai-backups/` on his Mac.
