@@ -21,6 +21,8 @@ Tick **Attended** on a card as people arrive, or press **Check everyone in** bes
 
 **People.** Pick a person on the left to see their details, the workshops they've booked, their trees, their feedback and any agreements they're the contact for.
 
+**Season.** How the year is going, as charts: seats taken against capacity per workshop, revenue and what was left after costs, how people heard about us, and how many workshops each person has come to. A plain table of the same numbers sits underneath.
+
 **Quick add.** Three short forms, easiest on a phone: **New task**, **Add a tree**, **Log feedback**. They're published, so each has its own link that opens without the rest of Grist (only on the tailnet, like Grist itself):
 
 - New task: http://nuc.pug-scylla.ts.net:8484/forms/e15KbpcguFa7PY8NKpRBnx/65
@@ -31,7 +33,7 @@ Save them to your phone's home screen. Unpublish from the form's page if you eve
 
 **Landon's tasks** and **Cass's tasks.** Each person's open tasks, plus anything marked **Both**, soonest due first. Tick **Done** and the task drops off the list (it's still in the Tasks table).
 
-**Tables** shows the latest site syncs. Under it are the raw tables (Organizations, Contacts, Agreements, Workshops, Registrations, Trees, Inventory, Feedback, Tasks, Site_Sync). The same raw tables as before.
+**Tables** shows the latest site syncs. Under it are the raw tables (Organizations, Contacts, Agreements, Workshops, Registrations, Trees, Inventory, Feedback, Tasks, Site_Sync, Prep_Steps). The same raw tables as before.
 
 Registrations has a new locked column, **Attendee Name**, which shows the contact's name so a booking reads as a person and not a row number.
 
@@ -91,3 +93,15 @@ The check-in button is Grist's Action Button widget (gristlabs.github.io), readi
 - **Ctrl+Z** (Cmd+Z on a Mac) undoes the last change, including button presses. Ctrl+Shift+Z redoes.
 - **Document history** (the clock icon at the top right, or the doc menu): the **Activity** tab shows every recent change and who made it; **Snapshots** has automatic saved copies of the whole doc. Open one to look around, and **Replace original** puts it back. Nothing is lost by looking.
 - Landon also keeps a copy before each big change in `~/zion-bonsai-backups/` on his Mac.
+
+## Waitlist, duplicates and trees (Nov 2026)
+
+- **Offer the seat.** When a seat opens, Landon and Cass get an email naming who's next on the waitlist. On Workshop day, select that person's card and press **Offer the seat**: it moves them to Pending so the seat is held. Then get in touch; once they pay, use the Paid by buttons as usual.
+- **Merge duplicates.** If someone is in Contacts twice with the same email, the **Duplicate?** button (on People and on the Contacts page) says which copy is kept. Select the other copy and press **Merge**: its registrations, trees, feedback, tasks and agreements move over, blanks are filled in, and the copy is deleted. Ctrl+Z undoes it.
+- **Trees.** A new tree's Date potted fills in from its workshop by itself (you can still change it). Shaping due is now nine months after potting, the same time the Grow app invites people back.
+
+## Prep steps
+
+The **Prep_Steps** table is the checklist every workshop gets (Step, Days before or after the date, Owner, Formats, Active). Editing it changes what future workshops get; tasks already made for a workshop stay as they are.
+
+Each upcoming workshop gets its prep tasks automatically (on Landon's or Cass's task page, with due dates counted from the workshop). Move the workshop's date and they move with it; cancel it and they're ticked Done.
