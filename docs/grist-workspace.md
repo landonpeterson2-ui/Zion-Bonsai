@@ -40,8 +40,22 @@ Registrations has a new locked column, **Attendee Name**, which shows the contac
 
 The colors are rules, not data. They update by themselves and you can't break anything by looking at them.
 
+## What changed (task 48)
+
+- **Hover a column header** and a short note says what it is, and whether you type it or Grist works it out ("Calculated, don't type here"). Columns that drive the site or the newsletter say so, for example **Email OK** and **Status** on Workshops.
+- **Labels are plain words** now ("Seats left", "Ready for site", "Email OK"). Only the labels changed. Behind the scenes every column keeps its old name, so the site sync, Brevo and the n8n workflows aren't affected.
+- **Status chips have colors:** Workshops (grey Planning, green On sale, clay Sold out, amber Waitlist, faded Done and Cancelled), Registrations (green Paid and Comped, amber Pending and Waitlist, grey Refunded and Cancelled), Trees **Return status**, Tasks **Owner** and Agreements **Status**.
+- **The table pages are tidier:** the columns you type come first, then the calculated ones. A few you rarely need are out of the way (Workshops: Slug, Time, Price label, Site status; Registrations: Expected, Attendee name). They still exist; open the column list at the top of the page (Hidden columns) to bring one back. **Ready for site** and **Check** are on the page.
+- **New workshops start pre-filled and in Planning.** Add a row to Workshops and Format, Venue, Capacity, Start, End, both prices and the registration link are copied from your most recent workshop by date, so you only change what's different. Status is **Planning**, so nothing goes on sale by accident. Change it to **On sale** when it's ready. Changing a workshop later never re-fills these.
+
 ## If something looks wrong
 
 - **Delete a page.** Hover over its name in the left panel, open the menu, choose Remove. Removing a page never deletes data; the tables stay in Raw data. If Grist ever asks whether to delete the table too, say no.
 - **Turn off a color.** Open the table's page, then Row style (or the column's Cell style for Status) in the right panel, and delete the rule.
 - **Go back to before all this.** A full copy of the doc from before the change is saved on Landon's Mac at `~/zion-bonsai-backups/grist-before-45-<date>.grist`. Ask Landon to restore it. Anything entered after the backup would need re-entering, so try the two steps above first.
+
+## Boards and the sign-in sheet
+
+**Boards.** Two boards, one above the other. *Workshops by status* has a lane for each Status (Cancelled is hidden; tick it in the bar at the top to show it). *Tree returns* has a lane for each Return Status. Drag a card to another lane to change its status.
+
+**Sign-in sheet.** Pick a workshop on the left and the sheet on the right fills in for it. Use it to print the sign-in sheet or the name tags on the day. The first time you open either page, Grist may ask you to allow the widget "Full document access". Say yes; these widgets come from our own website.
