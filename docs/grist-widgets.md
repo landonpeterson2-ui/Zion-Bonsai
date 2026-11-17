@@ -4,8 +4,8 @@ Two small custom widgets live in this repo and deploy with the site. They are pl
 
 | Widget | URL | Add it to | Access |
 |---|---|---|---|
-| Board | `https://zionbonsai.com/grist/board.html` | Workshops (by Status) or Trees (by Return_Status) | Full document access |
-| Sign-in sheet | `https://zionbonsai.com/grist/sign-in.html` | Registrations, linked to a Workshops section | Full document access |
+| Board | `https://zionbonsai.com/grist/board` | Workshops (by Status) or Trees (by Return_Status) | Full document access |
+| Sign-in sheet | `https://zionbonsai.com/grist/sign-in` | Registrations, linked to a Workshops section | Full document access |
 
 Full access is needed because the board reads the choice order of the Lane column and writes the move, and the sign-in sheet reads the workshop's title and date from the Workshops table. The pages are ours and contain no third-party code besides Grist's own plugin script and the Google Fonts stylesheet.
 
