@@ -39,7 +39,7 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - [x] 49 n8n marks past workshops Done each morning — after 46
 - [x] 50 n8n workshop prep tasks from Prep_Steps, and a waitlist-opening alert
 - [ ] 51 Unsubscribes in Brevo untick Email OK in Grist (sync-brevo.mjs) — needs a live `--check` with BREVO_API_KEY
-- [ ] 52 Grow app → Grist: claimed trees, return invitations, app sign-ups — after 50
+- [x] 52 Grow app → Grist: claimed trees, return invitations, app sign-ups
 
 ## Found while working
 - (task 25) Contact page "Groups" band links to /events and /workshops; /events may not exist until its task lands. Partner photos for Sweet Roots and Thistle & Honey are placeholders; Taya photo is workshop-finished-jade-thank-you-card (pot assumed hers per brief).

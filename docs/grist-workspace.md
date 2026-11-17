@@ -105,3 +105,7 @@ The check-in button is Grist's Action Button widget (gristlabs.github.io), readi
 The **Prep_Steps** table is the checklist every workshop gets (Step, Days before or after the date, Owner, Formats, Active). Editing it changes what future workshops get; tasks already made for a workshop stay as they are.
 
 Each upcoming workshop gets its prep tasks automatically (on Landon's or Cass's task page, with due dates counted from the workshop). Move the workshop's date and they move with it; cancel it and they're ticked Done.
+
+## Trees from the Grow app
+
+When someone claims their tree in the Grow app with a workshop tag, it shows up in **Trees** by itself within about 15 minutes (with its owner and workshop), and the person gets a Contact with **In the Grow app** ticked if they didn't have one. When the app sends someone a return invitation, that tree's Return status changes to Invited. Leave **App tree id** alone; it's how the sync knows a tree is already here. Tick **Email OK** yourself as usual; the sync never does.
