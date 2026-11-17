@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Zion Bonsai board (Grist widget)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #F4EEE6;
+      --linen: #FBF8F3;
+      --forest: #2F3B22;
+      --moss: #4F6420;
+      --clay: #A84A2B;
+      --clay-dark: #8F3E23;
+      --rule: rgba(47, 59, 34, .15);
+      --radius: 3px;
+      --sans: 'Open Sans', system-ui, sans-serif;
+      --label: 'Montserrat', 'Open Sans', system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      background: var(--paper);
+      color: var(--forest);
+      font: 400 14px/1.5 var(--sans);
+      display: flex;
+      flex-direction: column;
+    }
+    .label {
+      font: 600 11px/1.2 var(--label);
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    #note { margin: 24px; max-width: 46ch; }
+    #note[hidden], #app[hidden] { display: none; }
+    #app { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+    #bar {
+      display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center;
+      padding: 10px 14px; border-bottom: 1px solid var(--rule);
+    }
+    #bar .label { color: var(--moss); }
+    #bar label {
+      display: inline-flex; align-items: center; gap: 6px; min-height: 28px; cursor: pointer;
+    }
+    #msg { color: var(--clay); margin-left: auto; }
+    #lanes {
+      flex: 1; min-height: 0; display: flex; gap: 12px; padding: 14px; overflow: auto; align-items: flex-start;
+    }
+    .lane {
+      flex: 0 0 240px; background: var(--linen); border: 1px solid var(--rule); border-radius: var(--radius);
+      display: flex; flex-direction: column; max-height: 100%;
+    }
+    .lane.over { outline: 2px solid var(--clay); outline-offset: -2px; }
+    .lane h2 {
+      margin: 0; padding: 10px 12px; border-bottom: 1px solid var(--rule);
+      display: flex; justify-content: space-between; color: var(--forest);
+    }
+    .lane h2 span:last-child { color: var(--moss); }
+    .cards { padding: 8px; display: flex; flex-direction: column; gap: 8px; overflow-y: auto; min-height: 48px; }
+    .card {
+      background: var(--paper); border: 1px solid var(--rule); border-radius: var(--radius);
+      padding: 8px 10px; cursor: grab;
+    }
+    .card.cursor { border-color: var(--clay); box-shadow: inset 3px 0 0 var(--clay); }
+    .card.dragging { opacity: .45; }
+    .card .title { font-weight: 600; word-break: break-word; }
+    .card .date { color: var(--moss); font-size: 12px; }
+    .card .detail { font-size: 12px; opacity: .8; margin-top: 2px; word-break: break-word; }
+    .card select {
+      margin-top: 6px; width: 100%; min-height: 28px; font: 400 12px var(--sans); color: var(--forest);
+      background: var(--linen); border: 1px solid var(--rule); border-radius: var(--radius);
+    }
+    :focus-visible { outline: 2px solid var(--clay); outline-offset: 2px; }
+    .empty { color: var(--forest); opacity: .6; padding: 4px; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <p id="note">Open this inside Grist as a custom widget. See docs/grist-widgets.md in the Zion Bonsai repo for the steps.</p>
+  <div id="app" hidden>
+    <div id="bar" role="group" aria-label="Show lanes">
+      <span class="label">Show</span>
+      <span id="toggles"></span>
+      <span id="msg" class="label" role="status" aria-live="polite"></span>
+    </div>
+    <div id="lanes"></div>
+  </div>
+
+  <script src="https://docs.getgrist.com/grist-plugin-api.js"></script>
+  <script>
+  (function () {
+    'use strict';
+    var NONE = '(none)';
+    var state = { records: [], mapping: null, choices: null, choiceKey: '', hidden: [], cursorId: null };
+    var lanesEl = document.getElementById('lanes');
+    var togglesEl = document.getElementById('toggles');
+    var msgEl = document.getElementById('msg');
+    var dragId = null;
+    var msgTimer = null;
+
+    if (window.parent === window || typeof grist === 'undefined') return; // not framed: keep the note
+    document.getElementById('note').hidden = true;
+    document.getElementById('app').hidden = false;
+
+    grist.ready({
+      requiredAccess: 'full',
+      columns: [
+        { name: 'Lane', title: 'Lane', type: 'Choice', description: 'A Choice column: one lane per choice' },
+        { name: 'Title', title: 'Title', description: 'Card heading' },
+        { name: 'Date', title: 'Date', optional: true, type: 'Date,DateTime', description: 'Cards sort by this' },
+        { name: 'Detail', title: 'Detail', optional: true, description: 'Small text under the title' }
+      ]
+    });
+
+    function say(text) {
+      msgEl.textContent = text || '';
+      clearTimeout(msgTimer);
+      if (text) msgTimer = setTimeout(function () { msgEl.textContent = ''; }, 6000);
+    }
+
+    function fmtDate(v) {
+      if (v == null || v === '') return '';
+      var d = typeof v === 'number' ? new Date(v * 1000) : new Date(v);
+      if (isNaN(d.getTime())) return String(v);
+      return d.toLocaleDateString('en-US', { timeZone: 'UTC', month: 'short', day: 'numeric', year: 'numeric' });
+    }
+    function sortKey(v) {
+      if (typeof v === 'number') return v;
+      var t = Date.parse(v);
+      return isNaN(t) ? null : t / 1000;
+    }
+    function text(v) {
+      if (v == null) return '';
+      if (Array.isArray(v)) return v.filter(function (x) { return x !== 'L'; }).join(', ');
+      return String(v);
+    }
+
+    // Choices come from the Lane column's widgetOptions, so lanes follow the column's choice order.
+    async function loadChoices(laneCol) {
+      try {
+        var tableId = await grist.selectedTable.getTableId();
+        var tables = await grist.docApi.fetchTable('_grist_Tables');
+        var cols = await grist.docApi.fetchTable('_grist_Tables_column');
+        var tIdx = tables.tableId.indexOf(tableId);
+        if (tIdx < 0) return null;
+        var tableRef = tables.id[tIdx];
+        for (var i = 0; i < cols.id.length; i++) {
+          if (cols.parentId[i] === tableRef && cols.colId[i] === laneCol) {
+            var opts = JSON.parse(cols.widgetOptions[i] || '{}');
+            return Array.isArray(opts.choices) ? opts.choices : null;
+          }
+        }
+      } catch (e) {
+        console.warn('Could not read choice order', e);
+      }
+      return null;
+    }
+
+    function laneList() {
+      var m = state.mapping, base = (state.choices || []).slice();
+      var seen = {}, hasNone = false;
+      base.forEach(function (c) { seen[c] = true; });
+      state.records.forEach(function (r) {
+        var v = r.Lane;
+        if (v == null || v === '') hasNone = true;
+        else if (!seen[v]) { seen[v] = true; base.push(v); } // value not in the choice list
+      });
+      if (hasNone) base.push(NONE);
+      return base;
+    }
+
+    function render() {
+      lanesEl.textContent = '';
+      togglesEl.textContent = '';
+      var lanes = laneList();
+      lanes.forEach(function (lane) {
+        var lab = document.createElement('label');
+        var cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.checked = state.hidden.indexOf(lane) < 0;
+        cb.addEventListener('change', function () {
+          var h = state.hidden.filter(function (x) { return x !== lane; });
+          if (!cb.checked) h.push(lane);
+          state.hidden = h;
+          grist.setOption('hidden', h);
+          render();
+        });
+        lab.appendChild(cb);
+        lab.appendChild(document.createTextNode(lane));
+        togglesEl.appendChild(lab);
+      });
+
+      lanes.forEach(function (lane) {
+        if (state.hidden.indexOf(lane) >= 0) return;
+        var cards = state.records.filter(function (r) {
+          var v = (r.Lane == null || r.Lane === '') ? NONE : r.Lane;
+          return v === lane;
+        });
+        cards.sort(function (a, b) {
+          var ka = sortKey(a.Date), kb = sortKey(b.Date);
+          if (ka == null && kb == null) return 0;
+          if (ka == null) return 1;
+          if (kb == null) return -1;
+          return ka - kb;
+        });
+
+        var el = document.createElement('section');
+        el.className = 'lane';
+        el.dataset.lane = lane;
+        el.setAttribute('aria-label', lane);
+        var h = document.createElement('h2');
+        h.className = 'label';
+        var n1 = document.createElement('span'); n1.textContent = lane;
+        var n2 = document.createElement('span'); n2.textContent = String(cards.length);
+        h.appendChild(n1); h.appendChild(n2);
+        el.appendChild(h);
+        var body = document.createElement('div');
+        body.className = 'cards';
+        if (!cards.length) {
+          var e = document.createElement('div'); e.className = 'empty'; e.textContent = 'Nothing here';
+          body.appendChild(e);
+        }
+        cards.forEach(function (r) { body.appendChild(cardEl(r, lanes)); });
+        el.appendChild(body);
+
+        el.addEventListener('dragover', function (ev) {
+          if (dragId == null) return;
+          ev.preventDefault();
+          el.classList.add('over');
+        });
+        el.addEventListener('dragleave', function (ev) {
+          if (!el.contains(ev.relatedTarget)) el.classList.remove('over');
+        });
+        el.addEventListener('drop', function (ev) {
+          ev.preventDefault();
+          el.classList.remove('over');
+          if (dragId != null) move(dragId, lane);
+          dragId = null;
+        });
+        lanesEl.appendChild(el);
+      });
+    }
+
+    function cardEl(r, lanes) {
+      var c = document.createElement('div');
+      c.className = 'card' + (r.id === state.cursorId ? ' cursor' : '');
+      c.draggable = true;
+      c.dataset.id = String(r.id);
+      var t = document.createElement('div'); t.className = 'title'; t.textContent = text(r.Title) || '(untitled)';
+      c.appendChild(t);
+      var d = fmtDate(r.Date);
+      if (d) { var de = document.createElement('div'); de.className = 'date'; de.textContent = d; c.appendChild(de); }
+      var dt = text(r.Detail);
+      if (dt) { var dd = document.createElement('div'); dd.className = 'detail'; dd.textContent = dt; c.appendChild(dd); }
+
+      var sel = document.createElement('select');
+      sel.setAttribute('aria-label', 'Move ' + (text(r.Title) || 'card') + ' to');
+      var ph = document.createElement('option'); ph.value = ''; ph.textContent = 'Move to…';
+      sel.appendChild(ph);
+      var current = (r.Lane == null || r.Lane === '') ? NONE : r.Lane;
+      lanes.forEach(function (l) {
+        if (l === NONE || l === current) return;
+        var o = document.createElement('option'); o.value = l; o.textContent = l; sel.appendChild(o);
+      });
+      sel.addEventListener('change', function () { if (sel.value) move(r.id, sel.value); });
+      sel.addEventListener('click', function (ev) { ev.stopPropagation(); });
+      c.appendChild(sel);
+
+      c.addEventListener('click', function () {
+        state.cursorId = r.id;
+        grist.setCursorPos({ rowId: r.id });
+        Array.prototype.forEach.call(lanesEl.querySelectorAll('.card.cursor'), function (x) { x.classList.remove('cursor'); });
+        c.classList.add('cursor');
+      });
+      c.addEventListener('dragstart', function (ev) {
+        dragId = r.id;
+        c.classList.add('dragging');
+        ev.dataTransfer.effectAllowed = 'move';
+        try { ev.dataTransfer.setData('text/plain', String(r.id)); } catch (e) { /* ignore */ }
+      });
+      c.addEventListener('dragend', function () { dragId = null; c.classList.remove('dragging'); });
+      return c;
+    }
+
+    function move(id, lane) {
+      var laneCol = state.mapping && state.mapping.Lane;
+      if (!laneCol) return;
+      var fields = {};
+      fields[laneCol] = (lane === NONE) ? '' : lane;
+      Promise.resolve(grist.selectedTable.update({ id: id, fields: fields })).then(
+        function () { say('Moved'); },
+        function (e) { say('Could not move: ' + (e && e.message || e)); }
+      );
+    }
+
+    grist.onOptions(function (opts) {
+      state.hidden = (opts && Array.isArray(opts.hidden)) ? opts.hidden : [];
+      if (state.mapping) render();
+    });
+
+    grist.onRecord(function (rec) { state.cursorId = rec ? rec.id : null; });
+
+    grist.onRecords(async function (records, mappings) {
+      var mapped = grist.mapColumnNames(records, { columns: ['Lane', 'Title', 'Date', 'Detail'], mappings: mappings });
+      if (!mapped) {
+        state.records = []; state.mapping = null;
+        lanesEl.textContent = '';
+        var p = document.createElement('p');
+        p.style.margin = '24px';
+        p.textContent = 'Pick the Lane and Title columns in the widget settings (creator panel, right side).';
+        lanesEl.appendChild(p);
+        return;
+      }
+      state.mapping = mappings;
+      state.records = mapped;
+      if (state.choiceKey !== mappings.Lane) {
+        state.choiceKey = mappings.Lane;
+        state.choices = await loadChoices(mappings.Lane);
+      }
+      render();
+    });
+  })();
+  </script>
+</body>
+</html>

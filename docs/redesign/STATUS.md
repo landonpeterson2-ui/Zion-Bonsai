@@ -31,6 +31,13 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - [x] 43 Run the site on Cloudflare Workers (adapter, images binding, per-request pages, docs/deploy-cloudflare.md). Live at zionbonsai.com; Vercel project retired.
 - [ ] 42 Cleanup and PR
 
+## Grist tools (parallel)
+- [x] 45 Grist workspace: calendar, workshop day and task pages, colors
+- [x] 46 n8n alerts (new registration, sold out, low rating) and Monday digest
+- [x] 47 Grist custom widgets: board and sign-in sheet (add them in Grist after deploy, see docs/grist-widgets.md)
+- [ ] 48 Grist polish: friendly labels, descriptions, chip colors, tidy pages, new-workshop defaults — after 45
+- [ ] 49 n8n marks past workshops Done each morning — after 46
+
 ## Found while working
 - (task 25) Contact page "Groups" band links to /events and /workshops; /events may not exist until its task lands. Partner photos for Sweet Roots and Thistle & Honey are placeholders; Taya photo is workshop-finished-jade-thank-you-card (pot assumed hers per brief).
 <!-- Out-of-scope issues agents notice. Format: - (task NN) description -->

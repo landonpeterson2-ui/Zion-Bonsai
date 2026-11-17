@@ -57,3 +57,17 @@ n8n workflow "Zion Bonsai: registration form to Grist", every 15 minutes. The Go
 - **Registration:** Seats 1 or 2 (pair), Guest_Name, Notes from the questions box. Status is Pending, or Waitlist when the workshop isn't On sale or has fewer seats left. Cass fills in payment and changes the status.
 - If the contact already has a registration for that workshop (for example, one entered by hand), nothing is added.
 - A row with no matching workshop or a broken email is emailed once ("A registration needs a look") and is picked up automatically once fixed. A failed run emails through the "Zion Bonsai: error alert" workflow.
+
+## Alerts and the Monday digest
+
+Three n8n pieces email Landon and Cass. All send through the same Brevo SMTP credential and From address as the "error alert" workflow, and go to the same two people. Nothing in them shows an email address or phone number.
+
+- **New registration** (a step at the end of "Zion Bonsai: registration form to Grist"): one short email per registration the form adds. Subject `New registration: <first name> for <workshop> (<Mon D>)`. Body: seats, Pending or Waitlist, guest name and notes if any, seats left, and a link to the Grist doc.
+- **Zion Bonsai: heads-up alerts** (every 15 minutes), two kinds:
+  - `Sold out: <workshop> (<date>)`: a workshop that is On sale, Sold out or Waitlist has no seats left. If its Status is still "On sale", the email says to change it to Sold out or Waitlist.
+  - `Feedback needs a look: <rating>/5 from <workshop>`: a Feedback row rated 1 to 3, with its comment. A rating of 0 means "not rated" and is ignored.
+- **Zion Bonsai: Monday digest** (Mondays 7:00 AM Utah time): `This week at Zion Bonsai (<Mon D>)`. Sections, each left out when empty: workshops in the next 14 days with seats left; tasks due within 7 days or overdue, grouped by Landon and Cass ("Both" counts for each); trees to invite back (shaping due within 14 days, not yet due or invited); reorder; agreements (a heads-up, or 30 days or fewer left); registrations whose Check column has a problem; the last site sync if it wasn't "Published". If everything is empty it says "Nothing needs you this week. Come grow with us."
+
+**Once-only memory.** The heads-up workflow keeps a list of what it has already told you in its n8n static data, keyed by table and row (`Workshops 5`, `Feedback 12`). The first run after it is turned on records everything that is already true and sends nothing, so there is no backlog. After that each workshop or feedback row alerts once, and only after its email was sent. A workshop that is still sold out tomorrow does not repeat. To get an alert again for a row, it has to be a new row. (Static data only saves on real scheduled runs, not on manual test runs in the editor.)
+
+**Pausing.** In n8n, open the workflow and switch it off with the Active toggle: "Zion Bonsai: heads-up alerts" or "Zion Bonsai: Monday digest". For the new-registration email, open "Zion Bonsai: registration form to Grist" and disconnect or disable the last three nodes (Registration details, Write registration email, Email new registration); keep the rest running. All three report failures through "Zion Bonsai: error alert".

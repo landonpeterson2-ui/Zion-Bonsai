@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Zion Bonsai sign-in sheet (Grist widget)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Montserrat:wght@600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #F4EEE6;
+      --linen: #FBF8F3;
+      --forest: #2F3B22;
+      --moss: #4F6420;
+      --clay: #A84A2B;
+      --clay-dark: #8F3E23;
+      --rule: rgba(47, 59, 34, .15);
+      --radius: 3px;
+      --sans: 'Open Sans', system-ui, sans-serif;
+      --label: 'Montserrat', 'Open Sans', system-ui, sans-serif;
+      --display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--forest); font: 400 14px/1.5 var(--sans); }
+    .label { font: 600 11px/1.2 var(--label); letter-spacing: .16em; text-transform: uppercase; }
+    #note { margin: 24px; max-width: 46ch; }
+    [hidden] { display: none !important; }
+    #bar {
+      display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center;
+      padding: 10px 14px; border-bottom: 1px solid var(--rule);
+    }
+    #bar label { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; cursor: pointer; }
+    button {
+      font: 600 11px/1 var(--label); letter-spacing: .16em; text-transform: uppercase;
+      background: var(--clay); color: var(--linen); border: 0; border-radius: var(--radius);
+      min-height: 36px; padding: 0 16px; cursor: pointer; margin-left: auto;
+    }
+    button:hover { background: var(--clay-dark); }
+    :focus-visible { outline: 2px solid var(--clay); outline-offset: 2px; }
+    #sheet { padding: 20px 24px 40px; background: var(--linen); max-width: 8.5in; margin: 0 auto; }
+    #status { padding: 0 24px; color: var(--clay); }
+
+    h1 { font: 500 32px/1.1 var(--display); margin: 0; }
+    .sub { margin: 4px 0 18px; color: var(--moss); }
+    table { width: 100%; border-collapse: collapse; }
+    th { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--forest); }
+    td { padding: 0 8px; height: 38px; border-bottom: 1px solid var(--rule); vertical-align: middle; }
+    td.name { font-weight: 600; }
+    td.box { text-align: center; width: 70px; }
+    td.sig { width: 28%; }
+    td.tree { width: 20%; }
+    .tick { display: inline-block; width: 14px; height: 14px; border: 1px solid var(--forest); border-radius: 2px; vertical-align: middle; }
+    .sub2 { font-weight: 400; font-size: 12px; opacity: .75; }
+
+    #tags { display: grid; grid-template-columns: 1fr 1fr; }
+    .tag {
+      height: 1.95in; display: flex; align-items: center; justify-content: center; text-align: center;
+      border: 1px dashed rgba(47, 59, 34, .35); margin: -0.5px; padding: 8px;
+      font: 500 44px/1.05 var(--display); overflow: hidden; word-break: break-word;
+    }
+
+    @media print {
+      @page { size: letter; margin: .5in; }
+      body { background: #fff; color: #000; }
+      #bar, #status, #note { display: none !important; }
+      #sheet { background: #fff; padding: 0; max-width: none; }
+      h1, .sub, th, td, .tag { color: #000; }
+      th { border-bottom-color: #000; }
+      td { border-bottom-color: #888; }
+      .tick { border-color: #000; }
+      .tag { border-color: #999; break-inside: avoid; }
+      #tags { grid-template-columns: 1fr 1fr; }
+      tr, .tag { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <p id="note">Open this inside Grist as a custom widget. See docs/grist-widgets.md in the Zion Bonsai repo for the steps.</p>
+  <div id="app" hidden>
+    <div id="bar">
+      <span class="label">Print</span>
+      <label><input type="radio" name="mode" value="sheet" checked> Sign-in sheet</label>
+      <label><input type="radio" name="mode" value="tags"> Name tags</label>
+      <button type="button" id="print">Print</button>
+    </div>
+    <p id="status" class="label" role="status" aria-live="polite"></p>
+    <div id="sheet"></div>
+  </div>
+
+  <script src="https://docs.getgrist.com/grist-plugin-api.js"></script>
+  <script>
+  (function () {
+    'use strict';
+    var KEEP = ['Paid', 'Comped', 'Pending'];
+    var state = { rows: [], mode: 'sheet', workshops: null, workshopsLoaded: false };
+    var sheetEl = document.getElementById('sheet');
+    var statusEl = document.getElementById('status');
+
+    if (window.parent === window || typeof grist === 'undefined') return; // not framed: keep the note
+    document.getElementById('note').hidden = true;
+    document.getElementById('app').hidden = false;
+
+    // Full access is needed because the workshop's title and date live in another table (Workshops).
+    grist.ready({
+      requiredAccess: 'full',
+      columns: [
+        { name: 'Name', title: 'Name', description: 'Attendee name (Attendee_Name)' },
+        { name: 'Guest', title: 'Guest', optional: true, description: 'Guest name (Guest_Name)' },
+        { name: 'Seats', title: 'Seats', optional: true, type: 'Int,Numeric', description: '1 or 2' },
+        { name: 'Status', title: 'Status', description: 'Paid, Comped, Pending, ...' },
+        { name: 'Workshop', title: 'Workshop', optional: true, type: 'Ref', description: 'Reference to the Workshops table, for the heading' }
+      ]
+    });
+
+    function text(v) { return v == null ? '' : String(v).trim(); }
+    function lastWord(n) { var p = n.split(/\s+/); return p[p.length - 1].toLowerCase(); }
+    function firstName(n) { return n.split(/\s+/)[0]; }
+    function fmtDate(v) {
+      if (v == null || v === '') return '';
+      var d = typeof v === 'number' ? new Date(v * 1000) : new Date(v);
+      if (isNaN(d.getTime())) return String(v);
+      return d.toLocaleDateString('en-US', { timeZone: 'UTC', weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+    }
+
+    // Expand rows to people: pairs (Seats 2) become two lines.
+    function people() {
+      var out = [];
+      state.rows.forEach(function (r) {
+        if (KEEP.indexOf(text(r.Status)) < 0) return;
+        var name = text(r.Name);
+        if (!name) return;
+        out.push({ name: name, guestOf: null });
+        if (Number(r.Seats) >= 2) {
+          var g = text(r.Guest);
+          out.push(g ? { name: g, guestOf: null } : { name: 'Guest of ' + name, guestOf: name, sortName: name });
+        }
+      });
+      out.sort(function (a, b) {
+        var ka = lastWord(a.sortName || a.name), kb = lastWord(b.sortName || b.name);
+        if (ka !== kb) return ka < kb ? -1 : 1;
+        // keep a "Guest of X" directly after X
+        return (a.guestOf ? 1 : 0) - (b.guestOf ? 1 : 0);
+      });
+      return out;
+    }
+
+    function heading() {
+      var ids = {};
+      state.rows.forEach(function (r) { if (r.Workshop) ids[r.Workshop] = true; });
+      var keys = Object.keys(ids);
+      if (state.workshops && keys.length === 1) {
+        var w = state.workshops[keys[0]];
+        if (w) return { title: text(w.Title) || 'Workshop', date: fmtDate(w.Date) };
+      }
+      return { title: 'Workshop', date: '' };
+    }
+
+    function el(tag, cls, txt) {
+      var e = document.createElement(tag);
+      if (cls) e.className = cls;
+      if (txt != null) e.textContent = txt;
+      return e;
+    }
+
+    function render() {
+      sheetEl.textContent = '';
+      var list = people();
+      var h = heading();
+      statusEl.textContent = list.length ? list.length + (list.length === 1 ? ' person' : ' people') + ' (Paid, Comped, Pending)' : '';
+      if (!list.length) {
+        sheetEl.appendChild(el('p', null, 'No Paid, Comped or Pending registrations for the selected workshop.'));
+        return;
+      }
+      if (state.mode === 'tags') {
+        var grid = el('div'); grid.id = 'tags';
+        list.forEach(function (p) {
+          grid.appendChild(el('div', 'tag', p.guestOf ? 'Guest' : firstName(p.name)));
+        });
+        sheetEl.appendChild(grid);
+        return;
+      }
+      sheetEl.appendChild(el('h1', null, h.title));
+      sheetEl.appendChild(el('p', 'sub label', h.date ? h.date + ' · Sign-in sheet' : 'Sign-in sheet'));
+      var t = el('table');
+      var thead = el('thead'), hr = el('tr');
+      ['Name', 'Signature / initials', 'Tree', 'Email OK?'].forEach(function (c) {
+        var th = el('th', 'label', c); th.scope = 'col'; hr.appendChild(th);
+      });
+      thead.appendChild(hr); t.appendChild(thead);
+      var tb = el('tbody');
+      list.forEach(function (p) {
+        var tr = el('tr');
+        var td = el('td', 'name', p.name);
+        tr.appendChild(td);
+        tr.appendChild(el('td', 'sig'));
+        tr.appendChild(el('td', 'tree'));
+        var cb = el('td', 'box'); cb.appendChild(el('span', 'tick')); tr.appendChild(cb);
+        tb.appendChild(tr);
+      });
+      t.appendChild(tb);
+      sheetEl.appendChild(t);
+    }
+
+    async function loadWorkshops() {
+      try {
+        var t = await grist.docApi.fetchTable('Workshops');
+        var map = {};
+        for (var i = 0; i < t.id.length; i++) map[t.id[i]] = { Title: t.Title && t.Title[i], Date: t.Date && t.Date[i] };
+        state.workshops = map;
+      } catch (e) {
+        console.warn('Could not read Workshops', e);
+        state.workshops = null;
+      }
+      state.workshopsLoaded = true;
+    }
+
+    grist.onRecords(async function (records, mappings) {
+      var mapped = grist.mapColumnNames(records, { columns: ['Name', 'Guest', 'Seats', 'Status', 'Workshop'], mappings: mappings });
+      if (!mapped) {
+        state.rows = [];
+        sheetEl.textContent = '';
+        sheetEl.appendChild(el('p', null, 'Pick the Name and Status columns in the widget settings (creator panel, right side).'));
+        return;
+      }
+      state.rows = mapped;
+      if (!state.workshopsLoaded && mapped.some(function (r) { return r.Workshop; })) await loadWorkshops();
+      render();
+    });
+
+    Array.prototype.forEach.call(document.querySelectorAll('input[name=mode]'), function (r) {
+      r.addEventListener('change', function () { state.mode = r.value; render(); });
+    });
+    document.getElementById('print').addEventListener('click', function () { window.print(); });
+  })();
+  </script>
+</body>
+</html>
