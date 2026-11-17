@@ -1,8 +1,10 @@
 # Finding your way around Grist
 
-The Zion Bonsai doc has four day-to-day pages at the top of the page list, then the raw tables underneath. Nothing here changes what the website shows. It only changes how the doc looks and what's on each screen.
+The Zion Bonsai doc opens on **Home**. The day-to-day pages come next, and the raw tables are tucked under **Tables** at the bottom (click the arrow beside it to show or hide them). Nothing here changes what the website shows. It only changes how the doc looks and what's on each screen.
 
 ## The pages
+
+**Home.** What needs you, at a glance. Upcoming workshops as cards (seats taken, seats left, anything the site is waiting on) on the left. On the right, only when there's something to show: tasks due this week or overdue, registrations with a problem, kit items we're short of for upcoming workshops, and agreements ending within 30 days or with a heads-up.
 
 **Calendar.** Workshops on top, with the tasks due and the trees ready for shaping side by side underneath. Click an event to open its row. Switch between month, week and day in the calendar's top bar.
 
@@ -13,11 +15,13 @@ The Zion Bonsai doc has four day-to-day pages at the top of the page list, then 
 - the trees potted at that workshop
 - the feedback it got
 
-Tick **Attended** on a card as people arrive. Add a registration here and it lands on the right workshop automatically.
+Tick **Attended** on a card as people arrive, or press **Check everyone in** beside the checklist to tick every Paid and Comped booking at once, then untick anyone who didn't come (Ctrl+Z undoes the button too). The button only works from the workshop's date on, because ticking Attended starts the welcome emails. Add a registration here and it lands on the right workshop automatically.
+
+**People.** Pick a person on the left to see their details, the workshops they've booked, their trees, their feedback and any agreements they're the contact for.
 
 **Landon's tasks** and **Cass's tasks.** Each person's open tasks, plus anything marked **Both**, soonest due first. Tick **Done** and the task drops off the list (it's still in the Tasks table).
 
-**Tables** (Organizations, Contacts, Agreements, Workshops, Registrations, Trees, Inventory, Feedback, Tasks, Site_Sync). The same raw tables as before.
+**Tables** shows the latest site syncs. Under it are the raw tables (Organizations, Contacts, Agreements, Workshops, Registrations, Trees, Inventory, Feedback, Tasks, Site_Sync). The same raw tables as before.
 
 Registrations has a new locked column, **Attendee Name**, which shows the contact's name so a booking reads as a person and not a row number.
 
@@ -59,3 +63,9 @@ The colors are rules, not data. They update by themselves and you can't break an
 **Boards.** Two boards, one above the other. *Workshops by status* has a lane for each Status (Cancelled is hidden; tick it in the bar at the top to show it). *Tree returns* has a lane for each Return Status. Drag a card to another lane to change its status.
 
 **Sign-in sheet.** Pick a workshop on the left and the sheet on the right fills in for it. Use it to print the sign-in sheet or the name tags on the day. The first time you open either page, Grist may ask you to allow the widget "Full document access". Say yes; these widgets come from our own website.
+
+## Home, People and check-in (Nov 2026)
+
+New locked columns that feed these pages: Workshops **Upcoming** and **Check-in button**, Tasks **Due soon**, Agreements **Needs a look**, Inventory **Needed for upcoming** and **Short by**. Short by counts one of each kit item per seat taken (Paid, Comped, Pending) across all upcoming workshops, against **On hand**. Keep On hand current or it will flag everything as short. Kit rows turn red when short.
+
+The check-in button is Grist's Action Button widget (gristlabs.github.io), reading the Check-in button column.
