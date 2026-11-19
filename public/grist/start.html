@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Zion Bonsai start here (Grist widget)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Montserrat:wght@600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<!-- A Grist custom widget: the "Start here" page. No column mapping. Static text; it
+     renders even if Grist never answers. Option: forms = [{label, url}] for the Quick add links. -->
+<script src="https://docs.getgrist.com/grist-plugin-api.js"></script>
+<style>
+  :root {
+    --paper: #F4EEE6; --paper-deep: #E9DFD2; --linen: #FBF8F3; --clay: #A84A2B; --clay-dark: #8F3E23;
+    --moss: #4F6420; --forest: #2F3B22;
+    --rule: rgba(47, 59, 34, .15);
+    --radius: 3px;
+    --sans: 'Open Sans', system-ui, sans-serif;
+    --label: 'Montserrat', 'Open Sans', system-ui, sans-serif;
+    --display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body { margin: 0; background: var(--paper); color: var(--forest); font: 400 17px/1.65 var(--sans); }
+  main { max-width: 640px; margin: 0 auto; padding: 24px 16px 56px; }
+  :focus-visible { outline: 2px solid var(--clay); outline-offset: 2px; }
+  .label { font: 600 11px/1.2 var(--label); letter-spacing: .18em; text-transform: uppercase; color: var(--moss); margin: 0 0 10px; }
+  h1 { font: 500 44px/1.05 var(--display); margin: 0 0 14px; }
+  h1 em { display: block; font-style: italic; }
+  h2 { font: 600 11px/1.2 var(--label); letter-spacing: .18em; text-transform: uppercase; color: var(--moss);
+       margin: 40px 0 12px; padding-top: 14px; border-top: 1px solid var(--rule); }
+  p { margin: 0 0 12px; max-width: 65ch; }
+  .lede { font-size: 19px; }
+  ol.pages { list-style: none; margin: 0; padding: 0; counter-reset: p; }
+  ol.pages li { counter-increment: p; display: grid; grid-template-columns: 2.2em 1fr; padding: 12px 0; border-top: 1px solid var(--rule); }
+  ol.pages li:first-child { border-top: 0; padding-top: 0; }
+  ol.pages li::before { content: counter(p, decimal-leading-zero); font: 600 11px/2.2 var(--label); letter-spacing: .1em; color: var(--clay); }
+  ol.pages b { display: block; font-weight: 600; }
+  ol.pages span { color: var(--forest); }
+  .steps { margin: 0 0 12px; padding-left: 22px; }
+  .steps li { margin-top: 6px; }
+  .aside { background: var(--paper-deep); border-radius: var(--radius); padding: 12px 14px; margin: 14px 0; font-size: 16px; }
+  .btns { display: grid; gap: 10px; margin-top: 12px; }
+  .btn { display: flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 18px; border-radius: var(--radius);
+         background: var(--clay); color: var(--linen); text-decoration: none; font: 600 11px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; }
+  .btn:hover { background: var(--clay-dark); }
+  .signoff { font: italic 500 28px/1.2 var(--display); margin-top: 40px; }
+</style>
+</head>
+<body>
+<main>
+  <p class="label">Zion Bonsai</p>
+  <h1>Start here. <em>Then pick up a tree.</em></h1>
+  <p class="lede">This is where Landon and Cass keep the workshops, the people, the trees and the supplies. Every page below is made for a phone: big buttons, one thing at a time.</p>
+
+  <h2>What each page is for</h2>
+  <ol class="pages">
+    <li><div><b>Home</b><span>The short version of what's coming up.</span></div></li>
+    <li><div><b>My work</b><span>Your own to-do list and a countdown to the next workshop. Tap your name the first time.</span></div></li>
+    <li><div><b>Calendar</b><span>The workshops on a month grid. Best on a computer.</span></div></li>
+    <li><div><b>Workshop day</b><span>Who's coming and what to bring, on the morning of.</span></div></li>
+    <li><div><b>Plan a workshop</b><span>Set up a new date and its prep steps.</span></div></li>
+    <li><div><b>Boards</b><span>Workshops and trees in lanes. Move a card to change where it stands.</span></div></li>
+    <li><div><b>Phone book</b><span>Find a person. Call, text or email in one tap.</span></div></li>
+    <li><div><b>Workshop checklist</b><span>Photos, care sheets, surveys: tick each one once it's done.</span></div></li>
+    <li><div><b>Kit and supplies</b><span>What's on the shelf and what to reorder.</span></div></li>
+    <li><div><b>Trees</b><span>Whose tree is whose, and when it's due for a trim.</span></div></li>
+    <li><div><b>Sign-in sheet</b><span>The print-ready sheet and name tags.</span></div></li>
+    <li><div><b>People, Season, Quick add</b><span>The bigger picture, and a fast way to add someone new.</span></div></li>
+  </ol>
+
+  <div id="forms" hidden>
+    <h2>Quick add</h2>
+    <p>Met someone who wants a seat? Start here.</p>
+    <div class="btns" id="formbtns"></div>
+  </div>
+
+  <h2>Done and Undo</h2>
+  <ol class="steps">
+    <li>Tap <b>Done</b> on a task. It leaves your list.</li>
+    <li>A small bar at the bottom says <b>Undo</b> for a few seconds.</li>
+    <li>Missed it? Open <b>Done lately</b> at the bottom of My work and tap Undo there.</li>
+  </ol>
+  <p>Ticking a box on a checklist works the same way: tap to tick, tap again to untick. A dashed box fills in by itself. Tap it and it tells you why.</p>
+
+  <h2>If something goes wrong</h2>
+  <p>You can't break it. Every change is kept in <b>Document history</b> (in the Grist menu), with who changed what and when, and you can undo from there.</p>
+
+  <h2>Put it on your home screen</h2>
+  <p><b>iPhone:</b> open this page in Safari, tap Share, then Add to Home Screen.</p>
+  <p><b>Android:</b> open it in Chrome, tap the three dots, then Add to Home screen.</p>
+  <p>It opens like an app, with the Zion Bonsai logo.</p>
+
+  <p class="signoff">Come grow with us.</p>
+</main>
+<script>
+// Quick add links come from the widget's options: forms = [{ label, url }].
+// Only http(s) links are shown.
+function showForms(opts) {
+  var forms = Array.isArray(opts && opts.forms) ? opts.forms : [];
+  var box = document.getElementById('formbtns');
+  box.textContent = '';
+  var shown = 0;
+  forms.forEach(function (f) {
+    if (!f || typeof f.url !== 'string' || !/^https?:\/\//i.test(f.url)) return;
+    var a = document.createElement('a');
+    a.className = 'btn';
+    a.href = f.url;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.textContent = String(f.label || 'Open the form');
+    box.appendChild(a);
+    shown++;
+  });
+  document.getElementById('forms').hidden = !shown;
+}
+try {
+  grist.ready({ requiredAccess: 'none' });
+  grist.onOptions(showForms);
+} catch (e) { /* page is static; fine without Grist */ }
+</script>
+</body>
+</html>
