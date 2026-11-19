@@ -1,0 +1,882 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Zion Bonsai list (Grist widget)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Montserrat:wght@600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<!-- A Grist custom widget: any table as a searchable list of cards with tap-to-tick
+     checks, made for a phone. Tap a card to open its details sheet (edit, and
+     add/delete where the page allows it). Only works inside Grist. -->
+<script src="https://docs.getgrist.com/grist-plugin-api.js"></script>
+<style>
+  :root {
+    --paper: #F4EEE6; --paper-deep: #E9DFD2; --sandstone: #D9AE93; --linen: #FBF8F3;
+    --clay: #A84A2B; --clay-dark: #8F3E23; --moss: #4F6420; --forest: #2F3B22;
+    --rule: rgba(47, 59, 34, .15); --edge: rgba(47, 59, 34, .4);
+    --radius: 3px;
+    --sans: 'Open Sans', system-ui, sans-serif;
+    --label: 'Montserrat', 'Open Sans', system-ui, sans-serif;
+    --display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body { margin: 0; background: var(--paper); color: var(--forest); font: 400 16px/1.5 var(--sans); }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--clay); outline-offset: 2px; }
+  .label, .flabel { font: 600 11px/1.2 var(--label); letter-spacing: .16em; text-transform: uppercase; }
+  header { position: sticky; top: 0; z-index: 1; background: var(--paper); padding: 12px 14px 8px;
+           display: grid; grid-template-columns: 1fr auto; gap: 8px 10px; align-items: center; border-bottom: 1px solid var(--rule); }
+  .hint { grid-column: 1 / -1; margin: 0; color: var(--moss); font-size: 14px; }
+  header input[type=search] { grid-column: 1 / -1; width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid var(--edge);
+                              border-radius: var(--radius); background: var(--linen); }
+  header .count { color: var(--moss); font-size: 14px; }
+  .toggle { min-height: 44px; padding: 0 14px; border: 1px solid var(--edge); border-radius: var(--radius); background: var(--linen);
+            font: 600 11px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; white-space: nowrap; cursor: pointer; }
+  .toggle[aria-pressed=true] { background: var(--forest); border-color: var(--forest); color: var(--linen); }
+  .add { grid-column: 1 / -1; min-height: 48px; border: 1px solid var(--clay); border-radius: var(--radius); background: var(--clay);
+         color: var(--linen); font: 600 11px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; padding: 0 14px; cursor: pointer; }
+  .add:hover { background: var(--clay-dark); border-color: var(--clay-dark); }
+  main { max-width: 680px; margin: 0 auto; padding: 12px 14px 48px; }
+  .item { background: var(--linen); border: 1px solid var(--rule); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 10px; cursor: pointer; }
+  .item.selected { border-color: var(--forest); box-shadow: inset 3px 0 0 var(--forest); }
+  .item.flash { animation: flash 3s ease-out; }
+  @keyframes flash { 0%, 60% { background: rgba(217, 174, 147, .5); } 100% { background: var(--linen); } }
+  @media (prefers-reduced-motion: reduce) { .item.flash { animation: none; } }
+  .title { font-weight: 600; overflow-wrap: anywhere; }
+  .sub, .detail { color: var(--moss); font-size: 14px; margin-top: 2px; overflow-wrap: anywhere; }
+  .detail { white-space: pre-wrap; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; align-items: center; }
+  .chip { min-height: 44px; border: 1px solid var(--edge); border-radius: var(--radius); padding: 0 14px; background: var(--paper);
+          font: 600 11px/1.2 var(--label); letter-spacing: .12em; text-transform: uppercase; color: var(--forest); cursor: pointer;
+          display: inline-flex; align-items: center; gap: 8px; }
+  .chip.on { background: var(--forest); border-color: var(--forest); color: var(--linen); }
+  .chip.on::before { content: ""; width: 5px; height: 9px; border: solid currentColor; border-width: 0 1.5px 1.5px 0; transform: rotate(45deg) translateY(-1px); }
+  .chip.locked { border-style: dashed; }
+  .contact a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: var(--radius);
+               border: 1px solid var(--clay); color: var(--clay); text-decoration: none;
+               font: 600 11px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; }
+  .contact a:hover { background: var(--clay); color: var(--linen); }
+  .contact .nonote { color: var(--moss); font-size: 13px; }
+  .empty, #msg { color: var(--moss); padding: 12px 2px; }
+  #msg button { display: block; margin-top: 12px; min-height: 44px; padding: 0 18px; border: 1px solid var(--clay); border-radius: var(--radius);
+                background: var(--clay); color: var(--linen); font: 600 11px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; cursor: pointer; }
+  #toast { position: fixed; left: 50%; bottom: 88px; transform: translateX(-50%); background: var(--forest); color: var(--linen);
+           padding: 8px 16px; border-radius: var(--radius); opacity: 0; transition: opacity .2s; pointer-events: none;
+           max-width: 92vw; text-align: center; z-index: 100; }
+  #toast.show { opacity: 1; }
+  #toast.act { pointer-events: auto; }
+  #toast button { min-height: 44px; margin: -8px -8px -8px 8px; padding: 0 12px; border: 0; background: none; color: var(--linen);
+                  font: 600 11px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; text-decoration: underline; cursor: pointer; }
+  @media (prefers-reduced-motion: reduce) { #toast { transition: none; } }
+
+  .sheet-bg { position: fixed; inset: 0; z-index: 50; background: rgba(47, 59, 34, .45); display: flex; justify-content: center; align-items: stretch; }
+  .sheet { background: var(--paper); width: 100%; max-width: 560px; display: flex; flex-direction: column; margin: 0; position: relative; min-height: 0; }
+  @media (min-width: 640px) { .sheet-bg { padding: 20px; } .sheet { border-radius: var(--radius); overflow: hidden; } }
+  .sheet h2 { margin: 0; padding: 16px 16px 8px; font: 500 28px/1.15 var(--display); overflow-wrap: anywhere; }
+  .fields { flex: 1; overflow-y: auto; padding: 4px 16px 16px; }
+  .field { margin-top: 14px; }
+  .flabel { display: block; color: var(--moss); margin-bottom: 6px; }
+  .field input, .field select, .field textarea { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid var(--edge);
+        border-radius: var(--radius); background: var(--linen); }
+  .field textarea { min-height: 96px; resize: vertical; }
+  .field .ro { padding: 10px 12px; min-height: 44px; border: 1px dashed var(--edge); border-radius: var(--radius); color: var(--moss);
+               overflow-wrap: anywhere; white-space: pre-wrap; }
+  .field .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .fhead { margin: 24px 0 0; padding-top: 14px; border-top: 1px solid var(--rule); font: 600 11px/1.2 var(--label); letter-spacing: .18em;
+           text-transform: uppercase; color: var(--moss); }
+  .checks { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .checks .field { margin-top: 0; }
+  .delzone { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--rule); }
+  .del { min-height: 44px; padding: 0 4px; border: 0; background: none; color: var(--clay); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .item.pending { opacity: .6; }
+  .pending-note { color: var(--moss); font-size: 13px; margin-top: 2px; }
+  .bar { display: flex; gap: 10px; padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); background: var(--linen);
+         border-top: 1px solid var(--rule); align-items: center; }
+  .bar button { flex: 1; min-height: 48px; border-radius: var(--radius); border: 1px solid var(--edge); background: var(--linen);
+                font: 600 11px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; cursor: pointer; }
+  .bar .save { background: var(--clay); border-color: var(--clay); color: var(--linen); flex: 2; }
+  .bar .save:hover { background: var(--clay-dark); }
+  .bar .save:disabled { opacity: .6; }
+  .bar .confirm { flex: 1 1 100%; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .bar .confirm span { flex: 1 1 100%; font-weight: 600; }
+  .bar .confirm button { flex: 1 1 0; padding: 0 14px; }
+  .bar .confirm .go-del { background: var(--clay); border-color: var(--clay); color: var(--linen); }
+  .pickbtn { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; min-height: 44px; padding: 10px 12px;
+             text-align: left; border: 1px solid var(--edge); border-radius: var(--radius); background: var(--linen); cursor: pointer; }
+  .pickbtn.empty-pick span:first-child { color: var(--moss); }
+  .pickbtn span:first-child { overflow-wrap: anywhere; min-width: 0; }
+  .pickbtn .chev { width: 7px; height: 7px; border: solid var(--forest); border-width: 0 1.5px 1.5px 0; transform: rotate(45deg); flex: none; }
+  .picker { position: absolute; inset: 0; z-index: 5; background: var(--paper); display: flex; flex-direction: column; min-height: 0; }
+  .phead { display: flex; align-items: center; gap: 10px; padding: 10px 12px 4px; }
+  .phead .pback { min-height: 44px; padding: 0 14px; border: 1px solid var(--edge); border-radius: var(--radius); background: var(--linen);
+                  font: 600 11px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; cursor: pointer; }
+  .ptitle { font: 500 24px/1.1 var(--display); overflow-wrap: anywhere; }
+  .psearch { padding: 6px 12px; }
+  .psearch input { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid var(--edge); border-radius: var(--radius); background: var(--linen); }
+  .plist { flex: 1; overflow-y: auto; padding: 4px 12px 16px; min-height: 0; }
+  .popt { display: block; width: 100%; min-height: 44px; margin-bottom: 6px; padding: 10px 12px; text-align: left; border: 1px solid var(--rule);
+          border-radius: var(--radius); background: var(--linen); overflow-wrap: anywhere; cursor: pointer; }
+  .popt.cur { background: var(--forest); border-color: var(--forest); color: var(--linen); font-weight: 600; }
+  .popt.none { color: var(--moss); }
+  .popt.none.cur { color: var(--linen); }
+  .pnote { color: var(--moss); font-size: 14px; padding: 8px 4px; }
+  input[type=date] { -webkit-appearance: none; appearance: none; display: block; min-width: 0; max-width: 100%; min-height: 44px; }
+  input[type=date]::-webkit-date-and-time-value { text-align: left; }
+</style>
+</head>
+<body>
+<header hidden>
+  <p class="hint" hidden></p>
+  <input type="search" placeholder="Search" aria-label="Search" autocomplete="off">
+  <span class="count"></span>
+  <button type="button" class="toggle" id="unfinished" aria-pressed="false" hidden>Only unfinished</button>
+  <button type="button" class="add" id="add" hidden></button>
+</header>
+<main></main>
+<div id="msg">Loading…</div>
+<div id="toast" role="status"></div>
+<script>
+// Mapping slots: Title (required), and optionally Subtitle (several columns), Detail
+// (several), Date, Phone, Email, Checks (several true/false columns), Consent
+// (true/false: false hides Text) and Edit (extra columns shown in the details sheet).
+// Widget options:
+//   hint      one line shown under the title bar: what to do on this page
+//   addLabel  turns on the big add button (and Delete in the sheet)
+//   readOnly  column ids shown in the sheet but never editable
+//   addOnly   column ids offered only when adding a row
+//   notes     { ColId: "why it's locked" } shown when a locked box is tapped
+// Reference columns with more than 12 choices get a searchable picker.
+const MSG_LOADING = 'Loading…';
+const MSG_FAILED = "Couldn't load. Check your connection.";
+const MSG_NOTSET = "This page isn't set up yet. Ask Landon.";
+const MSG_ACCESS = "That can't be changed here. Ask Landon if you think it should be.";
+const MSG_LOCKED = 'This one fills in by itself. It can’t be changed here.';
+const MSG_CONN = "Couldn't save. Check your connection and try again.";
+const BIG_LIST = 150;       // above this many rows, show nothing until someone types a search
+const SAVE_TIMEOUT = 10000;
+const REF_PICKER_MIN = 12;  // a Ref column with more choices than this gets a searchable picker
+const PICK_MAX = 50;
+
+let rows = [];
+let mappings = null;
+let mapKey = '';
+let phase = 'loading';   // loading | ready | notset | failed
+let colMeta = {};        // colId -> { label, type, isFormula, description, options, visibleCol }
+let metaAll = null;      // raw _grist_Tables / _grist_Tables_column, for Ref targets
+let refLabels = {};      // Ref colId -> Map(row id -> label), for showing referenced names on cards
+let tableId = null;
+let hintText = '';
+let addLabel = '';
+let readOnlyCols = [];
+let addOnlyCols = [];
+let lockNotes = {};
+const savingIds = new Map(); // row id -> number of card-tick saves still in flight
+let query = '';
+let unfinishedOnly = false;
+let selectedId = null;
+let highlightId = null, awaitingNew = null, scrolledTo = null;
+let sheet = null;        // open details sheet state, or null
+let lastPointer = 0, pending = false, flushTimer = null;
+
+const header = document.querySelector('header');
+const hint = header.querySelector('.hint');
+const search = header.querySelector('input');
+const count = header.querySelector('.count');
+const unfinishedBtn = document.getElementById('unfinished');
+const addBtn = document.getElementById('add');
+const main = document.querySelector('main');
+const msg = document.getElementById('msg');
+const toast = document.getElementById('toast');
+
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+function text(v) {
+  if (v == null || v === '') return '';
+  if (Array.isArray(v)) return v.filter(x => x !== 'L').map(text).filter(Boolean).join(', ');
+  if (v instanceof Date) return v.toLocaleDateString('en-US', { timeZone: 'UTC', month: 'short', day: 'numeric', year: 'numeric' });
+  if (typeof v === 'number') return Number.isInteger(v) ? String(v) : String(Math.round(v * 100) / 100);
+  if (typeof v === 'boolean') return '';
+  return String(v);
+}
+const list = v => v == null ? [] : Array.isArray(v) ? v : [v];
+const cols = name => list(mappings?.[name]).filter(Boolean);
+const col1 = name => cols(name)[0] || null;
+class UserError extends Error {}
+
+// Dates: Grist sends UTC-midnight epoch seconds (or a Date); we show and send the UTC day.
+function isoFrom(v) {
+  const ms = v instanceof Date ? v.getTime() : Number(v) * 1000;
+  return Number.isFinite(ms) && v !== '' && v != null ? new Date(ms).toISOString().slice(0, 10) : '';
+}
+function epochFrom(iso) {
+  const [y, m, d] = iso.split('-').map(Number);
+  return Date.UTC(y, m - 1, d) / 1000;
+}
+function fmtDate(v) {
+  const iso = isoFrom(v);
+  return iso ? text(new Date(epochFrom(iso) * 1000)) : '';
+}
+
+const metaFor = c => colMeta[c] || { label: c.replace(/_/g, ' '), type: 'Text', isFormula: false, description: '', options: {}, visibleCol: 0 };
+const baseType = c => metaFor(c).type.split(':')[0];
+// Text for a cell, formatting dates, yes/no and referenced names the way the column's type says.
+function show(c, v) {
+  if (v == null || v === '') return '';
+  const t = baseType(c);
+  if (t === 'Date') return fmtDate(v);
+  if (t === 'Bool') return v ? 'Yes' : 'No';
+  if (t === 'Ref') return refLabels[c]?.get(Number(v)) || '';
+  return text(v);
+}
+// For subtitle and detail lines: numbers and yes/no get their column label ("Short by: 3"); words stand alone.
+function showLabeled(c, v) {
+  const s = show(c, v);
+  if (!s) return '';
+  const t = baseType(c);
+  return t === 'Numeric' || t === 'Int' || t === 'Bool' ? `${metaFor(c).label}: ${s}` : s;
+}
+
+function withTimeout(p, ms = SAVE_TIMEOUT) {
+  let t;
+  const timer = new Promise((_, rej) => { t = setTimeout(() => rej(new Error('timeout')), ms); });
+  return Promise.race([p, timer]).finally(() => clearTimeout(t));
+}
+function errMsg(e) {
+  if (!navigator.onLine) return MSG_CONN;
+  return /access|permission|blocked|denied/i.test(String(e?.message ?? e ?? '')) ? MSG_ACCESS : MSG_CONN;
+}
+function say(t, ms = 2500, action) {
+  toast.innerHTML = esc(t) + (action ? ` <button type="button" data-act>${esc(action.label)}</button>` : '');
+  toast.action = action ? action.run : null;
+  toast.classList.toggle('act', Boolean(action));
+  toast.classList.add('show');
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(() => { toast.classList.remove('show', 'act'); }, ms);
+}
+toast.addEventListener('click', e => {
+  if (!e.target.closest('[data-act]')) return;
+  const run = toast.action;
+  toast.classList.remove('show', 'act');
+  toast.action = null;
+  if (run) run();
+});
+
+// ---- Column labels, types and choices -------------------------------------
+async function loadMeta() {
+  colMeta = {};
+  tableId = await grist.getSelectedTableId();
+  const tables = await grist.docApi.fetchTable('_grist_Tables');
+  const meta = await grist.docApi.fetchTable('_grist_Tables_column');
+  metaAll = { tables, meta };
+  const tableRef = tables.id[tables.tableId.indexOf(tableId)];
+  for (let i = 0; i < meta.id.length; i++) {
+    if (meta.parentId[i] !== tableRef) continue;
+    let options = {};
+    try { options = JSON.parse(meta.widgetOptions[i] || '{}') || {}; } catch (e) { /* none */ }
+    colMeta[meta.colId[i]] = {
+      label: meta.label[i] || meta.colId[i], type: meta.type[i] || 'Text', isFormula: Boolean(meta.isFormula[i]),
+      description: String(meta.description?.[i] || '').trim(), options, visibleCol: meta.visibleCol?.[i] || 0,
+    };
+  }
+}
+// Every row of a Ref column's target table, with the label to show for each.
+async function refRows(c) {
+  const m = metaFor(c), target = m.type.slice(4);
+  const { tables, meta } = metaAll;
+  const tRef = tables.id[tables.tableId.indexOf(target)];
+  let disp = null;
+  const vi = meta.id.indexOf(m.visibleCol);
+  if (m.visibleCol && vi >= 0) disp = meta.colId[vi];
+  if (!disp) for (let j = 0; j < meta.id.length; j++) {
+    if (meta.parentId[j] === tRef && meta.type[j] === 'Text') { disp = meta.colId[j]; break; }
+  }
+  const data = await grist.docApi.fetchTable(target);
+  const hasActive = 'Active' in data;
+  return data.id.map((id, k) => ({ id, active: hasActive ? Boolean(data.Active[k]) : true, label: (disp ? text(data[disp][k]) : '') || `#${id}` }));
+}
+async function loadRefLabels() {
+  const shown = new Set([...cols('Title'), ...cols('Subtitle'), ...cols('Detail'), ...cols('Edit')].filter(c => baseType(c) === 'Ref'));
+  const out = {};
+  for (const c of shown) {
+    try { out[c] = new Map((await withTimeout(refRows(c), 8000)).map(o => [o.id, o.label])); } catch (e) { out[c] = refLabels[c] || new Map(); }
+  }
+  refLabels = out;
+}
+const checkCols = () => cols('Checks');
+const isReadOnlyCol = c => readOnlyCols.includes(c);
+const isLocked = c => metaFor(c).isFormula || isReadOnlyCol(c);
+const lockedMsg = c => lockNotes[c] || metaFor(c).description || MSG_LOCKED;
+const editableChecks = () => checkCols().filter(c => !isLocked(c));
+const checkOn = (r, c) => Boolean(r.raw[c]);
+const finished = r => { const cs = editableChecks(); return cs.length > 0 && cs.every(c => checkOn(r, c)); };
+
+function makeRow(raw) {
+  const parts = [...cols('Title'), ...cols('Subtitle'), ...cols('Detail'), ...cols('Phone'), ...cols('Email'), ...cols('Edit')];
+  const haystack = parts.map(c => show(c, raw[c])).join(' ').toLowerCase();
+  return { id: raw.id, raw, haystack };
+}
+function visibleNow(r) {
+  const words = query.toLowerCase().split(/\s+/).filter(Boolean);
+  return (!unfinishedOnly || !finished(r) || savingIds.has(r.id)) && words.every(w => r.haystack.includes(w));
+}
+
+// ---- Cards ---------------------------------------------------------------
+function card(r) {
+  const subtitle = cols('Subtitle').map(c => showLabeled(c, r.raw[c])).filter(Boolean).join(' · ');
+  const dc = col1('Date');
+  const date = dc ? show(dc, r.raw[dc]) : '';
+  const phone = text(r.raw[col1('Phone')]).trim(), email = text(r.raw[col1('Email')]).trim();
+  const tel = phone.replace(/[^\d+]/g, '');
+  const cc = col1('Consent');
+  const noTexts = cc && r.raw[cc] === false;
+  const contact = [
+    tel && `<a href="tel:${esc(tel)}" target="_blank">Call</a>`,
+    tel && (noTexts ? '<span class="nonote">No texts</span>' : `<a href="sms:${esc(tel)}" target="_blank">Text</a>`),
+    email.includes('@') && `<a href="mailto:${esc(email)}" target="_blank">Email</a>`,
+  ].filter(Boolean).join('');
+  const checks = checkCols().map(c => {
+    const on = checkOn(r, c), locked = isLocked(c);
+    return `<button type="button" class="chip${on ? ' on' : ''}${locked ? ' locked' : ''}" data-id="${r.id}" data-col="${esc(c)}"
+      aria-pressed="${on}"${locked ? ' aria-disabled="true"' : ''}>${esc(metaFor(c).label)}</button>`;
+  }).join('');
+  const title = cols('Title').map(c => show(c, r.raw[c])).filter(Boolean).join(' ');
+  const detail = cols('Detail').map(c => showLabeled(c, r.raw[c])).filter(Boolean).join('\n');
+  const flash = r.id === highlightId ? ' flash' : '';
+  const pend = savingIds.has(r.id);
+  return `<div class="item${r.id === selectedId ? ' selected' : ''}${flash}${pend ? ' pending' : ''}" data-row="${r.id}">
+    <div class="title">${esc(title) || '(no name)'}</div>
+    ${subtitle || date ? `<div class="sub">${esc([subtitle, date].filter(Boolean).join(' · '))}</div>` : ''}
+    ${pend ? '<div class="pending-note">Saving…</div>' : ''}
+    ${detail ? `<div class="detail">${esc(detail)}</div>` : ''}
+    ${contact ? `<div class="row contact">${contact}</div>` : ''}
+    ${checks ? `<div class="row">${checks}</div>` : ''}
+  </div>`;
+}
+
+function showMsg() {
+  msg.hidden = false;
+  if (phase === 'failed') {
+    msg.innerHTML = `${esc(MSG_FAILED)}<button type="button" id="retry">Try again</button>`;
+    document.getElementById('retry').onclick = () => location.reload();
+  } else {
+    msg.textContent = phase === 'notset' ? MSG_NOTSET : MSG_LOADING;
+  }
+}
+
+function render() {
+  if (phase !== 'ready') { header.hidden = true; main.innerHTML = ''; showMsg(); return; }
+  header.hidden = false;
+  msg.hidden = true;
+  hint.hidden = !hintText;
+  hint.textContent = hintText;
+  unfinishedBtn.hidden = !editableChecks().length;
+  unfinishedBtn.setAttribute('aria-pressed', String(unfinishedOnly));
+  addBtn.hidden = !addLabel;
+  addBtn.textContent = addLabel;
+  const shown = rows.filter(visibleNow);
+  count.textContent = `${shown.length} of ${rows.length}`;
+  let html;
+  if (shown.length > BIG_LIST && query.trim() === '') html = `<p class="empty">Type to search ${shown.length} entries</p>`;
+  else html = shown.map(card).join('');
+  if (!html) {
+    let why = 'Nothing matches.';
+    if (!rows.length) why = 'Nothing here yet.';
+    else if (!query.trim() && unfinishedOnly) why = 'All done here. Turn off Only unfinished to see everything.';
+    html = `<p class="empty">${esc(why)}</p>`;
+  }
+  main.innerHTML = html;
+  if (highlightId != null && scrolledTo !== highlightId) {
+    const el = main.querySelector('.flash');
+    if (el) {
+      scrolledTo = highlightId;
+      el.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      setTimeout(() => { if (highlightId === scrolledTo) highlightId = null; }, 3200);
+    }
+  }
+}
+
+// Redraws caused by data changes wait while someone is typing, a sheet is open,
+// or a tap has just landed. Redraws the person asked for (search, filters) go straight through.
+function canRedraw() {
+  const a = document.activeElement;
+  const typing = a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName);
+  return !typing && !sheet && Date.now() - lastPointer >= 400;
+}
+function flush() {
+  clearTimeout(flushTimer);
+  if (!pending) return;
+  if (canRedraw()) { pending = false; render(); } else flushTimer = setTimeout(flush, 250);
+}
+function requestRender() { pending = true; flush(); }
+document.addEventListener('pointerdown', () => { lastPointer = Date.now(); }, true);
+document.addEventListener('focusout', () => setTimeout(flush, 450));
+
+// ---- Header controls and card taps ---------------------------------------
+search.addEventListener('input', () => { query = search.value; render(); });
+unfinishedBtn.addEventListener('click', () => { unfinishedOnly = !unfinishedOnly; render(); });
+addBtn.addEventListener('click', () => openSheet(null));
+
+main.addEventListener('click', async e => {
+  const chip = e.target.closest('.chip');
+  if (chip) {
+    const id = Number(chip.dataset.id), c = chip.dataset.col;
+    if (isLocked(c)) { say(lockedMsg(c), 3500); return; }
+    const row = rows.find(r => r.id === id);
+    if (!row) return;
+    const before = row.raw[c];
+    const value = !before;
+    row.raw[c] = value;  // show it right away; Grist sends the saved rows back
+    savingIds.set(id, (savingIds.get(id) || 0) + 1);
+    render();
+    let failed = null;
+    try {
+      await withTimeout(grist.selectedTable.update({ id, fields: { [c]: value } }));
+    } catch (err) {
+      row.raw[c] = before;
+      failed = err;
+    }
+    const left = (savingIds.get(id) || 1) - 1;
+    if (left) savingIds.set(id, left); else savingIds.delete(id);
+    render();
+    if (failed) say(errMsg(failed), 5000);
+    return;
+  }
+  const item = e.target.closest('.item');
+  if (item && !e.target.closest('a')) {
+    selectedId = Number(item.dataset.row);
+    try { grist.setCursorPos({ rowId: selectedId }); } catch (err) { /* not linked */ }
+    render();
+    openSheet(selectedId);
+  }
+});
+
+// ---- Details sheet -------------------------------------------------------
+const kindOf = c => {
+  const m = metaFor(c), t = baseType(c);
+  if (m.isFormula) return 'ro';
+  return { Text: 'text', Numeric: 'num', Int: 'num', Date: 'date', Choice: 'choice', ChoiceList: 'chips', Bool: 'bool', Ref: 'ref' }[t] || 'ro';
+};
+function sheetColumns(adding) {
+  const seen = new Set(), out = [];
+  const add = (c, isCheck) => {
+    if (!c || seen.has(c) || (adding && isLocked(c)) || (!adding && addOnlyCols.includes(c))) return;
+    const ro = isReadOnlyCol(c);
+    seen.add(c); out.push({ col: c, check: isCheck, label: metaFor(c).label, kind: ro ? 'ro' : kindOf(c), readonly: ro });
+  };
+  cols('Title').forEach(c => add(c)); cols('Subtitle').forEach(c => add(c));
+  cols('Date').forEach(c => add(c));
+  cols('Detail').forEach(c => add(c)); cols('Edit').forEach(c => add(c));
+  if (adding) addOnlyCols.filter(c => colMeta[c]).forEach(c => add(c));
+  checkCols().forEach(c => add(c, true));
+  return out;
+}
+function choicesFor(c, current) {
+  const base = list(metaFor(c).options.choices).map(String);
+  return [...base, ...current.filter(x => x && !base.includes(x))];
+}
+function initialValue(f, raw) {
+  const v = raw ? raw[f.col] : null;
+  switch (f.kind) {
+    case 'num': return v == null || v === '' ? '' : String(v);
+    case 'date': return isoFrom(v);
+    case 'chips': return list(v).filter(x => x !== 'L').map(String);
+    case 'bool': return Boolean(v);
+    case 'ref': return Number(v) || 0;
+    default: return v == null ? '' : String(v);
+  }
+}
+async function refOptions(f, current) {
+  const data = await refRows(f.col);
+  const opts = data.filter(o => o.active || o.id === current).map(o => ({ id: o.id, label: o.label }));
+  if (current && !opts.some(o => o.id === current)) opts.push({ id: current, label: `#${current}` });
+  return opts.sort((a, b) => a.label.localeCompare(b.label));
+}
+
+function fieldsHtml(fields) {
+  let out = '', inChecks = false;
+  fields.forEach((f, i) => {
+    if (f.check && !inChecks) { inChecks = true; out += '<h3 class="fhead">Checklist</h3><div class="checks">'; }
+    out += fieldHtml(f, i);
+  });
+  return out + (inChecks ? '</div>' : '');
+}
+function pickBtnHtml(id, attrs, label) {
+  return `<button type="button" class="pickbtn${label ? '' : ' empty-pick'}" id="${id}" ${attrs}><span>${esc(label || 'Choose…')}</span><span class="chev" aria-hidden="true"></span></button>`;
+}
+function fieldHtml(f, i) {
+  const v = sheet.vals[f.col];
+  const label = `<label class="flabel" for="f${i}">${esc(f.label)}</label>`;
+  const wrap = body => `<div class="field">${body}</div>`;
+  if (f.kind === 'ro') {
+    if (f.check) return wrap(`<button type="button" class="chip locked${sheet.row && checkOn(sheet.row, f.col) ? ' on' : ''}" data-locked="${i}">${esc(f.label)}</button>`);
+    const shownVal = sheet.row ? show(f.col, sheet.row.raw[f.col]) : '';
+    return wrap(`<div class="flabel">${esc(f.label)}</div><div class="ro" data-locked="${i}">${esc(shownVal) || '—'}</div>`);
+  }
+  if (f.kind === 'bool') {
+    return wrap(`<button type="button" class="chip${v ? ' on' : ''}" data-f="${i}" data-bool aria-pressed="${v}">${esc(f.label)}</button>`);
+  }
+  if (f.kind === 'chips') {
+    const chips = choicesFor(f.col, v).map(ch => `<button type="button" class="chip${v.includes(ch) ? ' on' : ''}" data-f="${i}"
+      data-chip="${esc(ch)}" aria-pressed="${v.includes(ch)}">${esc(ch)}</button>`).join('');
+    return wrap(`<div class="flabel">${esc(f.label)}</div><div class="chips">${chips || '<span class="flabel">No choices set up.</span>'}</div>`);
+  }
+  if (f.kind === 'choice') {
+    const opts = ['', ...choicesFor(f.col, [v])].map(ch => `<option value="${esc(ch)}"${ch === v ? ' selected' : ''}>${esc(ch)}</option>`).join('');
+    return wrap(`${label}<select id="f${i}" data-f="${i}">${opts}</select>`);
+  }
+  if (f.kind === 'ref' && (f.refOpts || []).length > REF_PICKER_MIN) {
+    const cur = f.refOpts.find(o => o.id === v);
+    return wrap(`${label}${pickBtnHtml(`f${i}`, `data-pickf="${i}"`, cur ? cur.label : '')}`);
+  }
+  if (f.kind === 'ref') {
+    const opts = [{ id: 0, label: '' }, ...(f.refOpts || [])].map(o => `<option value="${o.id}"${o.id === v ? ' selected' : ''}>${esc(o.label)}</option>`).join('');
+    return wrap(`${label}<select id="f${i}" data-f="${i}">${opts}</select>`);
+  }
+  if (f.kind === 'date') return wrap(`${label}<input id="f${i}" data-f="${i}" type="date" value="${esc(v)}">`);
+  if (f.kind === 'num') return wrap(`${label}<input id="f${i}" data-f="${i}" type="text" inputmode="decimal" autocomplete="off" value="${esc(v)}">`);
+  const long = cols('Detail').includes(f.col) || f.col === 'Notes' || String(v).includes('\n') || String(v).length > 60;
+  return wrap(long
+    ? `${label}<textarea id="f${i}" data-f="${i}" rows="3">${esc(v)}</textarea>`
+    : `${label}<input id="f${i}" data-f="${i}" type="text" autocomplete="off" value="${esc(v)}">`);
+}
+
+async function openSheet(id, draft) {
+  if (sheet) return;
+  const row = id == null ? null : rows.find(r => r.id === id) || null;
+  if (id != null && !row) return;
+  const fields = sheetColumns(!row);
+  const vals = {}, blank = {};
+  for (const f of fields) {
+    vals[f.col] = initialValue(f, row?.raw);
+    blank[f.col] = initialValue(f, null);
+  }
+  const canDelete = Boolean(addLabel && row);
+  sheet = { row, fields, vals, base: JSON.parse(JSON.stringify(vals)), blank, canDelete, saving: false, picker: null };
+  if (draft) for (const f of fields) if (f.kind !== 'ro' && f.col in draft) vals[f.col] = JSON.parse(JSON.stringify(draft[f.col]));  // typed text kept after a failed save
+  try {
+    for (const f of fields) if (f.kind === 'ref') f.refOpts = await withTimeout(refOptions(f, vals[f.col]), 8000);
+  } catch (err) {
+    for (const f of fields) if (f.kind === 'ref' && !f.refOpts) f.kind = 'ro';
+  }
+  const titleText = row ? cols('Title').map(c => show(c, row.raw[c])).filter(Boolean).join(' ') || '(no name)' : addLabel.replace(/^\+\s*/, '');
+  const el = document.createElement('div');
+  el.className = 'sheet-bg';
+  el.innerHTML = `<form class="sheet" novalidate role="dialog" aria-modal="true" aria-label="${esc(titleText)}">
+    <h2>${esc(titleText)}</h2>
+    <div class="fields">${fieldsHtml(fields)}${canDelete ? '<div class="delzone"><button type="button" class="del" data-del>Delete</button></div>' : ''}</div>
+    <div class="bar">
+      <div class="bar-main" style="display:contents">
+        <button type="button" data-cancel>Cancel</button>
+        <button type="submit" class="save">Save</button>
+      </div>
+      <div class="confirm" data-bar="discard" hidden><span>Discard changes?</span>
+        <button type="button" data-keep>Keep editing</button><button type="button" data-discard>Discard</button></div>
+      <div class="confirm" data-bar="delete" hidden><span>Delete this?</span>
+        <button type="button" data-keep>Keep</button><button type="button" class="go-del" data-del-yes>Delete</button></div>
+    </div>
+  </form>`;
+  sheet.el = el;
+  document.body.appendChild(el);
+  document.body.style.overflow = 'hidden';
+  el.addEventListener('input', onSheetInput);
+  el.addEventListener('change', onSheetInput);
+  el.addEventListener('click', onSheetClick);
+  el.addEventListener('keydown', onSheetKey);
+  el.querySelector('form').addEventListener('submit', e => { e.preventDefault(); saveSheet(); });
+}
+
+// ---- Searchable picker (long lists) ----------------------------------------
+function openPicker(o) {  // o: { title, options, current, noneLabel, onPick, back }
+  if (!sheet || sheet.picker) return;
+  const p = document.createElement('div');
+  p.className = 'picker';
+  p.innerHTML = `<div class="phead"><button type="button" class="pback" data-pback>Back</button><div class="ptitle">${esc(o.title)}</div></div>
+    <div class="psearch"><input type="search" placeholder="Type a name to search" aria-label="Search" autocomplete="off" autocapitalize="off" spellcheck="false"></div>
+    <div class="plist"></div>`;
+  sheet.el.querySelector('form').appendChild(p);
+  sheet.picker = { ...o, el: p, matches: [] };
+  renderPicker();
+  p.querySelector('input').focus();
+}
+function closePicker() {
+  const pk = sheet?.picker;
+  if (!pk) return;
+  pk.el.remove();
+  sheet.picker = null;
+  const back = pk.back && sheet.el.querySelector(pk.back);
+  if (back) back.focus();
+}
+function pickMatches(pk, q) {
+  const words = q.toLowerCase().split(/\s+/).filter(Boolean);
+  if (!words.length) return pk.options.slice();
+  const scored = [];
+  for (const o of pk.options) {
+    const l = o.label.toLowerCase();
+    if (!words.every(w => l.includes(w))) continue;
+    const start = words.every(w => l.startsWith(w) || l.includes(' ' + w) || l.includes('-' + w));
+    scored.push({ o, r: l.startsWith(words[0]) ? 0 : start ? 1 : 2 });
+  }
+  return scored.sort((a, b) => a.r - b.r).map(x => x.o);
+}
+function renderPicker() {
+  const pk = sheet.picker, q = pk.el.querySelector('input').value.trim();
+  const all = pickMatches(pk, q), shown = all.slice(0, PICK_MAX);
+  pk.matches = shown;
+  const btn = (id, label, cls) => `<button type="button" class="popt${cls}" data-pv="${id}">${esc(label)}</button>`;
+  let html = btn(0, pk.noneLabel, ' none' + (!pk.current ? ' cur' : ''));
+  html += shown.map(o => btn(o.id, o.label, o.id === pk.current ? ' cur' : '')).join('');
+  if (!all.length) html += '<div class="pnote">No one matches. Check the spelling, or try fewer letters.</div>';
+  else if (all.length > PICK_MAX) html += '<div class="pnote">Keep typing to narrow it down</div>';
+  pk.el.querySelector('.plist').innerHTML = html;
+  pk.el.querySelector('.plist').scrollTop = 0;
+}
+function choosePick(id) {
+  const pk = sheet.picker;
+  if (!pk) return;
+  pk.onPick(id);
+  closePicker();
+}
+function onSheetKey(e) {
+  if (e.key !== 'Enter') return;
+  const t = e.target;
+  if (sheet.picker && t.closest('.picker')) {
+    if (!t.matches('input')) return;  // a focused name button: let Enter tap it
+    e.preventDefault();
+    const q = t.value.trim();
+    if (q && sheet.picker.matches.length) choosePick(sheet.picker.matches[0].id);
+  }
+}
+function closeSheet() {
+  if (!sheet) return;
+  if (sheet.picker) sheet.picker = null;
+  sheet.el.remove();
+  sheet = null;
+  document.body.style.overflow = '';
+  flush();
+}
+function showBar(which) {  // which: main | discard | delete
+  sheet.el.querySelector('.bar-main').style.display = which === 'main' ? 'contents' : 'none';
+  for (const b of sheet.el.querySelectorAll('[data-bar]')) b.hidden = b.dataset.bar !== which;
+}
+const isDirty = () => sheet.fields.some(f => f.kind !== 'ro' && JSON.stringify(sheet.vals[f.col]) !== JSON.stringify(sheet.base[f.col]));
+function tryClose() {
+  if (!sheet) return;
+  if (sheet.picker) { closePicker(); return; }
+  // Cancel always works. If a save is still running it carries on without the sheet.
+  if (sheet.saving || !isDirty()) { closeSheet(); return; }
+  showBar('discard');
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && sheet) tryClose(); });
+
+function onSheetInput(e) {
+  if (sheet.picker && e.target.closest('.picker')) { if (e.type === 'input') renderPicker(); return; }
+  const t = e.target.closest('[data-f]');
+  if (!t || t.hasAttribute('data-chip') || t.hasAttribute('data-bool')) return;
+  const f = sheet.fields[Number(t.dataset.f)];
+  sheet.vals[f.col] = f.kind === 'ref' ? Number(t.value) || 0 : t.value;
+}
+function onSheetClick(e) {
+  const t = e.target;
+  if (t === sheet.el) { tryClose(); return; }
+  const pv = t.closest('[data-pv]');
+  if (pv && sheet.picker) { choosePick(Number(pv.dataset.pv) || 0); return; }
+  if (t.closest('[data-pback]')) { closePicker(); return; }
+  const pf = t.closest('[data-pickf]');
+  if (pf) {
+    const f = sheet.fields[Number(pf.dataset.pickf)];
+    openPicker({ title: f.label, options: f.refOpts, current: sheet.vals[f.col], noneLabel: 'None', back: `#f${pf.dataset.pickf}`,
+      onPick: id => {
+        sheet.vals[f.col] = id;
+        const o = f.refOpts.find(x => x.id === id);
+        pf.classList.toggle('empty-pick', !o);
+        pf.firstElementChild.textContent = o ? o.label : 'Choose…';
+      } });
+    return;
+  }
+  const locked = t.closest('[data-locked]');
+  if (locked) {
+    const f = sheet.fields[Number(locked.dataset.locked)];
+    say(lockedMsg(f.col), 3500);
+    return;
+  }
+  const tog = t.closest('[data-chip], [data-bool]');
+  if (tog) {
+    const f = sheet.fields[Number(tog.dataset.f)];
+    if (tog.hasAttribute('data-bool')) sheet.vals[f.col] = !sheet.vals[f.col];
+    else {
+      const ch = tog.dataset.chip, cur = sheet.vals[f.col];
+      sheet.vals[f.col] = cur.includes(ch) ? cur.filter(x => x !== ch) : [...cur, ch];
+    }
+    const on = tog.hasAttribute('data-bool') ? sheet.vals[f.col] : sheet.vals[f.col].includes(tog.dataset.chip);
+    tog.classList.toggle('on', on);
+    tog.setAttribute('aria-pressed', String(on));
+    return;
+  }
+  if (t.closest('[data-cancel]')) tryClose();
+  else if (t.closest('[data-discard]')) closeSheet();
+  else if (t.closest('[data-keep]')) showBar('main');
+  else if (t.closest('[data-del-yes]')) deleteRow();
+  else if (t.closest('[data-del]')) { if (!sheet.saving) showBar('delete'); }
+}
+
+function toGrist(f, v) {
+  switch (f.kind) {
+    case 'num': {
+      const s = v.trim().replace(/,/g, '');
+      if (s === '') return null;
+      const n = Number(s);
+      if (!Number.isFinite(n)) throw new UserError(`"${f.label}" needs to be a number.`);
+      if (baseType(f.col) === 'Int' && !Number.isInteger(n)) throw new UserError(`"${f.label}" needs to be a whole number.`);
+      return n;
+    }
+    case 'date': return v ? epochFrom(v) : null;
+    case 'chips': return ['L', ...v];
+    case 'ref': return Number(v) || 0;
+    default: return v;
+  }
+}
+
+async function saveSheet() {
+  const s = sheet;
+  if (!s || s.saving) return;
+  const adding = !s.row, changes = {};
+  try {
+    for (const f of s.fields) {
+      if (f.kind === 'ro') continue;
+      const ref = adding ? s.blank[f.col] : s.base[f.col];
+      if (JSON.stringify(s.vals[f.col]) === JSON.stringify(ref)) continue;
+      changes[f.col] = toGrist(f, s.vals[f.col]);
+    }
+  } catch (err) { say(err.message, 4000); return; }
+  if (!Object.keys(changes).length) {
+    if (adding) say('Fill something in first.', 3000); else closeSheet();
+    return;
+  }
+  const saveBtn = s.el.querySelector('.save');
+  s.saving = true; saveBtn.disabled = true; saveBtn.textContent = 'Saving…';
+  const draft = JSON.parse(JSON.stringify(s.vals));
+  try {
+    if (adding) {
+      const known = new Set(rows.map(r => r.id));
+      const res = await withTimeout(grist.selectedTable.create({ fields: changes }));
+      const newId = Number(res?.id ?? res?.[0]?.id ?? res);
+      awaitingNew = { known, until: Date.now() + 10000 };
+      if (Number.isFinite(newId) && newId > 0) { highlightId = newId; scrolledTo = null; }
+      query = ''; search.value = ''; unfinishedOnly = false;
+    } else {
+      await withTimeout(grist.selectedTable.update({ id: s.row.id, fields: changes }));
+      Object.assign(s.row.raw, changes);
+      Object.assign(s.row, makeRow(s.row.raw));
+    }
+    if (sheet === s) closeSheet();  // if they cancelled meanwhile, the sheet is already gone
+    say('Saved'); render();
+  } catch (err) {
+    if (sheet === s) {
+      s.saving = false; saveBtn.disabled = false; saveBtn.textContent = 'Save';
+      say(errMsg(err), 5000);
+    } else {
+      // The sheet was cancelled while saving: offer the typed text back.
+      say(errMsg(err), 6000, { label: 'Reopen', run: () => openSheet(adding ? null : s.row.id, draft) });
+    }
+  }
+}
+
+// Everything we can write back, so Undo restores the row.
+function snapshotFields(raw) {
+  const out = {};
+  for (const n of ['Title', 'Subtitle', 'Detail', 'Date', 'Phone', 'Email', 'Checks', 'Consent', 'Edit']) for (const c of cols(n)) {
+    const v = raw[c];
+    if (metaFor(c).isFormula || v == null || (v === '' && baseType(c) !== 'Text')) continue;
+    out[c] = v instanceof Date ? v.getTime() / 1000 : v;
+  }
+  return out;
+}
+async function deleteRow() {
+  if (!sheet?.canDelete || sheet.saving) return;
+  const row = sheet.row, at = rows.indexOf(row), fields = snapshotFields(row.raw);
+  closeSheet();
+  rows = rows.filter(r => r !== row);
+  render();
+  try {
+    await withTimeout(grist.selectedTable.destroy(row.id));
+  } catch (err) {
+    rows.splice(Math.min(at, rows.length), 0, row);
+    render();
+    say(errMsg(err), 5000);
+    return;
+  }
+  say('Deleted.', 6000, { label: 'Undo', run: async () => {
+    try {
+      const known = new Set(rows.map(r => r.id));
+      await withTimeout(grist.selectedTable.create({ fields }));
+      awaitingNew = { known, until: Date.now() + 10000 };
+      say('Put back.');
+    } catch (err) { say(errMsg(err), 5000); }
+  } });
+}
+
+// ---- Grist wiring ---------------------------------------------------------
+if (typeof grist === 'undefined') {
+  phase = 'failed';
+  render();
+} else {
+  grist.ready({
+    requiredAccess: 'full',
+    allowSelectBy: true,
+    columns: [
+      { name: 'Title' },
+      { name: 'Subtitle', optional: true, allowMultiple: true },
+      { name: 'Detail', optional: true, allowMultiple: true },
+      { name: 'Date', optional: true, type: 'Date' },
+      { name: 'Phone', optional: true },
+      { name: 'Email', optional: true },
+      { name: 'Checks', optional: true, allowMultiple: true, type: 'Bool' },
+      { name: 'Consent', optional: true, type: 'Bool' },
+      { name: 'Edit', optional: true, allowMultiple: true },
+    ],
+  });
+
+  grist.onOptions(opts => {
+    hintText = String(opts?.hint ?? '').trim();
+    addLabel = String(opts?.addLabel ?? '').trim();
+    readOnlyCols = list(opts?.readOnly).map(String);
+    addOnlyCols = list(opts?.addOnly).map(String);
+    lockNotes = opts?.notes && typeof opts.notes === 'object' ? opts.notes : {};
+    if (phase === 'ready') requestRender();
+  });
+
+  grist.onRecords(async (records, newMappings) => {
+    try {
+      if (!newMappings) { mappings = null; mapKey = ''; rows = []; phase = 'notset'; render(); return; }
+      const key = JSON.stringify(newMappings);
+      mappings = newMappings;
+      if (key !== mapKey || !metaAll) { await loadMeta(); mapKey = key; }
+      await loadRefLabels();
+      rows = records.map(r => makeRow(r));
+      if (awaitingNew && Date.now() > awaitingNew.until) awaitingNew = null;
+      if (awaitingNew) {
+        const fresh = rows.filter(r => !awaitingNew.known.has(r.id));
+        if (fresh.length) {
+          const r = fresh[fresh.length - 1];
+          highlightId = r.id; scrolledTo = null; awaitingNew = null;
+          query = ''; search.value = ''; unfinishedOnly = false;
+        }
+      }
+      const wasReady = phase === 'ready';
+      phase = 'ready';
+      if (wasReady) requestRender(); else render();
+    } catch (err) {
+      console.warn('Could not load', err);
+      phase = 'failed';
+      render();
+    }
+  });
+  grist.onRecord(r => { selectedId = r?.id ?? null; if (phase === 'ready') requestRender(); });
+  setTimeout(() => { if (phase === 'loading') { phase = 'failed'; render(); } }, 20000);
+}
+</script>
+</body>
+</html>

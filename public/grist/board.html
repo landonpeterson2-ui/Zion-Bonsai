@@ -7,21 +7,25 @@
   <title>Zion Bonsai board (Grist widget)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Montserrat:wght@600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
       --paper: #F4EEE6;
+      --paper-deep: #E9DFD2;
       --linen: #FBF8F3;
       --forest: #2F3B22;
       --moss: #4F6420;
       --clay: #A84A2B;
       --clay-dark: #8F3E23;
       --rule: rgba(47, 59, 34, .15);
+      --edge: rgba(47, 59, 34, .4);
       --radius: 3px;
       --sans: 'Open Sans', system-ui, sans-serif;
       --label: 'Montserrat', 'Open Sans', system-ui, sans-serif;
+      --display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
     }
     * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
     html, body { height: 100%; margin: 0; }
     body {
       background: var(--paper);
@@ -30,28 +34,24 @@
       display: flex;
       flex-direction: column;
     }
-    .label {
-      font: 600 11px/1.2 var(--label);
-      letter-spacing: .16em;
-      text-transform: uppercase;
-    }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    .label { font: 600 11px/1.2 var(--label); letter-spacing: .16em; text-transform: uppercase; }
     #note { margin: 24px; max-width: 46ch; }
-    #note[hidden], #app[hidden] { display: none; }
     #app { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+    #hint { margin: 0; padding: 10px 14px 0; color: var(--moss); }
     #bar {
       display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center;
-      padding: 10px 14px; border-bottom: 1px solid var(--rule);
+      padding: 8px 14px; border-bottom: 1px solid var(--rule);
     }
     #bar .label { color: var(--moss); }
-    #bar label {
-      display: inline-flex; align-items: center; gap: 6px; min-height: 28px; cursor: pointer;
-    }
-    #msg { color: var(--clay); margin-left: auto; }
+    #bar label { display: inline-flex; align-items: center; gap: 6px; min-height: 28px; cursor: pointer; }
+    #msg { color: var(--forest); margin-left: auto; }
+    #tabs { display: none; }
     #lanes {
       flex: 1; min-height: 0; display: flex; gap: 12px; padding: 14px; overflow: auto; align-items: flex-start;
     }
     .lane {
-      flex: 0 0 240px; background: var(--linen); border: 1px solid var(--rule); border-radius: var(--radius);
+      flex: 0 0 250px; background: var(--linen); border: 1px solid var(--rule); border-radius: var(--radius);
       display: flex; flex-direction: column; max-height: 100%;
     }
     .lane.over { outline: 2px solid var(--clay); outline-offset: -2px; }
@@ -65,41 +65,110 @@
       background: var(--paper); border: 1px solid var(--rule); border-radius: var(--radius);
       padding: 8px 10px; cursor: grab;
     }
-    .card.cursor { border-color: var(--clay); box-shadow: inset 3px 0 0 var(--clay); }
+    .card.cursor { border-color: var(--forest); box-shadow: inset 3px 0 0 var(--forest); }
     .card.dragging { opacity: .45; }
+    .card.pending { opacity: .6; cursor: default; }
     .card .title { font-weight: 600; word-break: break-word; }
     .card .date { color: var(--moss); font-size: 12px; }
-    .card .detail { font-size: 12px; opacity: .8; margin-top: 2px; word-break: break-word; }
-    .card select {
-      margin-top: 6px; width: 100%; min-height: 28px; font: 400 12px var(--sans); color: var(--forest);
-      background: var(--linen); border: 1px solid var(--rule); border-radius: var(--radius);
+    .card .detail { font-size: 12px; color: var(--moss); margin-top: 2px; word-break: break-word; }
+    .card select.mv {
+      margin-top: 6px; width: 100%; min-height: 32px; font-size: 12px;
+      background: var(--linen); border: 1px solid var(--edge); border-radius: var(--radius);
     }
     :focus-visible { outline: 2px solid var(--clay); outline-offset: 2px; }
-    .empty { color: var(--forest); opacity: .6; padding: 4px; font-size: 12px; }
+    .empty { color: var(--moss); padding: 4px; font-size: 12px; }
+    #toast {
+      position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); background: var(--forest); color: var(--linen);
+      padding: 8px 16px; border-radius: var(--radius); opacity: 0; transition: opacity .2s; pointer-events: none;
+      z-index: 20; max-width: calc(100% - 24px);
+    }
+    #toast.show { opacity: 1; }
+    @media (prefers-reduced-motion: reduce) { #toast { transition: none; } }
+
+    /* Details sheet: a panel on wide screens, full screen on phones. */
+    #sheet { position: fixed; inset: 0; z-index: 10; background: rgba(47, 59, 34, .45); display: flex; align-items: center; justify-content: center; }
+    #sheet .panel {
+      background: var(--paper); width: 100%; max-width: 480px; max-height: 90%; overflow-y: auto; padding: 18px 16px; border-radius: var(--radius);
+    }
+    #sheet h3 { margin: 0 0 12px; font: 500 28px/1.15 var(--display); }
+    #sheet label { display: block; margin-bottom: 14px; color: var(--moss); }
+    #sheet input, #sheet select, #sheet textarea {
+      display: block; width: 100%; margin-top: 6px; min-height: 44px; padding: 8px 10px; border: 1px solid var(--edge);
+      border-radius: var(--radius); background: var(--linen); color: var(--forest); font: 400 16px/1.4 var(--sans); letter-spacing: 0; text-transform: none;
+    }
+    #sheet textarea { min-height: 96px; }
+    #sheet .ro { margin-top: 6px; padding: 10px; border: 1px dashed var(--edge); border-radius: var(--radius); color: var(--forest); overflow-wrap: anywhere; }
+    #sheet .actions, #sheet .ask { display: flex; gap: 10px; margin-top: 6px; }
+    #sheet .ask span { flex: 1 1 100%; font-weight: 600; }
+    #sheet .ask { flex-wrap: wrap; }
+    #sheet button {
+      flex: 1; min-height: 48px; border-radius: var(--radius); border: 1px solid var(--edge); background: var(--linen);
+      font: 600 11px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; cursor: pointer;
+    }
+    #sheet button.save, #sheet button.yes { background: var(--clay); border-color: var(--clay); color: var(--linen); }
+    #sheet button.save:hover, #sheet button.yes:hover { background: var(--clay-dark); }
+    #sheet button.save:disabled { opacity: .6; }
+
+    /* Phones (and narrow widgets): one lane at a time, picked with tabs; bigger tap targets;
+       16px inputs so iPhones don't zoom in on them. */
+    @media (max-width: 600px) {
+      #bar { display: none; }
+      #tabs { display: flex; gap: 6px; position: sticky; top: 0; z-index: 1; padding: 10px 14px; background: var(--paper); overflow-x: auto; }
+      #tabs button {
+        flex: 1 0 auto; min-height: 44px; padding: 0 12px; border: 1px solid var(--edge); border-radius: var(--radius);
+        background: var(--linen); font: 600 11px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; cursor: pointer;
+      }
+      #tabs button[aria-pressed=true] { background: var(--forest); border-color: var(--forest); color: var(--linen); }
+      #lanes { display: block; padding: 0 14px 80px; overflow: visible; }
+      .lane { display: none; flex: none; border: 0; background: none; max-height: none; }
+      .lane.active { display: block; }
+      .lane h2 { display: none; }
+      .cards { padding: 4px 0; overflow: visible; }
+      .card { padding: 12px 14px; cursor: pointer; background: var(--linen); }
+      .card .title { font-size: 16px; }
+      .card .date, .card .detail { font-size: 14px; }
+      .card select.mv { min-height: 44px; font-size: 16px; padding: 0 8px; }
+      #sheet { align-items: stretch; }
+      #sheet .panel { max-width: none; max-height: none; border-radius: 0; }
+    }
+    input[type=date] { -webkit-appearance: none; appearance: none; min-width: 0; max-width: 100%; }
+    input[type=date]::-webkit-date-and-time-value { text-align: left; }
   </style>
 </head>
 <body>
   <p id="note">Open this inside Grist as a custom widget. See docs/grist-widgets.md in the Zion Bonsai repo for the steps.</p>
   <div id="app" hidden>
+    <p id="hint" hidden></p>
     <div id="bar" role="group" aria-label="Show lanes">
-      <span class="label">Show</span>
+      <span class="label">Show:</span>
       <span id="toggles"></span>
       <span id="msg" class="label" role="status" aria-live="polite"></span>
     </div>
+    <div id="tabs" role="group" aria-label="Lanes"></div>
     <div id="lanes"></div>
   </div>
+  <div id="sheet" hidden></div>
+  <div id="toast" role="status"></div>
 
   <script src="https://docs.getgrist.com/grist-plugin-api.js"></script>
   <script>
   (function () {
     'use strict';
     var NONE = '(none)';
-    var state = { records: [], mapping: null, choices: null, choiceKey: '', hidden: [], cursorId: null };
+    var FIELDS = ['Lane', 'Title', 'Date', 'Detail'];
+    var state = { records: [], mapping: null, choices: null, meta: {}, refLabels: {}, choiceKey: '', hidden: [], hint: '',
+                  cursorId: null, activeLane: null, pending: {}, sheet: null };
     var lanesEl = document.getElementById('lanes');
     var togglesEl = document.getElementById('toggles');
+    var tabsEl = document.getElementById('tabs');
     var msgEl = document.getElementById('msg');
+    var hintEl = document.getElementById('hint');
+    var sheetEl = document.getElementById('sheet');
+    var toastEl = document.getElementById('toast');
     var dragId = null;
     var msgTimer = null;
+    var lastPointer = 0;
+    var renderTimer = null;
 
     if (window.parent === window || typeof grist === 'undefined') return; // not framed: keep the note
     document.getElementById('note').hidden = true;
@@ -107,6 +176,7 @@
 
     grist.ready({
       requiredAccess: 'full',
+      allowSelectBy: true,
       columns: [
         { name: 'Lane', title: 'Lane', type: 'Choice', description: 'A Choice column: one lane per choice' },
         { name: 'Title', title: 'Title', description: 'Card heading' },
@@ -119,15 +189,39 @@
       msgEl.textContent = text || '';
       clearTimeout(msgTimer);
       if (text) msgTimer = setTimeout(function () { msgEl.textContent = ''; }, 6000);
+      toastEl.textContent = text || '';
+      toastEl.classList.toggle('show', !!text);
+      if (text) setTimeout(function () { toastEl.classList.remove('show'); }, 2600);
+    }
+    var esc = function (s) {
+      return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; });
+    };
+    function errText(e) {
+      if (!navigator.onLine) return "Couldn't save. Check your connection and try again.";
+      return /access|permission|blocked|denied/i.test(String((e && e.message) || e))
+        ? "That can't be changed here. Ask Landon if you think it should be."
+        : "Couldn't save. Check your connection and try again.";
+    }
+    function withTimeout(p, ms) {
+      return Promise.race([p, new Promise(function (_, rej) { setTimeout(function () { rej(new Error('timeout')); }, ms || 10000); })]);
     }
 
+    function isoDay(v) {
+      if (v == null || v === '') return null;
+      var d = v instanceof Date ? v : new Date(typeof v === 'number' ? v * 1000 : v);
+      return isNaN(d.getTime()) ? null : d.toISOString().slice(0, 10);
+    }
     function fmtDate(v) {
-      if (v == null || v === '') return '';
-      var d = typeof v === 'number' ? new Date(v * 1000) : new Date(v);
-      if (isNaN(d.getTime())) return String(v);
-      return d.toLocaleDateString('en-US', { timeZone: 'UTC', month: 'short', day: 'numeric', year: 'numeric' });
+      var iso = isoDay(v);
+      if (!iso) return v == null || v === '' ? '' : String(v);
+      return new Date(iso + 'T00:00:00Z').toLocaleDateString('en-US', { timeZone: 'UTC', month: 'short', day: 'numeric', year: 'numeric' });
+    }
+    function epoch(iso) {
+      var p = iso.split('-').map(Number);
+      return Date.UTC(p[0], p[1] - 1, p[2]) / 1000;
     }
     function sortKey(v) {
+      if (v instanceof Date) return v.getTime() / 1000;
       if (typeof v === 'number') return v;
       var t = Date.parse(v);
       return isNaN(t) ? null : t / 1000;
@@ -137,30 +231,65 @@
       if (Array.isArray(v)) return v.filter(function (x) { return x !== 'L'; }).join(', ');
       return String(v);
     }
+    function isRef(f) { var m = state.meta[f]; return !!m && /^Ref:/.test(m.type); }
+    function writable(f) { var m = state.meta[f]; return !!state.mapping && !!state.mapping[f] && !!m && !m.isFormula && !isRef(f); }
+    // Reference columns arrive as row ids; show the name from the other table.
+    function show(f, v) {
+      if (v == null || v === '') return '';
+      if (isRef(f)) return (state.refLabels[f] && state.refLabels[f][Number(v)]) || '';
+      var m = state.meta[f];
+      if (m && /^Date/.test(m.type)) return fmtDate(v);
+      return text(v);
+    }
 
-    // Choices come from the Lane column's widgetOptions, so lanes follow the column's choice order.
-    async function loadChoices(laneCol) {
+    // Reads the Lane choices (their order) and the column types the details sheet needs.
+    async function loadMeta(mappings) {
+      var meta = {}, refLabels = {}, choices = null;
       try {
         var tableId = await grist.selectedTable.getTableId();
         var tables = await grist.docApi.fetchTable('_grist_Tables');
         var cols = await grist.docApi.fetchTable('_grist_Tables_column');
         var tIdx = tables.tableId.indexOf(tableId);
-        if (tIdx < 0) return null;
-        var tableRef = tables.id[tIdx];
-        for (var i = 0; i < cols.id.length; i++) {
-          if (cols.parentId[i] === tableRef && cols.colId[i] === laneCol) {
-            var opts = JSON.parse(cols.widgetOptions[i] || '{}');
-            return Array.isArray(opts.choices) ? opts.choices : null;
+        if (tIdx >= 0) {
+          var tableRef = tables.id[tIdx];
+          var byRef = {};
+          for (var i = 0; i < cols.id.length; i++) byRef[cols.id[i]] = i;
+          for (var j = 0; j < cols.id.length; j++) {
+            if (cols.parentId[j] !== tableRef) continue;
+            FIELDS.forEach(function (f) {
+              if (mappings[f] !== cols.colId[j]) return;
+              var opts = {};
+              try { opts = JSON.parse(cols.widgetOptions[j] || '{}') || {}; } catch (e) { /* none */ }
+              meta[f] = { colId: cols.colId[j], type: cols.type[j] || 'Text', isFormula: !!cols.isFormula[j],
+                          label: cols.label[j] || f, choices: Array.isArray(opts.choices) ? opts.choices : [], visibleCol: cols.visibleCol[j] };
+            });
+          }
+          if (meta.Lane) choices = meta.Lane.choices;
+          for (var k = 0; k < FIELDS.length; k++) {
+            var f = FIELDS[k], m = meta[f];
+            if (!m || !/^Ref:/.test(m.type)) continue;
+            var target = m.type.slice(4);
+            var tRef = tables.id[tables.tableId.indexOf(target)];
+            var disp = byRef[m.visibleCol] !== undefined ? cols.colId[byRef[m.visibleCol]] : null;
+            if (!disp) {
+              for (var x = 0; x < cols.id.length; x++) {
+                if (cols.parentId[x] === tRef && cols.type[x] === 'Text') { disp = cols.colId[x]; break; }
+              }
+            }
+            var data = await grist.docApi.fetchTable(target);
+            var map = {};
+            data.id.forEach(function (id, n) { map[id] = disp && data[disp] ? text(data[disp][n]) : ''; });
+            refLabels[f] = map;
           }
         }
       } catch (e) {
-        console.warn('Could not read choice order', e);
+        console.warn('Could not read the column settings', e);
       }
-      return null;
+      state.meta = meta; state.refLabels = refLabels; state.choices = choices;
     }
 
     function laneList() {
-      var m = state.mapping, base = (state.choices || []).slice();
+      var base = (state.choices || []).slice();
       var seen = {}, hasNone = false;
       base.forEach(function (c) { seen[c] = true; });
       state.records.forEach(function (r) {
@@ -171,11 +300,32 @@
       if (hasNone) base.push(NONE);
       return base;
     }
+    var laneOf = function (r) { return (r.Lane == null || r.Lane === '') ? NONE : r.Lane; };
+
+    // Redraws caused by someone else's edit wait while a sheet is open, a field is focused or a tap just landed.
+    function blocked() {
+      if (state.sheet) return true;
+      if (Date.now() - lastPointer < 400) return true;
+      var a = document.activeElement;
+      return !!a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName) && a.type !== 'checkbox';
+    }
+    function requestRender() {
+      if (!blocked()) { clearTimeout(renderTimer); renderTimer = null; render(); return; }
+      if (renderTimer) return;
+      renderTimer = setTimeout(function () { renderTimer = null; requestRender(); }, 300);
+    }
+    document.addEventListener('pointerdown', function () { lastPointer = Date.now(); }, true);
 
     function render() {
       lanesEl.textContent = '';
       togglesEl.textContent = '';
+      tabsEl.textContent = '';
+      hintEl.hidden = !state.hint;
+      hintEl.textContent = state.hint;
       var lanes = laneList();
+      var visible = lanes.filter(function (l) { return state.hidden.indexOf(l) < 0; });
+      if (visible.indexOf(state.activeLane) < 0) state.activeLane = visible[0] || null;
+
       lanes.forEach(function (lane) {
         var lab = document.createElement('label');
         var cb = document.createElement('input');
@@ -185,7 +335,7 @@
           var h = state.hidden.filter(function (x) { return x !== lane; });
           if (!cb.checked) h.push(lane);
           state.hidden = h;
-          grist.setOption('hidden', h);
+          Promise.resolve(grist.setOption('hidden', h)).catch(function () { /* editors may not save options: lasts this visit */ });
           render();
         });
         lab.appendChild(cb);
@@ -193,12 +343,18 @@
         togglesEl.appendChild(lab);
       });
 
-      lanes.forEach(function (lane) {
-        if (state.hidden.indexOf(lane) >= 0) return;
-        var cards = state.records.filter(function (r) {
-          var v = (r.Lane == null || r.Lane === '') ? NONE : r.Lane;
-          return v === lane;
-        });
+      visible.forEach(function (lane) {
+        var n = state.records.filter(function (r) { return laneOf(r) === lane; }).length;
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.setAttribute('aria-pressed', String(lane === state.activeLane));
+        b.textContent = lane + ' · ' + n;
+        b.addEventListener('click', function () { state.activeLane = lane; render(); window.scrollTo(0, 0); });
+        tabsEl.appendChild(b);
+      });
+
+      visible.forEach(function (lane) {
+        var cards = state.records.filter(function (r) { return laneOf(r) === lane; });
         cards.sort(function (a, b) {
           var ka = sortKey(a.Date), kb = sortKey(b.Date);
           if (ka == null && kb == null) return 0;
@@ -208,7 +364,7 @@
         });
 
         var el = document.createElement('section');
-        el.className = 'lane';
+        el.className = 'lane' + (lane === state.activeLane ? ' active' : '');
         el.dataset.lane = lane;
         el.setAttribute('aria-label', lane);
         var h = document.createElement('h2');
@@ -245,36 +401,46 @@
     }
 
     function cardEl(r, lanes) {
+      var pend = !!state.pending[r.id];
       var c = document.createElement('div');
-      c.className = 'card' + (r.id === state.cursorId ? ' cursor' : '');
-      c.draggable = true;
+      c.className = 'card' + (r.id === state.cursorId ? ' cursor' : '') + (pend ? ' pending' : '');
+      c.draggable = !pend;
+      c.tabIndex = 0;
       c.dataset.id = String(r.id);
-      var t = document.createElement('div'); t.className = 'title'; t.textContent = text(r.Title) || '(untitled)';
+      var title = show('Title', r.Title);
+      var t = document.createElement('div'); t.className = 'title'; t.textContent = title || '(untitled)';
       c.appendChild(t);
-      var d = fmtDate(r.Date);
+      var d = show('Date', r.Date);
       if (d) { var de = document.createElement('div'); de.className = 'date'; de.textContent = d; c.appendChild(de); }
-      var dt = text(r.Detail);
+      var dt = show('Detail', r.Detail);
+      if (pend) dt = (dt ? dt + ' · ' : '') + 'Saving…';
       if (dt) { var dd = document.createElement('div'); dd.className = 'detail'; dd.textContent = dt; c.appendChild(dd); }
 
-      var sel = document.createElement('select');
-      sel.setAttribute('aria-label', 'Move ' + (text(r.Title) || 'card') + ' to');
-      var ph = document.createElement('option'); ph.value = ''; ph.textContent = 'Move to…';
-      sel.appendChild(ph);
-      var current = (r.Lane == null || r.Lane === '') ? NONE : r.Lane;
-      lanes.forEach(function (l) {
-        if (l === NONE || l === current) return;
-        var o = document.createElement('option'); o.value = l; o.textContent = l; sel.appendChild(o);
-      });
-      sel.addEventListener('change', function () { if (sel.value) move(r.id, sel.value); });
-      sel.addEventListener('click', function (ev) { ev.stopPropagation(); });
-      c.appendChild(sel);
+      if (!pend && writable('Lane')) {
+        var sel = document.createElement('select');
+        sel.className = 'mv';
+        sel.setAttribute('aria-label', 'Move ' + (title || 'card') + ' to');
+        var ph = document.createElement('option'); ph.value = ''; ph.textContent = 'Move to…';
+        sel.appendChild(ph);
+        var current = laneOf(r);
+        lanes.forEach(function (l) {
+          if (l === NONE || l === current) return;
+          var o = document.createElement('option'); o.value = l; o.textContent = l; sel.appendChild(o);
+        });
+        sel.addEventListener('change', function () { var v = sel.value; sel.blur(); if (v) move(r.id, v); });
+        sel.addEventListener('click', function (ev) { ev.stopPropagation(); });
+        c.appendChild(sel);
+      }
 
       c.addEventListener('click', function () {
+        if (pend) return;
         state.cursorId = r.id;
-        grist.setCursorPos({ rowId: r.id });
+        try { grist.setCursorPos({ rowId: r.id }); } catch (e) { /* not linked */ }
         Array.prototype.forEach.call(lanesEl.querySelectorAll('.card.cursor'), function (x) { x.classList.remove('cursor'); });
         c.classList.add('cursor');
+        openSheet(r.id);
       });
+      c.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' && ev.target === c) c.click(); });
       c.addEventListener('dragstart', function (ev) {
         dragId = r.id;
         c.classList.add('dragging');
@@ -287,27 +453,126 @@
 
     function move(id, lane) {
       var laneCol = state.mapping && state.mapping.Lane;
-      if (!laneCol) return;
+      var row = state.records.filter(function (r) { return r.id === id; })[0];
+      if (!laneCol || !row || laneOf(row) === lane || lane === NONE || state.pending[id]) return;
       var fields = {};
-      fields[laneCol] = (lane === NONE) ? '' : lane;
-      Promise.resolve(grist.selectedTable.update({ id: id, fields: fields })).then(
-        function () { say('Moved'); },
-        function (e) { say('Could not move: ' + (e && e.message || e)); }
+      fields[laneCol] = lane;
+      state.pending[id] = true;
+      render();
+      withTimeout(Promise.resolve(grist.selectedTable.update({ id: id, fields: fields }))).then(
+        function () { delete state.pending[id]; row.Lane = lane; render(); say('Moved to ' + lane); },
+        function (e) { delete state.pending[id]; render(); say(errText(e)); }
       );
     }
 
+    // ---- Details sheet: edit the mapped columns that can be edited ----
+    function fieldHtml(f, r) {
+      var m = state.meta[f], v = r[f], name = esc(m.label);
+      if (!writable(f)) {
+        return '<div class="label" style="color:var(--moss)">' + name + '</div><div class="ro" style="margin-bottom:14px">' + (esc(show(f, v)) || '—') + '</div>';
+      }
+      if (f === 'Lane') {
+        var list = state.choices && state.choices.indexOf(v) < 0 && v ? state.choices.concat([v]) : (state.choices || []);
+        return '<label><span class="label">' + name + '</span><select data-f="Lane">' + list.map(function (s) {
+          return '<option' + (s === v ? ' selected' : '') + '>' + esc(s) + '</option>'; }).join('') + '</select></label>';
+      }
+      if (m.type === 'Date' || m.type === 'DateTime') {
+        return '<label><span class="label">' + name + '</span><input type="date" data-f="' + f + '" value="' + esc(isoDay(v) || '') + '"></label>';
+      }
+      if (m.type === 'Choice') {
+        var cl = m.choices.indexOf(v) < 0 && v ? m.choices.concat([v]) : m.choices;
+        return '<label><span class="label">' + name + '</span><select data-f="' + f + '"><option value=""></option>' + cl.map(function (s) {
+          return '<option' + (s === v ? ' selected' : '') + '>' + esc(s) + '</option>'; }).join('') + '</select></label>';
+      }
+      if (f === 'Detail') return '<label><span class="label">' + name + '</span><textarea data-f="Detail">' + esc(text(v)) + '</textarea></label>';
+      return '<label><span class="label">' + name + '</span><input type="text" data-f="' + f + '" value="' + esc(text(v)) + '"></label>';
+    }
+    function readSheet() {
+      var out = {};
+      Array.prototype.forEach.call(sheetEl.querySelectorAll('[data-f]'), function (el) { out[el.dataset.f] = el.value; });
+      return out;
+    }
+    function openSheet(id) {
+      var row = state.records.filter(function (r) { return r.id === id; })[0];
+      if (!row || !state.meta.Lane) return;
+      var fields = FIELDS.filter(function (f) { return state.meta[f]; });
+      sheetEl.innerHTML = '<div class="panel" role="dialog" aria-modal="true" aria-label="Card details">' +
+        '<h3>' + (esc(show('Title', row.Title)) || 'Details') + '</h3>' +
+        fields.map(function (f) { return fieldHtml(f, row); }).join('') +
+        '<div class="ask" hidden></div>' +
+        '<div class="actions"><button type="button" class="save">Save</button><button type="button" class="cancel">Cancel</button></div></div>';
+      sheetEl.hidden = false;
+      state.sheet = { id: id, initial: JSON.stringify(readSheet()), saving: false };
+    }
+    function closeSheet(force) {
+      var st = state.sheet;
+      if (!st) return;
+      if (!force && !st.saving && JSON.stringify(readSheet()) !== st.initial) {
+        var ask = sheetEl.querySelector('.ask');
+        ask.innerHTML = '<span>Discard changes?</span><button type="button" class="no">Keep editing</button><button type="button" class="yes">Discard</button>';
+        ask.hidden = false;
+        sheetEl.querySelector('.actions').hidden = true;
+        return;
+      }
+      state.sheet = null;
+      sheetEl.hidden = true;
+      sheetEl.innerHTML = '';
+      requestRender();
+    }
+    function toWrite(f, v) {
+      if (f === 'Date') return v ? epoch(v) : null;
+      return v;
+    }
+    async function saveSheet() {
+      var st = state.sheet;
+      if (!st || st.saving) return;
+      var now = readSheet(), was = JSON.parse(st.initial), fields = {}, local = {};
+      Object.keys(now).forEach(function (f) {
+        if (now[f] === was[f]) return;
+        fields[state.mapping[f]] = toWrite(f, now[f]);
+        local[f] = f === 'Date' ? toWrite(f, now[f]) : now[f];
+      });
+      if (!Object.keys(fields).length) { closeSheet(true); return; }
+      st.saving = true;
+      var btn = sheetEl.querySelector('.save');
+      btn.disabled = true; btn.textContent = 'Saving…';
+      try {
+        await withTimeout(Promise.resolve(grist.selectedTable.update({ id: st.id, fields: fields })));
+      } catch (e) {
+        st.saving = false;
+        if (state.sheet === st) { btn.disabled = false; btn.textContent = 'Save'; }
+        say(errText(e));
+        return;
+      }
+      var row = state.records.filter(function (r) { return r.id === st.id; })[0];
+      if (row) Object.assign(row, local);
+      if (state.sheet === st) closeSheet(true);
+      render();
+      say('Saved');
+    }
+    sheetEl.addEventListener('click', function (e) {
+      if (e.target === sheetEl || e.target.closest('.cancel')) closeSheet(false);
+      else if (e.target.closest('.save')) saveSheet();
+      else if (e.target.closest('.ask .no')) {
+        sheetEl.querySelector('.ask').hidden = true;
+        sheetEl.querySelector('.actions').hidden = false;
+      } else if (e.target.closest('.ask .yes')) closeSheet(true);
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && state.sheet) closeSheet(false); });
+
     grist.onOptions(function (opts) {
       state.hidden = (opts && Array.isArray(opts.hidden)) ? opts.hidden : [];
-      if (state.mapping) render();
+      state.hint = (opts && typeof opts.hint === 'string') ? opts.hint.trim() : '';
+      if (state.mapping) requestRender();
     });
 
     grist.onRecord(function (rec) { state.cursorId = rec ? rec.id : null; });
 
     grist.onRecords(async function (records, mappings) {
-      var mapped = grist.mapColumnNames(records, { columns: ['Lane', 'Title', 'Date', 'Detail'], mappings: mappings });
+      var mapped = grist.mapColumnNames(records, { columns: FIELDS, mappings: mappings });
       if (!mapped) {
         state.records = []; state.mapping = null;
-        lanesEl.textContent = '';
+        lanesEl.textContent = ''; tabsEl.textContent = '';
         var p = document.createElement('p');
         p.style.margin = '24px';
         p.textContent = 'Pick the Lane and Title columns in the widget settings (creator panel, right side).';
@@ -316,11 +581,16 @@
       }
       state.mapping = mappings;
       state.records = mapped;
-      if (state.choiceKey !== mappings.Lane) {
-        state.choiceKey = mappings.Lane;
-        state.choices = await loadChoices(mappings.Lane);
+      var key = JSON.stringify(mappings);
+      if (state.choiceKey !== key) {
+        state.choiceKey = key;
+        await loadMeta(mappings);
+      } else {
+        // Reference names can change; refresh them quietly.
+        var anyRef = FIELDS.some(isRef);
+        if (anyRef) await loadMeta(mappings);
       }
-      render();
+      requestRender();
     });
   })();
   </script>

@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Zion Bonsai my work (Grist widget)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Montserrat:wght@600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<!-- A Grist custom widget: one person's open tasks, made for a phone. Put it on the
+     Tasks table. No column mapping. Only works inside Grist. -->
+<script src="https://docs.getgrist.com/grist-plugin-api.js"></script>
+<style>
+  :root {
+    --paper: #F4EEE6; --paper-deep: #E9DFD2; --sandstone: #D9AE93; --linen: #FBF8F3;
+    --clay: #A84A2B; --clay-dark: #8F3E23; --moss: #4F6420; --forest: #2F3B22;
+    --rule: rgba(47, 59, 34, .15); --edge: rgba(47, 59, 34, .4);
+    --late-bg: rgba(168, 74, 43, .13); --soon-bg: rgba(217, 174, 147, .4);
+    --radius: 3px;
+    --sans: 'Open Sans', system-ui, sans-serif;
+    --label: 'Montserrat', 'Open Sans', system-ui, sans-serif;
+    --display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body { margin: 0; background: var(--paper); color: var(--forest); font: 400 16px/1.5 var(--sans); }
+  main { max-width: 640px; margin: 0 auto; padding: 16px 14px 80px; }
+  button, input, textarea, select { font: inherit; color: inherit; }
+  h1 { font: 500 34px/1.1 var(--display); margin: 4px 0 4px; }
+  h1 em { font-style: italic; }
+  h2 { font: 600 11px/1.2 var(--label); letter-spacing: .18em; text-transform: uppercase; color: var(--moss);
+       margin: 28px 0 10px; padding-top: 12px; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; }
+  .label { font: 600 11px/1.2 var(--label); letter-spacing: .16em; text-transform: uppercase; }
+  .hint { color: var(--moss); font-size: 14px; margin: 4px 0; }
+  .empty { color: var(--moss); padding: 6px 2px 10px; }
+  :focus-visible { outline: 2px solid var(--clay); outline-offset: 2px; }
+  .btn { font: 600 11px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; min-height: 44px; padding: 0 18px;
+         border: 1px solid var(--clay); border-radius: var(--radius); background: var(--clay); color: var(--linen); cursor: pointer; }
+  .btn:hover { background: var(--clay-dark); border-color: var(--clay-dark); }
+  .btn.plain { background: var(--linen); color: var(--forest); border-color: var(--edge); }
+  .btn.plain:hover { background: var(--paper-deep); }
+  .btn:disabled { opacity: .55; cursor: default; }
+  .link { background: none; border: 0; padding: 0; min-height: 44px; display: inline-flex; align-items: center;
+          color: var(--clay); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font-size: 15px; }
+  .people { display: grid; gap: 10px; margin-top: 14px; }
+  .people .btn { min-height: 56px; font-size: 13px; text-align: left; padding: 0 20px; }
+  .next { border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 10px 0; margin: 10px 0 4px; }
+  .next b { font-weight: 600; }
+  .card { background: var(--linen); border: 1px solid var(--rule); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 10px; }
+  .card.late { background: var(--late-bg); border-color: rgba(168, 74, 43, .35); }
+  .card.soon { background: var(--soon-bg); border-color: rgba(217, 174, 147, .9); }
+  .card.done { opacity: .6; }
+  .card.pending { opacity: .6; }
+  .card .title { font-weight: 600; overflow-wrap: anywhere; cursor: pointer; min-height: 44px; display: flex; align-items: center;
+                 background: none; border: 0; padding: 0; text-align: left; width: 100%; }
+  .card .meta { color: var(--forest); font-size: 14px; margin: 0 0 10px; opacity: .85; }
+  .card.late .meta { opacity: 1; font-weight: 600; }
+  .card .donebtn { width: 100%; min-height: 48px; }
+  .card .row { display: flex; gap: 10px; align-items: center; justify-content: space-between; }
+  details.fold { margin-top: 18px; }
+  details.fold summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; color: var(--clay);
+                         font: 600 11px/1.2 var(--label); letter-spacing: .16em; text-transform: uppercase; }
+  .addbtn { width: 100%; min-height: 48px; margin-bottom: 10px; }
+  form.add { display: grid; gap: 10px; margin-bottom: 12px; background: var(--linen); border: 1px solid var(--rule);
+             border-radius: var(--radius); padding: 14px; }
+  label.f { display: grid; gap: 4px; }
+  label.f .label { color: var(--moss); }
+  input, select, textarea { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid var(--edge); border-radius: var(--radius);
+                            background: var(--paper); color: var(--forest); }
+  textarea { min-height: 96px; resize: vertical; }
+  input[type=date] { -webkit-appearance: none; appearance: none; display: block; min-width: 0; max-width: 100%; }
+  input[type=date]::-webkit-date-and-time-value { text-align: left; }
+  .bar { display: flex; gap: 10px; }
+  .bar .btn { flex: 1; }
+  #sheet { position: fixed; inset: 0; z-index: 10; background: var(--paper); overflow-y: auto; }
+  #sheet .inner { max-width: 640px; margin: 0 auto; padding: 18px 14px 40px; display: grid; gap: 14px; }
+  #sheet h1 { font-size: 28px; }
+  #toast { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); background: var(--forest); color: var(--linen); z-index: 20;
+           padding: 8px 8px 8px 16px; border-radius: var(--radius); opacity: 0; transition: opacity .2s; pointer-events: none;
+           display: flex; gap: 10px; align-items: center; max-width: calc(100% - 24px); }
+  #toast.show { opacity: 1; pointer-events: auto; }
+  #toast button { background: none; border: 1px solid rgba(251, 248, 243, .5); color: var(--linen); border-radius: var(--radius);
+                  font: 600 11px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; min-height: 44px; padding: 0 14px; cursor: pointer; }
+  @media (prefers-reduced-motion: reduce) { #toast { transition: none; } }
+</style>
+</head>
+<body>
+<main id="app"><p class="hint">This is a Grist custom widget. Open it inside Grist.</p></main>
+<div id="sheet" hidden role="dialog" aria-modal="true" aria-label="Task details"></div>
+<div id="toast" role="status"></div>
+<script>
+// Reads the Tasks and Workshops tables by name (full access). Whoever you tap is
+// remembered on this phone, so you only pick once.
+const ME_KEY = 'zb-my-work-person';
+const SAVE_MS = 10000, LOAD_MS = 20000;
+const MSG_FAIL = "Couldn't load. Check your connection.";
+const MSG_SAVE = "Couldn't save. Check your connection and try again.";
+const MSG_ACCESS = "That can't be changed here. Ask Landon if you think it should be.";
+const SOON_DAYS = 3, LATELY_DAYS = 14;
+const ENDED = ['Cancelled', 'Done'];   // workshop statuses that are not "next"
+
+let tasks = [], workshops = [];
+let owners = ['Landon', 'Cass'];            // from the Owner column's choices, minus "Both"
+let hasNotes = false, hasDoneOn = false;    // optional Tasks columns
+let wsIsRef = true;                         // Tasks.Workshop is a reference (else plain text)
+let me = null, loaded = false, loadFailed = false, loadSeq = 0;
+let addOpen = false, addText = '', addDue = '', addWs = '';
+let adding = [];
+let sheet = null;
+const busy = new Set();
+let metaAt = 0;
+
+const app = document.getElementById('app');
+const sheetEl = document.getElementById('sheet');
+const toast = document.getElementById('toast');
+
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+function recall() { try { return localStorage.getItem(ME_KEY) || null; } catch (e) { return null; } }
+function remember(n) { try { if (n) localStorage.setItem(ME_KEY, n); else localStorage.removeItem(ME_KEY); } catch (e) {} }
+
+const withTimeout = (p, ms = SAVE_MS) => new Promise((res, rej) => {
+  const t = setTimeout(() => rej(new Error('timeout')), ms);
+  Promise.resolve(p).then(v => { clearTimeout(t); res(v); }, e => { clearTimeout(t); rej(e); });
+});
+const write = acts => withTimeout(grist.docApi.applyUserActions(acts));
+function errMsg(e) {
+  if (!navigator.onLine) return MSG_SAVE;
+  return /access|permission|blocked|denied/i.test(String(e?.message ?? e)) ? MSG_ACCESS : MSG_SAVE;
+}
+function rowsOf(t) { return t.id.map((id, i) => Object.fromEntries(Object.keys(t).map(k => [k, t[k][i]]))); }
+
+// ---- Dates: Grist Date cells are seconds at UTC midnight -------------------------------
+function todayIso() {
+  const p = Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone: 'America/Denver', year: 'numeric', month: '2-digit', day: '2-digit' })
+    .formatToParts(new Date()).map(x => [x.type, x.value]));
+  return `${p.year}-${p.month}-${p.day}`;
+}
+// A Date column holds UTC midnight; a DateTime holds a real moment, read on the Denver calendar.
+function isoDay(v) {
+  if (v == null || v === '') return null;
+  const secs = v instanceof Date ? v.getTime() / 1000 : Number(v);
+  if (!Number.isFinite(secs) || secs <= 0) return null;
+  if (secs % 86400 === 0) return new Date(secs * 1000).toISOString().slice(0, 10);
+  const p = Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone: 'America/Denver', year: 'numeric', month: '2-digit', day: '2-digit' })
+    .formatToParts(new Date(secs * 1000)).map(x => [x.type, x.value]));
+  return `${p.year}-${p.month}-${p.day}`;
+}
+const toSecs = iso => iso ? Date.parse(iso + 'T00:00:00Z') / 1000 : null;
+const dayDiff = (a, b) => Math.round((Date.parse(b + 'T00:00:00Z') - Date.parse(a + 'T00:00:00Z')) / 864e5);
+function addDays(iso, n) { const d = new Date(iso + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); }
+const fmt = (iso, o) => new Date(iso + 'T00:00:00Z').toLocaleDateString('en-US', { timeZone: 'UTC', ...o });
+const shortDay = iso => fmt(iso, { weekday: 'short', month: 'short', day: 'numeric' });
+function when(iso) {
+  const today = todayIso();
+  if (iso === today) return 'today';
+  if (iso === addDays(today, 1)) return 'tomorrow';
+  if (iso > today && iso <= addDays(today, 6)) return fmt(iso, { weekday: 'long' });
+  return fmt(iso, { month: 'short', day: 'numeric' });
+}
+function inDays(n) { return n === 0 ? 'today' : n === 1 ? 'tomorrow' : `in ${n} days`; }
+
+// ---- Loading --------------------------------------------------------------------------
+async function loadMeta() {
+  if (Date.now() - metaAt < 60000) return;
+  const [tb, col] = await Promise.all(['_grist_Tables', '_grist_Tables_column'].map(n => grist.docApi.fetchTable(n)));
+  const ref = tb.id[tb.tableId.indexOf('Tasks')];
+  const cols = rowsOf(col).filter(c => c.parentId === ref);
+  const by = Object.fromEntries(cols.map(c => [c.colId, c]));
+  hasNotes = !!by.Notes; hasDoneOn = !!by.Done_On;
+  wsIsRef = !by.Workshop || /^Ref:/.test(by.Workshop.type);
+  try {
+    const ch = JSON.parse(by.Owner?.widgetOptions || '{}').choices;
+    const names = (Array.isArray(ch) ? ch : []).filter(x => x && x !== 'Both');
+    if (names.length) owners = names;
+  } catch (e) {}
+  metaAt = Date.now();
+}
+async function load() {
+  const seq = ++loadSeq;
+  try {
+    const [t, w] = await Promise.all([grist.docApi.fetchTable('Tasks'), grist.docApi.fetchTable('Workshops')]);
+    await loadMeta();
+    if (seq !== loadSeq) return;
+    tasks = rowsOf(t); workshops = rowsOf(w);
+    loaded = true; loadFailed = false;
+  } catch (e) {
+    if (seq !== loadSeq) return;
+    if (!loaded) { loadFailed = true; render(); }
+    return;
+  }
+  if (me && !owners.includes(me)) me = null;
+  requestRender();
+}
+
+// ---- Redraw guard: never while typing, with a sheet open, or just after a tap ----------
+let lastDown = 0, pending = false;
+document.addEventListener('pointerdown', () => { lastDown = Date.now(); }, true);
+const typing = () => /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName || '');
+const blocked = () => typing() || !!sheet || Date.now() - lastDown < 400;
+function requestRender() { if (!pending) { pending = true; setTimeout(tryRender, 300); } }
+function tryRender() { if (!pending) return; if (blocked()) { setTimeout(tryRender, 450); return; } render(); }
+app.addEventListener('focusout', () => setTimeout(tryRender, 450));
+
+function say(text, onUndo, ms) {
+  toast.innerHTML = esc(text) + (onUndo ? ' <button type="button">Undo</button>' : '');
+  if (onUndo) toast.querySelector('button').onclick = () => { toast.classList.remove('show'); onUndo(); };
+  toast.classList.add('show');
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(() => toast.classList.remove('show'), ms || (onUndo ? 6000 : 2600));
+}
+
+// ---- Workshops ------------------------------------------------------------------------
+const wsTitle = id => workshops.find(w => w.id === id)?.Title || '';
+function taskWorkshop(t) { return wsIsRef ? wsTitle(Number(t.Workshop)) : String(t.Workshop || ''); }
+function liveWorkshops() { return workshops.filter(w => !ENDED.includes(w.Status)); }
+function nextWorkshop() {
+  const today = todayIso();
+  return liveWorkshops().map(w => ({ w, iso: isoDay(w.Date) })).filter(x => x.iso && x.iso >= today)
+    .sort((a, b) => (a.iso < b.iso ? -1 : 1))[0] || null;
+}
+function nextBanner() {
+  const n = nextWorkshop();
+  if (!n) return '<p class="hint">No workshop on the calendar yet.</p>';
+  return `<div class="next" role="status"><b>${esc(n.w.Title || 'Workshop')}</b>, ${esc(shortDay(n.iso))} — ${esc(inDays(dayDiff(todayIso(), n.iso)))}</div>`;
+}
+// Options for the Workshop picker: coming up first, then recent ones. Value = row id (or title).
+function wsOptions(sel) {
+  const today = todayIso();
+  const list = liveWorkshops().map(w => ({ w, iso: isoDay(w.Date) || '' }));
+  const up = list.filter(x => x.iso >= today).sort((a, b) => (a.iso < b.iso ? -1 : 1));
+  const past = list.filter(x => x.iso < today).sort((a, b) => (a.iso < b.iso ? 1 : -1));
+  const val = w => wsIsRef ? String(w.id) : String(w.Title || '');
+  const opts = [...up, ...past].map(x => ({ v: val(x.w), t: `${x.w.Title || 'Workshop'}${x.iso ? ', ' + fmt(x.iso, { month: 'short', day: 'numeric' }) : ''}` }));
+  if (sel && !opts.some(o => o.v === sel)) opts.push({ v: sel, t: wsIsRef ? wsTitle(Number(sel)) || '(removed)' : sel });
+  return `<option value="">No workshop</option>` + opts.map(o => `<option value="${esc(o.v)}"${o.v === sel ? ' selected' : ''}>${esc(o.t)}</option>`).join('');
+}
+const wsValue = t => wsIsRef ? (Number(t.Workshop) ? String(t.Workshop) : '') : String(t.Workshop || '');
+const wsWrite = v => wsIsRef ? (Number(v) || 0) : v;
+
+// ---- Tasks ----------------------------------------------------------------------------
+const mine = t => t.Owner === me || t.Owner === 'Both';
+function taskOrder(a, b) {
+  const da = isoDay(a.Due) ?? '9999', db = isoDay(b.Due) ?? '9999';
+  return da < db ? -1 : da > db ? 1 : String(a.Task).localeCompare(String(b.Task));
+}
+function card(t, doneCard) {
+  const due = isoDay(t.Due), today = todayIso();
+  const late = !doneCard && due && due < today;
+  const soon = !doneCard && due && !late && due <= addDays(today, SOON_DAYS);
+  const ws = taskWorkshop(t);
+  const meta = [late ? `Overdue, was due ${when(due)}` : due ? `Due ${when(due)}` : 'No due date',
+                t.Owner === 'Both' ? 'Both of you' : '', ws].filter(Boolean).join(' · ');
+  const p = busy.has(t.id);
+  return `<div class="card${late ? ' late' : soon ? ' soon' : ''}${doneCard ? ' done' : ''}${p ? ' pending' : ''}">
+    <button type="button" class="title" data-act="open" data-id="${t.id}">${esc(t.Task) || '(no name)'}</button>
+    <p class="meta">${esc(meta)}${p ? ' · Saving…' : ''}</p>
+    ${doneCard
+      ? `<button type="button" class="btn plain" data-act="undo" data-id="${t.id}"${p ? ' disabled' : ''}>Undo</button>`
+      : `<button type="button" class="btn donebtn" data-act="done" data-id="${t.id}"${p ? ' disabled' : ''}>Done</button>`}
+  </div>`;
+}
+function doneLately(t) {
+  if (!t.Done || !mine(t)) return false;
+  const cutoff = addDays(todayIso(), -LATELY_DAYS);
+  const day = hasDoneOn ? isoDay(t.Done_On) : isoDay(t.Due);   // without a Done_On column, use the due date
+  return !!day && day >= cutoff;
+}
+function render() {
+  pending = false;
+  if (!loaded) {
+    app.innerHTML = loadFailed
+      ? `<p>${esc(MSG_FAIL)}</p><button type="button" class="btn" data-act="retry">Try again</button>`
+      : '<p class="hint">Loading…</p>';
+    return;
+  }
+  if (!me) {
+    app.innerHTML = `<h1>Who's <em>this?</em></h1>
+      <p class="hint">Tap your name. This phone will remember it.</p>
+      <div class="people">${owners.map(n => `<button type="button" class="btn plain" data-act="pick" data-name="${esc(n)}">${esc(n)}</button>`).join('')}</div>`;
+    return;
+  }
+  const todo = tasks.filter(t => !t.Done && mine(t)).sort(taskOrder);
+  const done = tasks.filter(doneLately).sort((a, b) => (isoDay(b.Done_On ?? b.Due) || '') < (isoDay(a.Done_On ?? a.Due) || '') ? -1 : 1);
+  app.innerHTML = `
+    <h1>Hi, <em>${esc(me)}</em></h1>
+    <button type="button" class="link" data-act="switch">Not ${esc(me)}?</button>
+    ${nextBanner()}
+    <p class="hint">Tap a task's name to change its date, workshop or notes.</p>
+    <h2><span>Your tasks</span><span>${todo.length}</span></h2>
+    ${addOpen || addText || addDue ? `<form class="add">
+      <label class="f"><span class="label">What needs doing?</span><input name="task" enterkeyhint="done" autocomplete="off" value="${esc(addText)}"></label>
+      <label class="f"><span class="label">Due date (optional)</span><input name="due" type="date" value="${esc(addDue)}"></label>
+      <label class="f"><span class="label">Workshop (optional)</span><select name="ws">${wsOptions(addWs)}</select></label>
+      <div class="bar"><button class="btn">Add</button><button type="button" class="btn plain" data-act="add-cancel">Cancel</button></div>
+    </form>` : `<button type="button" class="btn addbtn" data-act="add-open">+ Add a task</button>`}
+    ${adding.map(a => `<div class="card pending"><div class="title">${esc(a.text)}</div><p class="meta">Adding…</p></div>`).join('')}
+    ${todo.map(t => card(t, false)).join('') || '<p class="empty">Nothing on your list. Nice.</p>'}
+    ${done.length ? `<details class="fold"><summary>Done lately (${done.length})</summary>${done.map(t => card(t, true)).join('')}</details>` : ''}`;
+}
+
+// ---- Saving ---------------------------------------------------------------------------
+async function save(id, fields) {
+  if (busy.has(id)) { say('Still saving. One moment.'); return false; }
+  busy.add(id); render();
+  try {
+    await write([['UpdateRecord', 'Tasks', id, fields]]);
+    const row = tasks.find(r => r.id === id);
+    if (row) Object.assign(row, fields);
+    busy.delete(id); render();
+    return true;
+  } catch (e) {
+    busy.delete(id); render();
+    say(errMsg(e), null, 5000);
+    return false;
+  }
+}
+const doneFields = on => hasDoneOn ? { Done: on, Done_On: on ? toSecs(todayIso()) : null } : { Done: on };
+
+app.addEventListener('click', async e => {
+  const el = e.target.closest('[data-act]');
+  if (!el) return;
+  const id = Number(el.dataset.id);
+  switch (el.dataset.act) {
+    case 'retry': loadFailed = false; render(); load(); break;
+    case 'pick': me = el.dataset.name; remember(me); render(); break;
+    case 'switch': me = null; remember(null); render(); break;
+    case 'add-open': addOpen = true; render(); app.querySelector('input[name=task]')?.focus(); break;
+    case 'add-cancel': addOpen = false; addText = ''; addDue = ''; addWs = ''; render(); break;
+    case 'open': openSheet(id); break;
+    case 'done':
+      if (await save(id, doneFields(true))) say('Done.', () => save(id, doneFields(false)));
+      break;
+    case 'undo':
+      if (await save(id, doneFields(false))) say('Back on your list.');
+      break;
+  }
+});
+app.addEventListener('input', e => {
+  if (e.target.name === 'task') addText = e.target.value;
+  if (e.target.name === 'due') addDue = e.target.value;
+});
+app.addEventListener('change', e => {
+  if (e.target.name === 'due') addDue = e.target.value;
+  if (e.target.name === 'ws') addWs = e.target.value;
+});
+app.addEventListener('submit', async e => {
+  e.preventDefault();
+  const f = e.target;
+  const text = f.task.value.trim();
+  if (!text) { f.task.focus(); return; }
+  const fields = { Task: text, Owner: me, Done: false };
+  if (f.due.value) fields.Due = toSecs(f.due.value);
+  if (f.ws.value) fields.Workshop = wsWrite(f.ws.value);
+  const ph = { text };
+  adding.push(ph);
+  addText = ''; addDue = ''; addWs = ''; addOpen = false;
+  f.task.blur();
+  render();
+  try {
+    await write([['AddRecord', 'Tasks', null, fields]]);
+    adding = adding.filter(a => a !== ph);
+    say('Added.');
+    await load();
+  } catch (err) {
+    adding = adding.filter(a => a !== ph);
+    if (!addText) { addText = text; addDue = f.due.value; addWs = f.ws.value; }
+    render();
+    say(errMsg(err), null, 5000);
+  }
+});
+
+// ---- Details sheet: name, due date, workshop, notes -----------------------------------
+function openSheet(id) {
+  const t = tasks.find(r => r.id === id);
+  if (!t) return;
+  const init = { Task: String(t.Task ?? ''), Due: isoDay(t.Due) || '', Workshop: wsValue(t), Notes: String(t.Notes ?? '') };
+  sheet = { id, init };
+  sheetEl.innerHTML = `<form class="inner">
+    <h1>Task</h1>
+    <label class="f"><span class="label">Task</span><input id="f-Task" value="${esc(init.Task)}" autocomplete="off"></label>
+    <label class="f"><span class="label">Due date</span><input id="f-Due" type="date" value="${esc(init.Due)}"></label>
+    <label class="f"><span class="label">Workshop</span><select id="f-Workshop">${wsOptions(init.Workshop)}</select></label>
+    ${hasNotes ? `<label class="f"><span class="label">Notes</span><textarea id="f-Notes" rows="4">${esc(init.Notes)}</textarea></label>` : ''}
+    <div class="bar"><button type="submit" class="btn" data-sheet="save">Save</button><button type="button" class="btn plain" data-sheet="cancel">Cancel</button></div>
+    <div class="bar" id="discard" hidden><button type="button" class="btn plain" data-sheet="keep">Keep editing</button><button type="button" class="btn" data-sheet="discard">Discard</button></div>
+  </form>`;
+  sheetEl.hidden = false; sheetEl.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+function closeSheet() { sheet = null; sheetEl.hidden = true; sheetEl.innerHTML = ''; document.body.style.overflow = ''; render(); }
+const sheetVals = () => Object.fromEntries(Object.keys(sheet.init).map(k => [k, sheetEl.querySelector('#f-' + k)?.value ?? sheet.init[k]]));
+const sheetDirty = () => { const v = sheetVals(); return Object.keys(v).some(k => v[k] !== sheet.init[k]); };
+async function saveSheet() {
+  const mineSheet = sheet, { id, init } = sheet, v = sheetVals(), fields = {};
+  if (v.Task !== init.Task) {
+    if (!v.Task.trim()) { say('Give it a name first.'); return; }
+    fields.Task = v.Task.trim();
+  }
+  if (v.Due !== init.Due) fields.Due = toSecs(v.Due);
+  if (v.Workshop !== init.Workshop) fields.Workshop = wsWrite(v.Workshop);
+  if (hasNotes && v.Notes !== init.Notes) fields.Notes = v.Notes;
+  if (!Object.keys(fields).length) { closeSheet(); return; }
+  const btn = sheetEl.querySelector('[data-sheet=save]'); btn.disabled = true;
+  const ok = await save(id, fields);
+  if (!ok) { if (sheet === mineSheet) btn.disabled = false; return; }   // stay open, typing kept
+  if (sheet === mineSheet) closeSheet();
+  say('Saved.');
+}
+sheetEl.addEventListener('submit', e => { e.preventDefault(); if (sheet) saveSheet(); });
+sheetEl.addEventListener('click', e => {
+  const act = e.target.closest('[data-sheet]')?.dataset.sheet;
+  if (!act || !sheet) return;
+  if (act === 'cancel') { if (sheetDirty()) sheetEl.querySelector('#discard').hidden = false; else closeSheet(); }
+  else if (act === 'keep') sheetEl.querySelector('#discard').hidden = true;
+  else if (act === 'discard') closeSheet();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && sheet) sheetEl.querySelector('[data-sheet=cancel]').click(); });
+
+// ---- Start ----------------------------------------------------------------------------
+if (typeof grist === 'undefined') {
+  loadFailed = true;
+} else {
+  grist.ready({ requiredAccess: 'full' });
+  me = recall();
+  grist.onRecords(() => load());                       // anyone's change to Tasks
+  setInterval(() => { if (!document.hidden) load(); }, 30000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) load(); });
+  setTimeout(() => { if (!loaded) { loadFailed = true; render(); } }, LOAD_MS);
+  load();
+}
+render();
+</script>
+</body>
+</html>
