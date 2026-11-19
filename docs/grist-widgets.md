@@ -9,6 +9,8 @@ Small custom widgets live in this repo and deploy with the site. They are plain 
 | My work | `https://zionbonsai.com/grist/my-work` | Tasks | Full document access |
 | List | `https://zionbonsai.com/grist/list` | Contacts, Workshops, Inventory or Trees (any table) | Full document access |
 | Start here | `https://zionbonsai.com/grist/start` | Any table (no mapping) | None |
+| What's coming | `https://zionbonsai.com/grist/schedule` | Workshops (no mapping) | Full document access |
+| Workshop day | `https://zionbonsai.com/grist/workshop` | Workshops (no mapping) | Full document access |
 
 Mapping slots and options at a glance (details in the sections below):
 
@@ -19,6 +21,8 @@ Mapping slots and options at a glance (details in the sections below):
 | My work | none (reads Tasks and Workshops by name) | none |
 | List | Title (required), Subtitle (several), Detail (several), Date, Phone, Email, Checks (several true/false), Consent, Edit (several) | `hint`, `addLabel`, `readOnly` (column ids), `addOnly` (column ids), `notes` ({ColId: "why it's locked"}) |
 | Start here | none | `forms`: `[{label, url}]` for the Quick add buttons |
+| What's coming | none (reads Workshops, Tasks, Trees, Agreements, Contacts by name) | none |
+| Workshop day | none (reads Workshops, Registrations, Contacts, Trees, Feedback by name) | none |
 
 `icons.js` is for the NUC's `GRIST_INCLUDE_CUSTOM_SCRIPT_URL`: `https://zionbonsai.com/grist/icons.js` gives every Grist page the Zion Bonsai home-screen icon (`icon-32/180/192.png`, the logo on a paper square) and the title "Zion Bonsai".
 
@@ -79,6 +83,25 @@ Any table as searchable cards. Phone-first, no grid.
 ## Start here
 
 No mapping. Plain-language tour of the pages, how Done and Undo work, and that every change is kept in Document history. Quick add buttons appear when the `forms` option has links; nothing is hardcoded in the page.
+
+## What's coming
+
+On Workshops, no mapping. Replaces the computer calendar on a phone: one list grouped Today, This week, Next week, then "Week of Mon D". The last 30 days fold under **Earlier**; open tasks that are overdue always show there, however old.
+
+- Four kinds, each with a small label: workshops (time, seats left, status), open tasks that have a due date (big **Done** with Undo, which also sets `Done_On`), trees whose `Shaping_Due` falls in range, and agreements ending (not Expired or Declined, with `Heads_Up` if any). Cancelled workshops are left out.
+- **Show:** tick boxes hide or show each kind. They are remembered on this phone (`localStorage`).
+- Tap a workshop, tree or agreement for its details. Tap a task to change its name, due date or notes.
+
+## Workshop day
+
+On Workshops, no mapping. Runs one workshop from a phone.
+
+- The picker starts on today's workshop, else the next upcoming, else the latest, and remembers your choice for the session (`sessionStorage`). Summary: date, time, "8 of 10 seats taken".
+- **Checklist:** Group photo, Care sent, Survey sent as big toggles.
+- **Check-in** and each guest's payment buttons are the document's own Action Button columns (`Workshops.Check_In_Button`, `Registrations.Payment_Buttons`). The widget decodes the values (`["L", ...]`, `["O", {...}]`) and shows one button per entry; tapping applies that entry's `actions` unchanged. An entry with no actions (for example "Status: Paid") is shown as a plain note. Payment and check-in rules stay in Grist; change them there. UpdateRecord actions get an Undo.
+- **Guests:** one card per registration, sorted by name: guest, seats, status chip, the `Check` warning if any, a big **Here** toggle (Attended), and the payment buttons. Tap a name for Call, Text, Email, and to edit Seats, Status and Notes.
+- **+ Add a guest** picks an existing contact (searchable) or adds a new one (first name, last name, email, phone), then creates the registration as Pending on this workshop.
+- Folded at the bottom: trees potted at this workshop, and feedback (count and average rating).
 
 ## Sign-in sheet
 
