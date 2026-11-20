@@ -40,6 +40,11 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - [x] 50 n8n workshop prep tasks from Prep_Steps, and a waitlist-opening alert
 - [ ] 51 Unsubscribes in Brevo untick Email OK in Grist (sync-brevo.mjs) — needs a live `--check` with BREVO_API_KEY
 - [x] 52 Grow app → Grist: claimed trees, return invitations, app sign-ups
+- [ ] 53 Grist phone pages: My work, lists, board, Start here — practice copy built, live pending Landon's go
+- [ ] 54 Grist phone widgets: What's coming and Workshop day — practice copy built, live with 53
+- [ ] 55 Gift cards in Grist (docs/redesign/gift-cards-handoff.md)
+- [x] 56 Tentative workshops on the site — with 55
+  - Milestone: `tentative` accepted by schema and sync; workshops page lists tentative dates with the gift card line (link in `site.json` `giftCertificates.giveUrl`); NextWorkshop prefers bookable dates; no Event JSON-LD for tentative rows (no calendar feed or event sitemap entries exist).
 
 ## Found while working
 - (task 25) Contact page "Groups" band links to /events and /workshops; /events may not exist until its task lands. Partner photos for Sweet Roots and Thistle & Honey are placeholders; Taya photo is workshop-finished-jade-thank-you-card (pot assumed hers per brief).

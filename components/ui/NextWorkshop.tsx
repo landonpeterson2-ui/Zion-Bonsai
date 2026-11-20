@@ -17,8 +17,15 @@ export function formatTime(hhmm: string) {
 
 /** Bordered next-date block. The card is paper, so the clay eyebrow is fine even on a paper-deep section. */
 export default function NextWorkshop({ className = '' }: { className?: string }) {
-  const next = getUpcomingWorkshops()[0]
-  const venue = next ? getPartner(next.venue) : undefined
+  // Prefer a date people can book; fall back to a tentative one.
+  const upcoming = getUpcomingWorkshops()
+  const next = upcoming.find((w) => w.status !== 'tentative') ?? upcoming[0]
+  const tentative = next?.status === 'tentative'
+  const venue = next?.venue ? getPartner(next.venue) : undefined
+  const details = [
+    next?.start && next.end ? `${formatTime(next.start)}\u2013${formatTime(next.end)}` : '',
+    venue ? `${venue.name}${venue.location ? `, ${venue.location}` : ''}` : '',
+  ].filter(Boolean).join(' \u00b7 ')
 
   return (
     <div className={`flex flex-col gap-6 border border-forest/20 bg-paper p-6 sm:flex-row sm:items-center sm:justify-between md:p-8 ${className}`}>
@@ -26,10 +33,10 @@ export default function NextWorkshop({ className = '' }: { className?: string })
         <div>
           <Eyebrow tone="clay">Next workshop</Eyebrow>
           <p className="mt-2 font-display text-[1.9rem] font-medium leading-tight text-forest">{formatDate(next.date)}</p>
-          <p className="mt-1 text-sm text-soil">
-            {formatTime(next.start)}&ndash;{formatTime(next.end)}
-            {venue ? ` · ${venue.name}${venue.location ? `, ${venue.location}` : ''}` : ''}
-          </p>
+          {tentative ? (
+            <p className="mt-1 font-label text-[11px] font-semibold uppercase tracking-[0.16em] text-soil">Tentative</p>
+          ) : null}
+          {details ? <p className="mt-1 text-sm text-soil">{details}</p> : null}
         </div>
       ) : (
         <p className="font-display text-2xl text-forest">New dates soon.</p>

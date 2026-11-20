@@ -72,10 +72,11 @@ for (const w of workshopRows.filter((w) => w.Show_On_Site)) {
     type: TYPES[w.Format],
     title: w.Title,
     date: isoDate(w.Date),
-    start: to24h(w.Start),
-    end: to24h(w.End),
-    venue: orgs.get(w.Venue)?.Slug,
-    price: w.Price_Label,
+    // Tentative rows may not have a time, venue or price yet; leave those keys out.
+    start: orNull(to24h(w.Start)) ?? undefined,
+    end: orNull(to24h(w.End)) ?? undefined,
+    venue: orgs.get(w.Venue)?.Slug || undefined,
+    price: orNull(w.Price_Label) ?? undefined,
     registrationUrl: orNull(w.Registration_Form),
     status: w.Site_Status,
   })
@@ -89,7 +90,7 @@ for (const current of readContent('workshops.json').workshops) {
   workshops.push(current)
   if (!row) waiting.push(`${current.title} on ${current.date}: on the site but not in Grist, so it was left as is`)
 }
-workshops.sort((a, b) => (a.date + a.start).localeCompare(b.date + b.start))
+workshops.sort((a, b) => (a.date + (a.start ?? '')).localeCompare(b.date + (b.start ?? '')))
 
 // Partners. Logos live in public/partners/, so keep each one from the current file.
 const currentPartners = readContent('partners.json')
