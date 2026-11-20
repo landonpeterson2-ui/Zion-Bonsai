@@ -1,2 +1,6 @@
 /_next/static/*
   Cache-Control: public,max-age=31536000,immutable
+
+# Grist loads these from its own origin with crossorigin="anonymous", so they need CORS.
+/grist/*.js
+  Access-Control-Allow-Origin: *
