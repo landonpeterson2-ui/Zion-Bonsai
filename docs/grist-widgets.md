@@ -18,6 +18,8 @@ Small custom widgets live in this repo and deploy with the site. They are plain 
 | Follow-ups | `https://zionbonsai.com/grist/follow-ups` | Contacts (no mapping) | Full document access |
 | Feedback | `https://zionbonsai.com/grist/feedback` | Feedback (no mapping) | Full document access |
 | Partners | `https://zionbonsai.com/grist/partners` | Organizations (no mapping) | Full document access |
+| Gift cards sold | `https://zionbonsai.com/grist/gift-cards` | Gift_Cards (no mapping) | Full document access |
+| Bookings | `https://zionbonsai.com/grist/bookings` | Registrations (no mapping) | Full document access |
 
 Mapping slots and options at a glance (details in the sections below):
 
@@ -37,6 +39,8 @@ Mapping slots and options at a glance (details in the sections below):
 | Follow-ups | none (reads Contacts, Registrations, Workshops; needs `Contacts.Last_Contacted` by name) | none |
 | Feedback | none (reads Feedback, Contacts, Workshops by name) | none |
 | Partners | none (reads Organizations, Contacts, Agreements, Workshops by name) | none |
+| Gift cards sold | none (reads Gift_Cards, Contacts, Registrations by name) | none |
+| Bookings | none (reads Registrations, Workshops, Contacts by name) | none |
 
 `icons.js` is for the NUC's `GRIST_INCLUDE_CUSTOM_SCRIPT_URL`: `https://zionbonsai.com/grist/icons.js` gives every Grist page the Zion Bonsai home-screen icon (`icon-32/180/192.png`, the logo on a paper square) and the title "Zion Bonsai".
 
@@ -139,3 +143,7 @@ On Registrations, with Select By set to the Workshops section.
 - "Open this inside Grist as a custom widget" means you opened the URL directly. That's expected.
 - Blank board or sheet: check the column mapping in the right panel.
 - Changes to these files reach Grist after the next site deploy; reload the Grist page to pick them up.
+
+## Phone page menu
+
+`phone-menu.js` (loaded by `icons.js`, which Grist loads on every page through `GRIST_INCLUDE_CUSTOM_SCRIPT_URL`) hides pages that aren't phone pages from Grist's page menu on screens under 768px wide, in the Zion Bonsai doc and its practice copy only. A "Show all pages" link at the bottom of the menu brings them back. The list of phone pages is `PHONE_PAGES` at the top of the file; add a page's exact name there when you make a new phone page. On a computer nothing is hidden.

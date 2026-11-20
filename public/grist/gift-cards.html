@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Zion Bonsai gift cards sold (Grist widget)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Montserrat:wght@600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<!-- A Grist custom widget: every gift card sold, and a sheet to log a new sale.
+     Put it on the Gift_Cards table. No column mapping. Only works inside Grist.
+     Only the last 4 digits of a card are ever typed or shown. The full number stays in Square. -->
+<script src="https://docs.getgrist.com/grist-plugin-api.js"></script>
+<style>
+  :root {
+    --paper: #F4EEE6; --paper-deep: #E9DFD2; --sandstone: #D9AE93; --linen: #FBF8F3;
+    --clay: #A84A2B; --clay-dark: #8F3E23; --moss: #4F6420; --forest: #2F3B22;
+    --rule: rgba(47, 59, 34, .15); --edge: rgba(47, 59, 34, .4);
+    --late-bg: rgba(168, 74, 43, .13); --soon-bg: rgba(217, 174, 147, .4);
+    --radius: 3px;
+    --sans: 'Open Sans', system-ui, sans-serif;
+    --label: 'Montserrat', 'Open Sans', system-ui, sans-serif;
+    --display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body { margin: 0; background: var(--paper); color: var(--forest); font: 400 16px/1.5 var(--sans); }
+  main { max-width: 640px; margin: 0 auto; padding: 16px 14px 80px; }
+  button, input, textarea, select { font: inherit; color: inherit; }
+  h1 { font: 500 34px/1.1 var(--display); margin: 4px 0 4px; }
+  h1 em { font-style: italic; }
+  h2 { font: 600 11px/1.2 var(--label); letter-spacing: .18em; text-transform: uppercase; color: var(--moss);
+       margin: 28px 0 10px; padding-top: 12px; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; }
+  .label { font: 600 11px/1.2 var(--label); letter-spacing: .16em; text-transform: uppercase; }
+  .hint { color: var(--moss); font-size: 14px; margin: 4px 0; }
+  .empty { color: var(--moss); padding: 6px 2px 10px; }
+  :focus-visible { outline: 2px solid var(--clay); outline-offset: 2px; }
+  .btn { font: 600 11px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; min-height: 44px; padding: 0 18px;
+         border: 1px solid var(--clay); border-radius: var(--radius); background: var(--clay); color: var(--linen); cursor: pointer; }
+  .btn:hover { background: var(--clay-dark); border-color: var(--clay-dark); }
+  .btn.plain { background: var(--linen); color: var(--forest); border-color: var(--edge); }
+  .btn.plain:hover { background: var(--paper-deep); }
+  .btn:disabled { opacity: .55; cursor: default; }
+  .link { background: none; border: 0; padding: 0; min-height: 44px; display: inline-flex; align-items: center;
+          color: var(--clay); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font-size: 15px; }
+  .people { display: grid; gap: 10px; margin-top: 14px; }
+  .people .btn { min-height: 56px; font-size: 13px; text-align: left; padding: 0 20px; }
+  .next { border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 10px 0; margin: 10px 0 4px; }
+  .next b { font-weight: 600; }
+  .card { background: var(--linen); border: 1px solid var(--rule); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 10px; }
+  .card.late { background: var(--late-bg); border-color: rgba(168, 74, 43, .35); }
+  .card.soon { background: var(--soon-bg); border-color: rgba(217, 174, 147, .9); }
+  .card.done { opacity: .6; }
+  .card.pending { opacity: .6; }
+  .card .title { font-weight: 600; overflow-wrap: anywhere; cursor: pointer; min-height: 44px; display: flex; align-items: center;
+                 background: none; border: 0; padding: 0; text-align: left; width: 100%; }
+  .card .meta { color: var(--forest); font-size: 14px; margin: 0 0 10px; opacity: .85; }
+  .card.late .meta { opacity: 1; font-weight: 600; }
+  .card .donebtn { width: 100%; min-height: 48px; }
+  .card .row { display: flex; gap: 10px; align-items: center; justify-content: space-between; }
+  details.fold { margin-top: 18px; }
+  details.fold summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; color: var(--clay);
+                         font: 600 11px/1.2 var(--label); letter-spacing: .16em; text-transform: uppercase; }
+  .addbtn { width: 100%; min-height: 48px; margin-bottom: 10px; }
+  form.add { display: grid; gap: 10px; margin-bottom: 12px; background: var(--linen); border: 1px solid var(--rule);
+             border-radius: var(--radius); padding: 14px; }
+  label.f { display: grid; gap: 4px; }
+  label.f .label { color: var(--moss); }
+  input, select, textarea { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid var(--edge); border-radius: var(--radius);
+                            background: var(--paper); color: var(--forest); }
+  textarea { min-height: 96px; resize: vertical; }
+  input[type=date] { -webkit-appearance: none; appearance: none; display: block; min-width: 0; max-width: 100%; }
+  input[type=date]::-webkit-date-and-time-value { text-align: left; }
+  .bar { display: flex; gap: 10px; }
+  .bar .btn { flex: 1; }
+  #sheet { position: fixed; inset: 0; z-index: 10; background: var(--paper); overflow-y: auto; }
+  #sheet .inner { max-width: 640px; margin: 0 auto; padding: 18px 14px 40px; display: grid; gap: 14px; }
+  #sheet h1 { font-size: 28px; }
+  #toast { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); background: var(--forest); color: var(--linen); z-index: 20;
+           padding: 8px 8px 8px 16px; border-radius: var(--radius); opacity: 0; transition: opacity .2s; pointer-events: none;
+           display: flex; gap: 10px; align-items: center; max-width: calc(100% - 24px); }
+  #toast.show { opacity: 1; pointer-events: auto; }
+  #toast button { background: none; border: 1px solid rgba(251, 248, 243, .5); color: var(--linen); border-radius: var(--radius);
+                  font: 600 11px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; min-height: 44px; padding: 0 14px; cursor: pointer; }
+  @media (prefers-reduced-motion: reduce) { #toast { transition: none; } }
+  .summary { margin: 8px 0 0; }
+  .summary b { font-weight: 600; }
+  .toggles { display: grid; gap: 10px; }
+  .toggle { width: 100%; min-height: 52px; display: flex; justify-content: space-between; align-items: center; text-align: left;
+            padding: 0 16px; background: var(--linen); color: var(--forest); border: 1px solid var(--edge); border-radius: var(--radius);
+            font: 600 12px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; cursor: pointer; }
+  .toggle[aria-pressed=true] { background: var(--moss); border-color: var(--moss); color: var(--linen); }
+  .toggle:disabled { opacity: .55; cursor: default; }
+  .acts { display: grid; gap: 8px; margin-top: 10px; }
+  .acts .btn { width: 100%; min-height: 48px; text-align: left; padding: 10px 16px; line-height: 1.3; }
+  .note { color: var(--moss); font-size: 14px; margin: 6px 0 0; }
+  .warn { margin: 0 0 10px; padding: 8px 10px; background: var(--late-bg); border: 1px solid rgba(168, 74, 43, .35);
+          border-radius: var(--radius); font-size: 14px; font-weight: 600; }
+  .chip { display: inline-block; font: 600 10px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; padding: 5px 8px;
+          border: 1px solid var(--edge); border-radius: var(--radius); background: var(--paper); }
+  .chip.paid { background: var(--moss); border-color: var(--moss); color: var(--linen); }
+  .chip.pending { background: var(--soon-bg); border-color: rgba(217, 174, 147, .9); }
+  .card.out { opacity: .6; }
+  .card .hereb { width: 100%; min-height: 52px; margin-top: 4px; }
+  .card .hereb[aria-pressed=true] { background: var(--moss); border-color: var(--moss); color: var(--linen); }
+  .pick { margin: 8px 0 0; }
+  .results { display: grid; gap: 6px; }
+  .results .btn { text-align: left; min-height: 44px; }
+  .results .btn[aria-pressed=true] { background: var(--moss); border-color: var(--moss); color: var(--linen); }
+  .contact { display: flex; flex-wrap: wrap; gap: 8px; }
+  .contact a { flex: 1; min-width: 90px; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+  .bar .btn[type=submit] { flex: 1; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 4px; }
+  .chipbtn { min-height: 44px; padding: 0 14px; background: var(--linen); color: var(--forest); border: 1px solid var(--edge); border-radius: var(--radius);
+             font: 600 11px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; }
+  .chipbtn[aria-pressed=true] { background: var(--moss); border-color: var(--moss); color: var(--linen); }
+  .chip.late { background: var(--late-bg); border-color: rgba(168, 74, 43, .35); }
+  .chips-inline { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
+  .card .contact { margin-top: 10px; }
+  .card .stat { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .card .stat .btn { min-height: 48px; padding: 0 8px; }
+  .card .stat .btn[aria-pressed=true] { background: var(--moss); border-color: var(--moss); color: var(--linen); }
+  .card .onsite { margin: 0 0 8px; }
+  .card .acts-row { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 10px; }
+  .quote { margin: 0 0 10px; overflow-wrap: anywhere; }
+  .top { font-weight: 600; }
+  .bal { font: 500 30px/1.1 var(--display); margin: 2px 0 10px; }
+  .bal .label { font-size: 10px; color: var(--moss); }
+  .digits { font: 600 36px/1 var(--label); letter-spacing: .3em; text-align: center; min-height: 64px; padding: 10px 0 10px .3em; }
+  .chip.used { background: var(--paper-deep); }
+  .bigact { width: 100%; min-height: 52px; margin-top: 4px; }
+  .used-list { margin: 8px 0 0; padding: 0; list-style: none; font-size: 15px; }
+  .used-list li { border-top: 1px solid var(--rule); padding: 10px 0; }
+</style>
+</head>
+<body>
+<main id="app"><p class="hint">This is a Grist custom widget. Open it inside Grist.</p></main>
+<div id="sheet" hidden role="dialog" aria-modal="true" aria-label="Details"></div>
+<div id="toast" role="status"></div>
+<script>
+const SAVE_MS = 10000, LOAD_MS = 20000;
+const MSG_FAIL = "Couldn't load. Check your connection.";
+const MSG_SAVE = "Couldn't save. Check your connection and try again.";
+const MSG_ACCESS = "That can't be changed here. Ask Landon if you think it should be.";
+
+let loaded = false, loadFailed = false, loadSeq = 0, sheet = null;
+const busy = new Set();
+
+const app = document.getElementById('app');
+const sheetEl = document.getElementById('sheet');
+const toast = document.getElementById('toast');
+
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const withTimeout = (p, ms = SAVE_MS) => new Promise((res, rej) => {
+  const t = setTimeout(() => rej(new Error('timeout')), ms);
+  Promise.resolve(p).then(v => { clearTimeout(t); res(v); }, e => { clearTimeout(t); rej(e); });
+});
+const write = acts => withTimeout(grist.docApi.applyUserActions(acts));
+function errMsg(e) {
+  if (!navigator.onLine) return MSG_SAVE;
+  return /access|permission|blocked|denied/i.test(String(e?.message ?? e)) ? MSG_ACCESS : MSG_SAVE;
+}
+function rowsOf(t) { return t.id.map((id, i) => Object.fromEntries(Object.keys(t).map(k => [k, t[k][i]]))); }
+
+// ---- Grist's encoded cell values --------------------------------------------------------
+function decode(v) {
+  if (Array.isArray(v)) {
+    if (v[0] === 'L') return v.slice(1).map(decode);
+    if (v[0] === 'O' && v.length === 2 && v[1] && typeof v[1] === 'object') return Object.fromEntries(Object.entries(v[1]).map(([k, x]) => [k, decode(x)]));
+    if (v[0] === 'E' || v[0] === 'P' || v[0] === 'C') return null;
+    return v.map(decode);
+  }
+  if (v && typeof v === 'object') return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, decode(x)]));
+  return v;
+}
+function listOf(v) { const d = decode(v); return Array.isArray(d) ? d.map(String) : d ? [String(d)] : []; }
+const refId = v => { const n = Number(Array.isArray(v) ? v[1] : v); return Number.isFinite(n) && n > 0 ? n : null; };
+
+// ---- Dates: Grist Date cells are seconds at UTC midnight -------------------------------
+function todayIso() {
+  const p = Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone: 'America/Denver', year: 'numeric', month: '2-digit', day: '2-digit' })
+    .formatToParts(new Date()).map(x => [x.type, x.value]));
+  return `${p.year}-${p.month}-${p.day}`;
+}
+function isoDay(v) {
+  if (v == null || v === '') return null;
+  const secs = v instanceof Date ? v.getTime() / 1000 : Number(v);
+  if (!Number.isFinite(secs) || secs <= 0) return null;
+  if (secs % 86400 === 0) return new Date(secs * 1000).toISOString().slice(0, 10);
+  const p = Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone: 'America/Denver', year: 'numeric', month: '2-digit', day: '2-digit' })
+    .formatToParts(new Date(secs * 1000)).map(x => [x.type, x.value]));
+  return `${p.year}-${p.month}-${p.day}`;
+}
+const toSecs = iso => iso ? Date.parse(iso + 'T00:00:00Z') / 1000 : null;
+const dayDiff = (a, b) => Math.round((Date.parse(b + 'T00:00:00Z') - Date.parse(a + 'T00:00:00Z')) / 864e5);
+const fmt = (iso, o) => new Date(iso + 'T00:00:00Z').toLocaleDateString('en-US', { timeZone: 'UTC', ...o });
+const shortDay = iso => fmt(iso, { weekday: 'short', month: 'short', day: 'numeric' }).replace(',', '');
+const monthDay = iso => fmt(iso, { month: 'short', day: 'numeric' });
+// "Oct 3", with the year when it isn't this year
+const niceDay = iso => iso.slice(0, 4) === todayIso().slice(0, 4) ? monthDay(iso) : fmt(iso, { month: 'short', day: 'numeric', year: 'numeric' });
+
+// ---- Redraw guard: never while typing, with a sheet open, or just after a tap ----------
+let lastDown = 0, pending = false;
+document.addEventListener('pointerdown', () => { lastDown = Date.now(); }, true);
+const typing = () => /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName || '');
+const blocked = () => typing() || !!sheet || Date.now() - lastDown < 400;
+function requestRender() { if (!pending) { pending = true; setTimeout(tryRender, 300); } }
+function tryRender() { if (!pending) return; if (blocked()) { setTimeout(tryRender, 450); return; } render(); }
+app.addEventListener('focusout', () => setTimeout(tryRender, 450));
+
+function say(text, onUndo, ms) {
+  toast.innerHTML = esc(text) + (onUndo ? ' <button type="button">Undo</button>' : '');
+  if (onUndo) toast.querySelector('button').onclick = () => { toast.classList.remove('show'); onUndo(); };
+  toast.classList.add('show');
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(() => toast.classList.remove('show'), ms || (onUndo ? 6000 : 2600));
+}
+
+// ---- Saving ---------------------------------------------------------------------------
+async function save(table, id, fields, key) {
+  if (busy.has(key)) { say('Still saving. One moment.'); return false; }
+  busy.add(key); render();
+  try {
+    await write([['UpdateRecord', table, id, fields]]);
+    const row = tables()[table]?.find(r => r.id === id);
+    if (row) Object.assign(row, fields);
+    busy.delete(key); render();
+    return true;
+  } catch (e) {
+    busy.delete(key); render();
+    say(errMsg(e), null, 5000);
+    return false;
+  }
+}
+// Save, then offer Undo that puts the old values back.
+async function changeWithUndo(table, id, fields, key, msg) {
+  const row = tables()[table]?.find(r => r.id === id); if (!row) return;
+  const before = Object.fromEntries(Object.keys(fields).map(k => [k, row[k] ?? null]));
+  if (await save(table, id, fields, key)) say(msg, () => save(table, id, before, key));
+}
+
+// ---- Contact buttons --------------------------------------------------------------------
+function contactBtns(c, optedOutOfEmail) {
+  if (!c) return '';
+  const digits = String(c.Phone || '').trim().replace(/[^\d+]/g, ''), email = String(c.Email || '').trim();
+  const parts = [];
+  if (digits) parts.push(`<a class="btn plain" href="tel:${esc(digits)}">Call</a><a class="btn plain" href="sms:${esc(digits)}">Text</a>`);
+  if (email) parts.push(`<a class="btn plain" href="mailto:${esc(encodeURIComponent(email))}">Email</a>`);
+  return (parts.length ? `<div class="contact">${parts.join('')}</div>` : '')
+    + (email && optedOutOfEmail ? '<p class="note">Not on the email list. A personal note is fine; no newsletters.</p>' : '');
+}
+
+// ---- Sheets ---------------------------------------------------------------------------
+// sheet = { init: {k: string}, save(), vals()? , sheetClick(e)? }
+function showSheet() { sheetEl.hidden = false; sheetEl.scrollTop = 0; document.body.style.overflow = 'hidden'; }
+function closeSheet() { sheet = null; sheetEl.hidden = true; sheetEl.innerHTML = ''; document.body.style.overflow = ''; render(); }
+const sheetVals = () => sheet.vals ? sheet.vals() : Object.fromEntries(Object.keys(sheet.init).map(k => [k, sheetEl.querySelector('#f-' + k)?.value ?? sheet.init[k]]));
+const sheetDirty = () => { const v = sheetVals(); return Object.keys(sheet.init).some(k => v[k] !== sheet.init[k]); };
+const sheetBars = `<div class="bar"><button type="submit" class="btn" data-sheet="save">Save</button><button type="button" class="btn plain" data-sheet="cancel">Cancel</button></div>
+    <div class="bar" id="discard" hidden><button type="button" class="btn plain" data-sheet="keep">Keep editing</button><button type="button" class="btn" data-sheet="discard">Discard</button></div>`;
+sheetEl.addEventListener('submit', e => { e.preventDefault(); if (sheet?.save) sheet.save(); });
+sheetEl.addEventListener('click', e => {
+  if (!sheet) return;
+  if (sheet.sheetClick && sheet.sheetClick(e)) return;
+  const act = e.target.closest('[data-sheet]')?.dataset.sheet;
+  if (!act) return;
+  if (act === 'cancel') { if (sheetDirty()) sheetEl.querySelector('#discard').hidden = false; else closeSheet(); }
+  else if (act === 'keep') sheetEl.querySelector('#discard').hidden = true;
+  else if (act === 'discard') closeSheet();
+});
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape' || !sheet) return;
+  const c = sheetEl.querySelector('[data-sheet=cancel]'); if (c) c.click(); else closeSheet();
+});
+// Save the sheet's changed fields to one record.
+async function saveSheetRecord(table, id, fields, key) {
+  if (!Object.keys(fields).length) { closeSheet(); return; }
+  const mine = sheet, btn = sheetEl.querySelector('[data-sheet=save]'); btn.disabled = true;
+  const ok = await save(table, id, fields, key);
+  if (!ok) { if (sheet === mine) btn.disabled = false; return; }
+  if (sheet === mine) closeSheet();
+  say('Saved.');
+}
+
+// ---- Start ----------------------------------------------------------------------------
+function start() {
+  if (typeof grist === 'undefined') { loadFailed = true; render(); return; }
+  grist.ready({ requiredAccess: 'full' });
+  grist.onRecords(() => load());
+  setInterval(() => { if (!document.hidden) load(); }, 30000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) load(); });
+  setTimeout(() => { if (!loaded) { loadFailed = true; render(); } }, LOAD_MS);
+  load();
+  render();
+}
+const loadingHtml = () => loadFailed
+  ? `<p>${esc(MSG_FAIL)}</p><button type="button" class="btn" data-act="retry">Try again</button>`
+  : '<p class="hint">Loading…</p>';
+
+
+// ---- Column choices, read from the doc so they stay in step with Grist -------------------
+const choices = {};   // 'Table.Col' -> [labels]
+let metaAt = 0;
+async function loadMeta(want) {
+  if (Date.now() - metaAt < 60000) return;
+  const [tb, col] = await Promise.all(['_grist_Tables', '_grist_Tables_column'].map(n => grist.docApi.fetchTable(n)));
+  const cols = rowsOf(col);
+  for (const [t, names] of Object.entries(want)) {
+    const ref = tb.id[tb.tableId.indexOf(t)];
+    for (const n of names) {
+      const c = cols.find(x => x.parentId === ref && x.colId === n);
+      try { const ch = JSON.parse(c?.widgetOptions || '{}').choices; if (Array.isArray(ch) && ch.length) choices[t + '.' + n] = ch.map(String); } catch (e) {}
+    }
+  }
+  metaAt = Date.now();
+}
+const choicesOf = (key, fallback) => choices[key] || fallback;
+function optionsHtml(list, cur, blank) {
+  const all = !cur || list.includes(cur) ? list : [...list, cur];
+  return (blank ? `<option value=""${cur ? '' : ' selected'}>${esc(blank)}</option>` : '')
+    + all.map(s => `<option${s === cur ? ' selected' : ''}>${esc(s)}</option>`).join('');
+}
+
+// ---- "Who" picker: an existing contact, or a new person made in the same save ------------
+// add = { q, picked, isNew, first, last, email, phone, ... }
+const pickInp = (add, n, label, type, extra = '') => `<label class="f"><span class="label">${label}</span><input data-add="${n}" type="${type}" value="${esc(add[n])}" autocomplete="off" ${extra}></label>`;
+function pickResults(add) {
+  const q = add.q.trim().toLowerCase();
+  const found = (q ? contacts.filter(c => String(c.Name || '').toLowerCase().includes(q)) : contacts.slice())
+    .sort((a, b) => String(a.Name).localeCompare(String(b.Name))).slice(0, 8);
+  return found.map(c => `<button type="button" class="btn plain" data-pick="pick" data-id="${c.id}" aria-pressed="${add.picked === c.id}">${esc(c.Name || '(no name)')}</button>`).join('') || '<p class="empty">No match.</p>';
+}
+function pickerHtml(add, who) {
+  return add.isNew
+    ? `${pickInp(add, 'first', 'First name', 'text')}${pickInp(add, 'last', 'Last name', 'text')}${pickInp(add, 'email', 'Email', 'email')}${pickInp(add, 'phone', 'Phone', 'tel')}
+      <button type="button" class="link" data-pick="existing">Pick an existing contact instead</button>`
+    : `${pickInp(add, 'q', who, 'search', 'enterkeyhint="search"')}
+      <div class="results" id="pk-results">${pickResults(add)}</div>
+      <button type="button" class="link" data-pick="new">New person</button>`;
+}
+// Returns the contact to use: { id, action|null }. A new person gets a row id picked up front so the
+// contact and the record that points at it go in ONE applyUserActions call (one Undo).
+async function resolveContact(add) {
+  if (!add.isNew) return { id: add.picked, action: null };
+  const t = await withTimeout(grist.docApi.fetchTable('Contacts'));
+  const id = Math.max(0, ...t.id.map(Number)) + 1;
+  return { id, action: ['AddRecord', 'Contacts', id, { First_Name: add.first.trim(), Last_Name: add.last.trim(), Email: add.email.trim(), Phone: add.phone.trim() }] };
+}
+function checkWho(add) {
+  if (add.isNew) return add.first.trim() || add.last.trim() ? '' : 'Add at least a first or last name.';
+  return add.picked ? '' : 'Pick a person first, or choose New person.';
+}
+// Typing and tapping inside the add sheet. Returns true when it handled the event.
+function pickerInput(add, e) {
+  const k = e.target.dataset.add; if (!k) return false;
+  add[k] = e.target.value;
+  if (k === 'q') { const r = document.getElementById('pk-results'); if (r) r.innerHTML = pickResults(add); }
+  return true;
+}
+function pickerClick(add, e, redraw) {
+  const el = e.target.closest('[data-pick]'); if (!el) return false;
+  const a = el.dataset.pick;
+  if (a === 'pick') add.picked = Number(el.dataset.id);
+  else if (a === 'new') { add.isNew = true; add.picked = null; }
+  else if (a === 'existing') add.isNew = false;
+  redraw(); return true;
+}
+
+// Reads Gift_Cards and Contacts by name (full access).
+// Only the last 4 digits of a card are ever typed here. Nothing typed is stored on this phone.
+let giftCards = [], contacts = [], q = '', filter = 'Active', add = null;
+const tables = () => ({ Gift_Cards: giftCards });
+const DEFAULTS = { Offer: ['Date Night for Two', 'One Seat', 'Other'], Design: ['1 Prune What No Longer Serves You', '2 Utah Grown', '3 Step Away From the Watering Can', '4 Breathe Snip Repeat', '5 Humble Beginnings'],
+  Delivery: ['eGift', 'Printable', 'Both'], Status: ['Active', 'Used', 'Refunded', 'Void'] };
+const ch = col => choicesOf('Gift_Cards.' + col, DEFAULTS[col]);
+const DEAD = ['Refunded', 'Void'];   // sales that were undone
+const money = n => { const v = Math.round((Number(n) || 0) * 100) / 100; return '$' + (v % 1 ? v.toFixed(2) : String(v)); };
+
+async function load() {
+  const seq = ++loadSeq;
+  try {
+    const res = await Promise.allSettled(['Gift_Cards', 'Contacts'].map(n => grist.docApi.fetchTable(n)));
+    if (res[0].status === 'rejected') throw new Error('load');
+    const [g, c] = res.map(x => x.status === 'fulfilled' ? rowsOf(x.value) : []);
+    await loadMeta({ Gift_Cards: ['Offer', 'Design', 'Delivery', 'Status'] }).catch(() => {});
+    if (seq !== loadSeq) return;
+    giftCards = g; contacts = c; loaded = true; loadFailed = false;
+  } catch (e) {
+    if (seq !== loadSeq) return;
+    if (!loaded) { loadFailed = true; render(); }
+    return;
+  }
+  requestRender();
+}
+
+const buyerName = c => contacts.find(x => x.id === refId(c.Buyer))?.Name || '';
+const cardLabel = c => String(c.Card_Label || '').trim() || ('Card ' + String(c.Card_Last4 || '').trim());
+const needle = c => [cardLabel(c), c.Recipient_Name, buyerName(c), c.Card_Last4, c.Order_Ref].join(' ').toLowerCase();
+const byNewest = (a, b) => (isoDay(b.Sold_Date) || '').localeCompare(isoDay(a.Sold_Date) || '') || b.id - a.id;
+
+function cardHtml(c, saucer) {
+  const p = busy.has('g' + c.id), d = isoDay(c.Sold_Date);
+  const chip = `<span class="chip${c.Status === 'Active' ? ' paid' : c.Status === 'Used' ? ' used' : ' pending'}">${esc(c.Status || 'No status')}</span>`;
+  const meta = [c.Offer, c.Design, d ? 'Sold ' + niceDay(d) : ''].filter(Boolean).join(' · ');
+  const who = buyerName(c);
+  return `<div class="card${p ? ' pending' : ''}${DEAD.includes(c.Status) || c.Status === 'Used' ? ' out' : ''}">
+    <div class="row"><button type="button" class="title" data-act="open" data-id="${c.id}">${esc(cardLabel(c))}</button>${chip}</div>
+    <p class="meta">${esc(meta || 'No offer yet')}${p ? ' · Saving…' : ''}</p>
+    ${who ? `<p class="meta">Bought by ${esc(who)}</p>` : ''}
+    <div class="bal" aria-label="Balance">${esc(money(c.Balance))}<span class="label"> left on our records</span></div>
+    ${c.Check ? `<p class="warn">${esc(c.Check)}</p>` : ''}
+    ${saucer ? `<button type="button" class="toggle bigact" data-act="saucer" data-id="${c.id}" aria-pressed="false"${p ? ' disabled' : ''}><span>Handed over</span><span>Not yet</span></button>` : ''}
+  </div>`;
+}
+
+function listHtml() {
+  const t = q.trim().toLowerCase();
+  const saucers = giftCards.filter(c => c.Saucer_Owed && !c.Saucer_Given && !DEAD.includes(c.Status) && (!t || needle(c).includes(t))).sort(byNewest);
+  const shown = giftCards.filter(c => (filter === 'All' || c.Status === filter) && (!t || needle(c).includes(t))).sort(byNewest);
+  const live = giftCards.filter(c => !DEAD.includes(c.Status));
+  const designs = [...new Set(live.map(c => c.Design || '(no design)'))].sort();
+  const empty = !giftCards.length ? 'No gift cards logged yet. Tap + Log a sale when you sell one.'
+    : t ? 'No card matches that.' : filter === 'Used' ? 'No cards are marked Used yet.' : filter === 'Active' ? 'No active cards.' : 'Nothing here.';
+  return `${saucers.length ? `<h2><span>Saucers to hand out</span><span>${saucers.length}</span></h2>${saucers.map(c => cardHtml(c, true)).join('')}` : ''}
+    <h2><span>Cards</span><span>${shown.length}</span></h2>
+    ${shown.map(c => cardHtml(c, false)).join('') || `<p class="empty">${esc(empty)}</p>`}
+    <details class="fold"><summary>By design</summary>
+      <ul class="used-list">${designs.map(d => { const l = live.filter(c => (c.Design || '(no design)') === d);
+        return `<li class="row"><span>${esc(d)}</span><span>${l.length} · ${esc(money(l.reduce((n, c) => n + (Number(c.Amount) || 0), 0)))}</span></li>`; }).join('') || '<li class="empty">Nothing sold yet.</li>'}</ul>
+      <p class="note">Counts and totals leave out Refunded and Void cards.</p></details>`;
+}
+function render() {
+  pending = false;
+  if (!loaded) { app.innerHTML = loadingHtml(); return; }
+  const n = s => s === 'All' ? giftCards.length : giftCards.filter(c => c.Status === s).length;
+  app.innerHTML = `
+    <h1>Gift cards <em>sold</em></h1>
+    <p class="hint">Every card we've sold. Tap + to log a new one.</p>
+    <button type="button" class="btn addbtn" data-act="add-open">+ Log a sale</button>
+    <label class="f"><span class="label">Search</span><input id="q" type="search" enterkeyhint="search" autocomplete="off" placeholder="Recipient, buyer, last 4 or order #" value="${esc(q)}"></label>
+    <div class="chips">${['Active', 'Used', 'All'].map(s => `<button type="button" class="chipbtn" data-act="filter" data-f="${s}" aria-pressed="${filter === s}">${s} (${n(s)})</button>`).join('')}</div>
+    <div id="out">${listHtml()}</div>`;
+}
+const redrawOut = () => { const o = document.getElementById('out'); if (o) o.innerHTML = listHtml(); };
+app.addEventListener('input', e => { if (e.target.id === 'q') { q = e.target.value; redrawOut(); } });
+
+// ---- Edit a card -----------------------------------------------------------------------
+function openEdit(id) {
+  const c = giftCards.find(x => x.id === id); if (!c) return;
+  const init = { Recipient_Name: String(c.Recipient_Name ?? ''), Design: String(c.Design ?? ''), Delivery: String(c.Delivery ?? ''), Order_Ref: String(c.Order_Ref ?? ''),
+    Status: String(c.Status ?? ''), Saucer_Given: c.Saucer_Given ? '1' : '0', Notes: String(c.Notes ?? '') };
+  sheet = { init, save: () => saveEdit(id) };
+  const txt = (k, label) => `<label class="f"><span class="label">${label}</span><input id="f-${k}" type="text" autocomplete="off" value="${esc(init[k])}"></label>`;
+  const sel = (k, label, list, blank) => `<label class="f"><span class="label">${label}</span><select id="f-${k}">${optionsHtml(list, init[k], blank)}</select></label>`;
+  sheetEl.innerHTML = `<form class="inner"><h1>${esc(cardLabel(c))}</h1>
+    <p class="note">The card number stays in Square. Only the last 4 are kept here, and they can't be changed from this screen.</p>
+    ${c.Check ? `<p class="warn">${esc(c.Check)}</p>` : ''}
+    ${txt('Recipient_Name', 'Recipient')}
+    ${sel('Design', 'Design', ch('Design'), 'Pick one')}
+    ${sel('Delivery', 'Delivery', ch('Delivery'), 'Pick one')}
+    ${txt('Order_Ref', 'Square order #')}
+    ${sel('Status', 'Status', ch('Status'))}
+    <label class="f"><span class="label">Saucer</span><select id="f-Saucer_Given"><option value="0"${init.Saucer_Given === '0' ? ' selected' : ''}>Not handed over</option><option value="1"${init.Saucer_Given === '1' ? ' selected' : ''}>Handed over</option></select></label>
+    <label class="f"><span class="label">Notes (never a card number)</span><textarea id="f-Notes" rows="4">${esc(init.Notes)}</textarea></label>
+    ${sheetBars}</form>`;
+  showSheet();
+}
+async function saveEdit(id) {
+  const c = giftCards.find(x => x.id === id); if (!c) return;
+  const v = sheetVals(), init = sheet.init, fields = {};
+  for (const k of Object.keys(init)) if (v[k] !== init[k]) fields[k] = k === 'Saucer_Given' ? v[k] === '1' : v[k];
+  if (!Object.keys(fields).length) { closeSheet(); return; }
+  const before = Object.fromEntries(Object.keys(fields).map(k => [k, c[k] ?? (k === 'Saucer_Given' ? false : '')]));
+  const mine = sheet, btn = sheetEl.querySelector('[data-sheet=save]'); btn.disabled = true;
+  if (!await save('Gift_Cards', id, fields, 'g' + id)) { if (sheet === mine) btn.disabled = false; return; }
+  if (sheet === mine) closeSheet();
+  say('Saved.', () => save('Gift_Cards', id, before, 'g' + id));
+}
+
+// ---- Log a sale ------------------------------------------------------------------------
+const MSG_DIGITS = 'Only the last 4 digits, please. Nothing longer is accepted.';
+const MSG_NOTE = 'Only the last 4. The whole number stays in Square.';
+function openAddSale() {
+  add = { q: '', picked: null, isNew: false, first: '', last: '', email: '', phone: '', last4: '', recipient: '', offer: '', design: '', delivery: '', order: '', amount: '' };
+  sheet = { init: {}, save: saveSale, sheetClick: e => pickerClick(add, e, drawAdd) || (e.target.closest('[data-sheet=close]') ? (closeSheet(), true) : false) };
+  drawAdd(); showSheet();
+}
+function drawAdd() {
+  const sel = (k, label, list) => `<label class="f"><span class="label">${label}</span><select data-add="${k}">${optionsHtml(list, add[k], 'Pick one')}</select></label>`;
+  sheetEl.innerHTML = `<form class="inner" novalidate><h1>Log a <em>sale</em></h1>
+    <label class="f"><span class="label">Card last 4 digits</span><input data-add="last4" class="digits" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(add.last4)}" aria-describedby="l4-note"></label>
+    <p class="note" id="l4-note">${MSG_NOTE}</p>
+    <div style="display:grid;gap:10px"><span class="label" style="color:var(--moss)">Buyer</span>${pickerHtml(add, 'Find the buyer')}</div>
+    ${pickInp(add, 'recipient', 'Recipient name', 'text')}
+    ${sel('offer', 'Offer', ch('Offer'))}
+    <div id="amt-wrap"${add.offer === 'Other' ? '' : ' hidden'}>${pickInp(add, 'amount', 'Amount ($)', 'text', 'inputmode="decimal"')}</div>
+    ${sel('design', 'Design', ch('Design'))}
+    ${sel('delivery', 'Delivery', ch('Delivery'))}
+    ${pickInp(add, 'order', 'Square order #', 'text')}
+    <p class="note">The amount, sold date and status fill in by themselves.</p>
+    <p class="warn" id="add-err" hidden></p>
+    <div class="bar"><button type="submit" class="btn" id="add-save">Log the sale</button><button type="button" class="btn plain" data-sheet="close">Cancel</button></div>
+  </form>`;
+}
+const addErr = m => { const el = document.getElementById('add-err'); if (el) { el.textContent = m; el.hidden = !m; } if (m) say(m, null, 4000); };
+function onAddField(e) {
+  if (!add) return;
+  if (e.target.dataset.add === 'last4') {
+    const raw = e.target.value, digits = raw.replace(/\D/g, '');
+    if (digits.length > 4) { add.last4 = ''; e.target.value = ''; document.getElementById('l4-note').textContent = MSG_DIGITS; return; }
+    add.last4 = digits; if (raw !== digits) e.target.value = digits;
+    document.getElementById('l4-note').textContent = MSG_NOTE;
+    return;
+  }
+  pickerInput(add, e);
+  if (e.target.dataset.add === 'offer') document.getElementById('amt-wrap').hidden = add.offer !== 'Other';
+}
+sheetEl.addEventListener('input', onAddField);
+sheetEl.addEventListener('change', e => { if (e.target.tagName === 'SELECT') onAddField(e); });
+// A pasted number longer than 4 digits is refused outright (maxlength would quietly keep the first 4).
+sheetEl.addEventListener('paste', e => {
+  if (!add || e.target.dataset.add !== 'last4') return;
+  const t = (e.clipboardData?.getData('text') || '').replace(/\D/g, '');
+  if (t.length > 4) { e.preventDefault(); add.last4 = ''; e.target.value = ''; document.getElementById('l4-note').textContent = MSG_DIGITS; }
+});
+async function saveSale() {
+  const a = add; if (!a) return;
+  if (!/^\d{4}$/.test(a.last4)) return addErr('The card needs exactly 4 digits. Just the last 4, never the whole number.');
+  const who = checkWho(a); if (who) return addErr(who);
+  if (!a.offer) return addErr('Pick the offer.');
+  let amount = null;
+  if (a.offer === 'Other') { amount = Math.round(Number(a.amount) * 100) / 100; if (!(amount > 0)) return addErr('Other needs an amount, like 40.'); }
+  if (!a.design) return addErr('Pick the design.');
+  if (!a.delivery) return addErr('Pick how it was delivered.');
+  const btn = document.getElementById('add-save'); btn.disabled = true;
+  const mine = sheet;
+  try {
+    const c = await resolveContact(a);
+    const fields = { Card_Last4: a.last4, Buyer: c.id, Offer: a.offer, Design: a.design, Delivery: a.delivery };
+    if (a.recipient.trim()) fields.Recipient_Name = a.recipient.trim();
+    if (a.order.trim()) fields.Order_Ref = a.order.trim();
+    if (amount) fields.Amount = amount;
+    const acts = c.action ? [c.action] : [];
+    acts.push(['AddRecord', 'Gift_Cards', null, fields]);
+    const res = await write(acts);   // contact (if new) and card together: one Undo
+    const gid = Number(res?.retValues?.[acts.length - 1]) || null;
+    if (sheet === mine) { add = null; closeSheet(); }
+    const undo = gid ? [['RemoveRecord', 'Gift_Cards', gid], ...(c.action ? [['RemoveRecord', 'Contacts', c.id]] : [])] : null;
+    say('Sale logged.', undo ? async () => { try { await write(undo); await load(); say('Undone.'); } catch (err) { say(errMsg(err), null, 5000); } } : null);
+    await load();
+  } catch (err) { if (btn.isConnected) btn.disabled = false; say(errMsg(err), null, 5000); }
+}
+
+app.addEventListener('click', async e => {
+  const el = e.target.closest('[data-act]'); if (!el) return;
+  const id = Number(el.dataset.id);
+  switch (el.dataset.act) {
+    case 'retry': loadFailed = false; render(); load(); break;
+    case 'open': openEdit(id); break;
+    case 'add-open': openAddSale(); break;
+    case 'filter': filter = el.dataset.f; render(); break;
+    case 'saucer': changeWithUndo('Gift_Cards', id, { Saucer_Given: true }, 'g' + id, 'Saucer handed over.'); break;
+  }
+});
+start();
+</script>
+</body>
+</html>

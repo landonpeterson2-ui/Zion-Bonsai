@@ -15,4 +15,9 @@
   var m = document.createElement('meta');
   m.name = 'apple-mobile-web-app-title'; m.content = 'Zion Bonsai';
   document.head.appendChild(m);
+  // Phone-only page menu (acts only on the Zion Bonsai docs, on a phone-sized screen).
+  var pm = document.createElement('script');
+  pm.src = base + 'phone-menu.js';
+  pm.async = true;
+  document.head.appendChild(pm);
 })();
