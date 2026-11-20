@@ -39,6 +39,9 @@ function TentativeDates({ items, giveUrl }: { items: Workshop[]; giveUrl: string
   return (
     <div className="mt-12">
       <Eyebrow tone="clay">Tentative dates</Eyebrow>
+      <p className="mt-3 max-w-[65ch] text-soil">
+        We confirm dates one quarter at a time so we can keep them clear of holidays and local events.
+      </p>
       <ul className="mt-4 border-t border-forest/15">
         {items.map((w) => {
           const venue = w.venue ? getPartner(w.venue) : undefined
