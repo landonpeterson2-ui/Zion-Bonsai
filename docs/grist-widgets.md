@@ -11,6 +11,13 @@ Small custom widgets live in this repo and deploy with the site. They are plain 
 | Start here | `https://zionbonsai.com/grist/start` | Any table (no mapping) | None |
 | What's coming | `https://zionbonsai.com/grist/schedule` | Workshops (no mapping) | Full document access |
 | Workshop day | `https://zionbonsai.com/grist/workshop` | Workshops (no mapping) | Full document access |
+| Gift card | `https://zionbonsai.com/grist/gift-card` | Gift_Cards (no mapping) | Full document access |
+| Packing and restock | `https://zionbonsai.com/grist/packing` | Inventory (no mapping) | Full document access |
+| Season at a glance | `https://zionbonsai.com/grist/season` | Workshops (no mapping) | Full document access |
+| Trees coming back | `https://zionbonsai.com/grist/returns` | Trees (no mapping) | Full document access |
+| Follow-ups | `https://zionbonsai.com/grist/follow-ups` | Contacts (no mapping) | Full document access |
+| Feedback | `https://zionbonsai.com/grist/feedback` | Feedback (no mapping) | Full document access |
+| Partners | `https://zionbonsai.com/grist/partners` | Organizations (no mapping) | Full document access |
 
 Mapping slots and options at a glance (details in the sections below):
 
@@ -23,6 +30,13 @@ Mapping slots and options at a glance (details in the sections below):
 | Start here | none | `forms`: `[{label, url}]` for the Quick add buttons |
 | What's coming | none (reads Workshops, Tasks, Trees, Agreements, Contacts by name) | none |
 | Workshop day | none (reads Workshops, Registrations, Contacts, Trees, Feedback by name) | none |
+| Gift card | none (reads Gift_Cards, Registrations, Workshops, Contacts by name) | none |
+| Packing and restock | none (reads Workshops, Inventory, Organizations; packed ticks stay on the phone by name) | none |
+| Season at a glance | none (reads Workshops, Registrations by name) | none |
+| Trees coming back | none (reads Trees, Contacts, Workshops by name) | none |
+| Follow-ups | none (reads Contacts, Registrations, Workshops; needs `Contacts.Last_Contacted` by name) | none |
+| Feedback | none (reads Feedback, Contacts, Workshops by name) | none |
+| Partners | none (reads Organizations, Contacts, Agreements, Workshops by name) | none |
 
 `icons.js` is for the NUC's `GRIST_INCLUDE_CUSTOM_SCRIPT_URL`: `https://zionbonsai.com/grist/icons.js` gives every Grist page the Zion Bonsai home-screen icon (`icon-32/180/192.png`, the logo on a paper square) and the title "Zion Bonsai".
 

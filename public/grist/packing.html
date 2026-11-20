@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Zion Bonsai packing and restock (Grist widget)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Montserrat:wght@600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<!-- A Grist custom widget: pack the car for a workshop and see what to buy. Put it on the Inventory or Workshops table. No column mapping. Only works inside Grist. -->
+<script src="https://docs.getgrist.com/grist-plugin-api.js"></script>
+<style>
+  :root {
+    --paper: #F4EEE6; --paper-deep: #E9DFD2; --sandstone: #D9AE93; --linen: #FBF8F3;
+    --clay: #A84A2B; --clay-dark: #8F3E23; --moss: #4F6420; --forest: #2F3B22;
+    --rule: rgba(47, 59, 34, .15); --edge: rgba(47, 59, 34, .4);
+    --late-bg: rgba(168, 74, 43, .13); --soon-bg: rgba(217, 174, 147, .4);
+    --radius: 3px;
+    --sans: 'Open Sans', system-ui, sans-serif;
+    --label: 'Montserrat', 'Open Sans', system-ui, sans-serif;
+    --display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body { margin: 0; background: var(--paper); color: var(--forest); font: 400 16px/1.5 var(--sans); }
+  main { max-width: 640px; margin: 0 auto; padding: 16px 14px 80px; }
+  button, input, textarea, select { font: inherit; color: inherit; }
+  h1 { font: 500 34px/1.1 var(--display); margin: 4px 0 4px; }
+  h1 em { font-style: italic; }
+  h2 { font: 600 11px/1.2 var(--label); letter-spacing: .18em; text-transform: uppercase; color: var(--moss);
+       margin: 28px 0 10px; padding-top: 12px; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; }
+  .label { font: 600 11px/1.2 var(--label); letter-spacing: .16em; text-transform: uppercase; }
+  .hint { color: var(--moss); font-size: 14px; margin: 4px 0; }
+  .empty { color: var(--moss); padding: 6px 2px 10px; }
+  :focus-visible { outline: 2px solid var(--clay); outline-offset: 2px; }
+  .btn { font: 600 11px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; min-height: 44px; padding: 0 18px;
+         border: 1px solid var(--clay); border-radius: var(--radius); background: var(--clay); color: var(--linen); cursor: pointer; }
+  .btn:hover { background: var(--clay-dark); border-color: var(--clay-dark); }
+  .btn.plain { background: var(--linen); color: var(--forest); border-color: var(--edge); }
+  .btn.plain:hover { background: var(--paper-deep); }
+  .btn:disabled { opacity: .55; cursor: default; }
+  .link { background: none; border: 0; padding: 0; min-height: 44px; display: inline-flex; align-items: center;
+          color: var(--clay); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font-size: 15px; }
+  .people { display: grid; gap: 10px; margin-top: 14px; }
+  .people .btn { min-height: 56px; font-size: 13px; text-align: left; padding: 0 20px; }
+  .next { border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 10px 0; margin: 10px 0 4px; }
+  .next b { font-weight: 600; }
+  .card { background: var(--linen); border: 1px solid var(--rule); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 10px; }
+  .card.late { background: var(--late-bg); border-color: rgba(168, 74, 43, .35); }
+  .card.soon { background: var(--soon-bg); border-color: rgba(217, 174, 147, .9); }
+  .card.done { opacity: .6; }
+  .card.pending { opacity: .6; }
+  .card .title { font-weight: 600; overflow-wrap: anywhere; cursor: pointer; min-height: 44px; display: flex; align-items: center;
+                 background: none; border: 0; padding: 0; text-align: left; width: 100%; }
+  .card .meta { color: var(--forest); font-size: 14px; margin: 0 0 10px; opacity: .85; }
+  .card.late .meta { opacity: 1; font-weight: 600; }
+  .card .donebtn { width: 100%; min-height: 48px; }
+  .card .row { display: flex; gap: 10px; align-items: center; justify-content: space-between; }
+  details.fold { margin-top: 18px; }
+  details.fold summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; color: var(--clay);
+                         font: 600 11px/1.2 var(--label); letter-spacing: .16em; text-transform: uppercase; }
+  .addbtn { width: 100%; min-height: 48px; margin-bottom: 10px; }
+  form.add { display: grid; gap: 10px; margin-bottom: 12px; background: var(--linen); border: 1px solid var(--rule);
+             border-radius: var(--radius); padding: 14px; }
+  label.f { display: grid; gap: 4px; }
+  label.f .label { color: var(--moss); }
+  input, select, textarea { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid var(--edge); border-radius: var(--radius);
+                            background: var(--paper); color: var(--forest); }
+  textarea { min-height: 96px; resize: vertical; }
+  input[type=date] { -webkit-appearance: none; appearance: none; display: block; min-width: 0; max-width: 100%; }
+  input[type=date]::-webkit-date-and-time-value { text-align: left; }
+  .bar { display: flex; gap: 10px; }
+  .bar .btn { flex: 1; }
+  #sheet { position: fixed; inset: 0; z-index: 10; background: var(--paper); overflow-y: auto; }
+  #sheet .inner { max-width: 640px; margin: 0 auto; padding: 18px 14px 40px; display: grid; gap: 14px; }
+  #sheet h1 { font-size: 28px; }
+  #toast { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); background: var(--forest); color: var(--linen); z-index: 20;
+           padding: 8px 8px 8px 16px; border-radius: var(--radius); opacity: 0; transition: opacity .2s; pointer-events: none;
+           display: flex; gap: 10px; align-items: center; max-width: calc(100% - 24px); }
+  #toast.show { opacity: 1; pointer-events: auto; }
+  #toast button { background: none; border: 1px solid rgba(251, 248, 243, .5); color: var(--linen); border-radius: var(--radius);
+                  font: 600 11px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; min-height: 44px; padding: 0 14px; cursor: pointer; }
+  @media (prefers-reduced-motion: reduce) { #toast { transition: none; } }
+  .summary { margin: 8px 0 0; }
+  .summary b { font-weight: 600; }
+  .toggles { display: grid; gap: 10px; }
+  .toggle { width: 100%; min-height: 52px; display: flex; justify-content: space-between; align-items: center; text-align: left;
+            padding: 0 16px; background: var(--linen); color: var(--forest); border: 1px solid var(--edge); border-radius: var(--radius);
+            font: 600 12px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; cursor: pointer; }
+  .toggle[aria-pressed=true] { background: var(--moss); border-color: var(--moss); color: var(--linen); }
+  .toggle:disabled { opacity: .55; cursor: default; }
+  .acts { display: grid; gap: 8px; margin-top: 10px; }
+  .acts .btn { width: 100%; min-height: 48px; text-align: left; padding: 10px 16px; line-height: 1.3; }
+  .note { color: var(--moss); font-size: 14px; margin: 6px 0 0; }
+  .warn { margin: 0 0 10px; padding: 8px 10px; background: var(--late-bg); border: 1px solid rgba(168, 74, 43, .35);
+          border-radius: var(--radius); font-size: 14px; font-weight: 600; }
+  .chip { display: inline-block; font: 600 10px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; padding: 5px 8px;
+          border: 1px solid var(--edge); border-radius: var(--radius); background: var(--paper); }
+  .chip.paid { background: var(--moss); border-color: var(--moss); color: var(--linen); }
+  .chip.pending { background: var(--soon-bg); border-color: rgba(217, 174, 147, .9); }
+  .card.out { opacity: .6; }
+  .card .hereb { width: 100%; min-height: 52px; margin-top: 4px; }
+  .card .hereb[aria-pressed=true] { background: var(--moss); border-color: var(--moss); color: var(--linen); }
+  .pick { margin: 8px 0 0; }
+  .results { display: grid; gap: 6px; }
+  .results .btn { text-align: left; min-height: 44px; }
+  .results .btn[aria-pressed=true] { background: var(--moss); border-color: var(--moss); color: var(--linen); }
+  .contact { display: flex; flex-wrap: wrap; gap: 8px; }
+  .contact a { flex: 1; min-width: 90px; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+  .bar .btn[type=submit] { flex: 1; }
+  .tabs { display: flex; gap: 8px; margin: 14px 0 6px; }
+  .tabs .btn { flex: 1; }
+  .tabs .btn[aria-pressed=true] { background: var(--forest); border-color: var(--forest); color: var(--linen); }
+  .tick { display: flex; align-items: center; gap: 14px; min-height: 52px; padding: 6px 14px; margin-bottom: 8px; cursor: pointer;
+          background: var(--linen); border: 1px solid var(--rule); border-radius: var(--radius); }
+  .tick input { width: 24px; height: 24px; min-height: 0; padding: 0; flex: none; accent-color: var(--moss); }
+  .tick span { overflow-wrap: anywhere; }
+  .tick.on { background: var(--paper-deep); }
+  .tick.on span { text-decoration: line-through; opacity: .7; }
+  .tick small { display: block; color: var(--moss); font-size: 13px; }
+  .stepper { display: flex; align-items: center; gap: 8px; }
+  .stepper .btn { min-width: 52px; padding: 0; font-size: 18px; }
+  .stepper b { min-width: 3ch; text-align: center; font-weight: 600; font-size: 18px; }
+  .buyrow { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+  form.alsoadd { display: flex; gap: 8px; margin-top: 8px; }
+  form.alsoadd input { flex: 1; }
+  form.alsoadd .btn { flex: none; }
+  .rm { flex: none; margin-left: auto; min-height: 44px; min-width: 44px; background: none; border: 0; color: var(--clay); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+</style>
+</head>
+<body>
+<main id="app"><p class="hint">This is a Grist custom widget. Open it inside Grist.</p></main>
+<div id="sheet" hidden role="dialog" aria-modal="true" aria-label="Details"></div>
+<div id="toast" role="status"></div>
+<script>
+const SAVE_MS = 10000, LOAD_MS = 20000;
+const MSG_FAIL = "Couldn't load. Check your connection.";
+const MSG_SAVE = "Couldn't save. Check your connection and try again.";
+const MSG_ACCESS = "That can't be changed here. Ask Landon if you think it should be.";
+
+let loaded = false, loadFailed = false, loadSeq = 0, metaAt = 0;
+let sheet = null;
+const busy = new Set();
+
+const app = document.getElementById('app');
+const sheetEl = document.getElementById('sheet');
+const toast = document.getElementById('toast');
+
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+const withTimeout = (p, ms = SAVE_MS) => new Promise((res, rej) => {
+  const t = setTimeout(() => rej(new Error('timeout')), ms);
+  Promise.resolve(p).then(v => { clearTimeout(t); res(v); }, e => { clearTimeout(t); rej(e); });
+});
+const write = acts => withTimeout(grist.docApi.applyUserActions(acts));
+function errMsg(e) {
+  if (!navigator.onLine) return MSG_SAVE;
+  return /access|permission|blocked|denied/i.test(String(e?.message ?? e)) ? MSG_ACCESS : MSG_SAVE;
+}
+function rowsOf(t) { return t.id.map((id, i) => Object.fromEntries(Object.keys(t).map(k => [k, t[k][i]]))); }
+
+// ---- Grist's encoded cell values --------------------------------------------------------
+// Formula columns holding a list or dict can arrive as ["L", ...] and ["O", {...}] (nested).
+function decode(v) {
+  if (Array.isArray(v)) {
+    if (v[0] === 'L') return v.slice(1).map(decode);
+    if (v[0] === 'O' && v.length === 2 && v[1] && typeof v[1] === 'object') return Object.fromEntries(Object.entries(v[1]).map(([k, x]) => [k, decode(x)]));
+    if (v[0] === 'E' || v[0] === 'P' || v[0] === 'C') return null;
+    return v.map(decode);
+  }
+  if (v && typeof v === 'object') return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, decode(x)]));
+  return v;
+}
+const listOf = raw => { const d = decode(raw); return Array.isArray(d) ? d : d ? [d] : []; };
+
+// ---- Dates: Grist Date cells are seconds at UTC midnight -------------------------------
+function todayIso() {
+  const p = Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone: 'America/Denver', year: 'numeric', month: '2-digit', day: '2-digit' })
+    .formatToParts(new Date()).map(x => [x.type, x.value]));
+  return `${p.year}-${p.month}-${p.day}`;
+}
+function isoDay(v) {
+  if (v == null || v === '') return null;
+  const secs = v instanceof Date ? v.getTime() / 1000 : Number(v);
+  if (!Number.isFinite(secs) || secs <= 0) return null;
+  if (secs % 86400 === 0) return new Date(secs * 1000).toISOString().slice(0, 10);
+  const p = Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone: 'America/Denver', year: 'numeric', month: '2-digit', day: '2-digit' })
+    .formatToParts(new Date(secs * 1000)).map(x => [x.type, x.value]));
+  return `${p.year}-${p.month}-${p.day}`;
+}
+const fmt = (iso, o) => new Date(iso + 'T00:00:00Z').toLocaleDateString('en-US', { timeZone: 'UTC', ...o });
+const shortDay = iso => fmt(iso, { weekday: 'short', month: 'short', day: 'numeric' });
+const longDay = iso => fmt(iso, { weekday: 'long', month: 'long', day: 'numeric' });
+const money = n => { const v = Math.round((Number(n) || 0) * 100) / 100; return '$' + (v % 1 ? v.toFixed(2) : String(v)); };
+
+// ---- Redraw guard: never while typing, with a sheet open, or just after a tap ----------
+let lastDown = 0, pending = false;
+document.addEventListener('pointerdown', () => { lastDown = Date.now(); }, true);
+const typing = () => /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName || '');
+const blocked = () => typing() || !!sheet || Date.now() - lastDown < 400;
+function requestRender() { if (!pending) { pending = true; setTimeout(tryRender, 300); } }
+function tryRender() { if (!pending) return; if (blocked()) { setTimeout(tryRender, 450); return; } render(); }
+app.addEventListener('focusout', () => setTimeout(tryRender, 450));
+
+function say(text, onUndo, ms) {
+  toast.innerHTML = esc(text) + (onUndo ? ' <button type="button">Undo</button>' : '');
+  if (onUndo) toast.querySelector('button').onclick = () => { toast.classList.remove('show'); onUndo(); };
+  toast.classList.add('show');
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(() => toast.classList.remove('show'), ms || (onUndo ? 6000 : 2600));
+}
+function showSheet() { sheetEl.hidden = false; sheetEl.scrollTop = 0; document.body.style.overflow = 'hidden'; }
+function closeSheet() { sheet = null; sheetEl.hidden = true; sheetEl.innerHTML = ''; document.body.style.overflow = ''; render(); }
+
+// ---- Workshops ------------------------------------------------------------------------
+const pickable = () => workshops.filter(w => w.Status !== 'Cancelled' && isoDay(w.Date));
+function defaultWorkshop() {
+  const today = todayIso(), list = pickable().map(w => ({ id: w.id, iso: isoDay(w.Date) }));
+  const hit = list.find(x => x.iso === today)
+    || list.filter(x => x.iso > today).sort((a, b) => a.iso < b.iso ? -1 : 1)[0]
+    || list.sort((a, b) => a.iso < b.iso ? 1 : -1)[0];
+  return hit ? hit.id : null;
+}
+function wsOptions(selected) {
+  const today = todayIso();
+  const list = pickable().map(w => ({ w, iso: isoDay(w.Date) }));
+  const up = list.filter(x => x.iso >= today).sort((a, b) => a.iso < b.iso ? -1 : 1);
+  const past = list.filter(x => x.iso < today).sort((a, b) => a.iso < b.iso ? 1 : -1);
+  return [...up, ...past].map(x => `<option value="${x.w.id}"${x.w.id === selected ? ' selected' : ''}>${esc(`${x.w.Title || 'Workshop'}, ${fmt(x.iso, { month: 'short', day: 'numeric' })}`)}</option>`).join('');
+}
+
+// ---- Start (each page defines load, render, onReady) ----------------------------------
+function start() {
+  if (typeof grist === 'undefined') { loadFailed = true; render(); return; }
+  grist.ready({ requiredAccess: 'full' });
+  grist.onRecords(() => load());
+  setInterval(() => { if (!document.hidden) load(); }, 30000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) load(); });
+  setTimeout(() => { if (!loaded) { loadFailed = true; render(); } }, LOAD_MS);
+  load();
+  render();
+}
+// Reads Workshops, Inventory and Organizations by name (full access).
+// Packed ticks and the "Also bring" list are kept on this phone only (never in Grist), per workshop.
+const STORE_KEY = 'zb-packing-v1';
+let workshops = [], inventory = [], orgs = [];
+let wsId = null, tab = 'pack', inflight = 0, reloadTimer = null;
+
+function readStore() { try { const v = JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); return v && typeof v === 'object' ? v : {}; } catch (e) { return {}; } }
+function writeStore(s) { try { localStorage.setItem(STORE_KEY, JSON.stringify(s)); } catch (e) {} }
+function bucket(id) { const s = readStore(), b = s[id] || {}; return { ticks: Array.isArray(b.ticks) ? b.ticks : [], also: Array.isArray(b.also) ? b.also : [] }; }
+function putBucket(id, b) { const s = readStore(); s[id] = b; writeStore(s); }
+
+async function load() {
+  if (inflight > 0) return;   // don't overwrite taps that are still saving
+  const seq = ++loadSeq;
+  try {
+    const res = await Promise.allSettled(['Workshops', 'Inventory', 'Organizations'].map(n => grist.docApi.fetchTable(n)));
+    if (res[0].status === 'rejected' || res[1].status === 'rejected') throw new Error('load');
+    const [w, i, o] = res.map(x => x.status === 'fulfilled' ? rowsOf(x.value) : []);
+    if (seq !== loadSeq || inflight > 0) return;
+    workshops = w; inventory = i; orgs = o;
+    loaded = true; loadFailed = false;
+  } catch (e) {
+    if (seq !== loadSeq) return;
+    if (!loaded) { loadFailed = true; render(); }
+    return;
+  }
+  if (!workshops.some(w => w.id === wsId)) wsId = defaultWorkshop();
+  requestRender();
+}
+
+const supplierOf = r => { const o = orgs.find(x => x.id === Number(r.Supplier)); return o ? String(o.Name || '').trim() : ''; };
+const itemName = r => String(r.Item || '').trim() || '(no name)';
+
+function packHtml() {
+  const w = workshops.find(x => x.id === wsId);
+  if (!w) return '<p class="empty">No workshops yet. Add one in Grist first.</p>';
+  const iso = isoDay(w.Date), b = bucket(w.id);
+  const kit = inventory.filter(r => r.In_Kit).sort((a, c) => itemName(a).localeCompare(itemName(c)));
+  const groups = new Map();
+  for (const r of kit) { const k = String(r.Category || '').trim() || 'Other'; if (!groups.has(k)) groups.set(k, []); groups.get(k).push(r); }
+  const packed = kit.filter(r => b.ticks.includes(r.id)).length;
+  const seats = Number(w.Seats_Taken) || 0;
+  return `
+    <label class="f pick"><span class="label">Workshop</span><select data-pick>${wsOptions(wsId)}</select></label>
+    <p class="summary"><b>${esc(w.Title || 'Workshop')}</b><br>${esc([iso ? longDay(iso) : ''].filter(Boolean).join(''))}<br>Need ${seats} for this workshop</p>
+    <h2><span>The kit</span><span>${packed} of ${kit.length} packed</span></h2>
+    ${[...groups.entries()].sort((a, c) => a[0] === 'Other' ? 1 : c[0] === 'Other' ? -1 : a[0].localeCompare(c[0])).map(([cat, rows]) =>
+      `<p class="label" style="color:var(--moss);margin:14px 0 6px">${esc(cat)}</p>${rows.map(r => tick('kit', r.id, itemName(r), b.ticks.includes(r.id), seats ? `${seats} needed` : '')).join('')}`).join('')
+      || '<p class="empty">Nothing is marked In_Kit in Inventory yet.</p>'}
+    <h2><span>Also bring</span><span>${b.also.filter(a => a.done).length} of ${b.also.length}</span></h2>
+    ${b.also.map((a, i) => `<div class="tick${a.done ? ' on' : ''}"><label style="display:flex;align-items:center;gap:14px;flex:1;min-height:44px;cursor:pointer"><input type="checkbox" data-also="${i}"${a.done ? ' checked' : ''}><span>${esc(a.text)}</span></label><button type="button" class="rm" data-act="rm-also" data-i="${i}" aria-label="Remove ${esc(a.text)}">Remove</button></div>`).join('')}
+    <form class="alsoadd" data-form="also"><input id="also-text" type="text" placeholder="Something else for the car" autocomplete="off" enterkeyhint="done" aria-label="Add something to bring"><button type="submit" class="btn">Add</button></form>
+    <p class="note">This list stays on this phone.</p>
+    <div class="bar" style="margin-top:22px"><button type="button" class="btn plain" data-act="start-over">Start over</button></div>`;
+}
+function tick(group, id, text, on, sub) {
+  return `<label class="tick${on ? ' on' : ''}"><input type="checkbox" data-tick="${id}"${on ? ' checked' : ''}><span>${esc(text)}${sub ? `<small>${esc(sub)}</small>` : ''}</span></label>`;
+}
+
+const buyList = () => inventory.filter(r => r.Needs_Reorder || Number(r.Short_By) > 0);
+function buyHtml() {
+  const rows = buyList();
+  if (!rows.length) return '<p class="empty">Nothing to buy right now. Stock covers the upcoming workshops.</p>';
+  const groups = new Map();
+  for (const r of rows) { const k = supplierOf(r) || 'No supplier set'; if (!groups.has(k)) groups.set(k, []); groups.get(k).push(r); }
+  return [...groups.entries()].sort((a, c) => a[0] === 'No supplier set' ? 1 : c[0] === 'No supplier set' ? -1 : a[0].localeCompare(c[0])).map(([sup, list]) =>
+    `<h2><span>${esc(sup)}</span><span>${list.length}</span></h2>${list.sort((a, c) => (Number(c.Short_By) || 0) - (Number(a.Short_By) || 0) || itemName(a).localeCompare(itemName(c))).map(buyCard).join('')}`).join('');
+}
+function buyCard(r) {
+  const short = Number(r.Short_By) || 0, lead = Number(r.Lead_Time_Days) || 0, hand = Number(r.On_Hand) || 0;
+  const bits = [short > 0 ? `Short by ${short}` : 'Below reorder point', `${hand} on hand`, lead > 0 ? `order ${lead} ${lead === 1 ? 'day' : 'days'} ahead` : ''].filter(Boolean);
+  return `<div class="card${short > 0 ? ' late' : ''}">
+    <p class="title" style="cursor:default;margin:0">${esc(itemName(r))}</p>
+    <p class="meta">${esc(bits.join(' · '))}</p>
+    <div class="buyrow">
+      <div class="stepper"><button type="button" class="btn plain" data-act="dec" data-id="${r.id}" aria-label="One less ${esc(itemName(r))}">−</button><b aria-live="polite">${hand}</b><button type="button" class="btn plain" data-act="inc" data-id="${r.id}" aria-label="One more ${esc(itemName(r))}">+</button></div>
+      <button type="button" class="btn" data-act="gotit" data-id="${r.id}">Got it</button>
+    </div></div>`;
+}
+
+function render() {
+  pending = false;
+  if (!loaded) {
+    app.innerHTML = loadFailed
+      ? `<p>${esc(MSG_FAIL)}</p><button type="button" class="btn" data-act="retry">Try again</button>`
+      : '<p class="hint">Loading…</p>';
+    return;
+  }
+  const nBuy = buyList().length;
+  app.innerHTML = `
+    <h1>Packing and <em>restock</em></h1>
+    <p class="hint">Tick things off as they go in the car.</p>
+    <div class="tabs" role="group" aria-label="Pack or Buy">
+      <button type="button" class="btn plain" data-act="tab" data-tab="pack" aria-pressed="${tab === 'pack'}">Pack</button>
+      <button type="button" class="btn plain" data-act="tab" data-tab="buy" aria-pressed="${tab === 'buy'}">Buy${nBuy ? ` (${nBuy})` : ''}</button>
+    </div>
+    ${tab === 'pack' ? packHtml() : buyHtml()}`;
+}
+
+// ---- Buying: change On_Hand -----------------------------------------------------------
+async function setOnHand(id, value, undoable) {
+  const r = inventory.find(x => x.id === id); if (!r) return false;
+  const prev = r.On_Hand == null ? null : Number(r.On_Hand);
+  r.On_Hand = value; render();   // show it straight away
+  inflight++;
+  try {
+    await write([['UpdateRecord', 'Inventory', id, { On_Hand: value }]]);
+  } catch (e) {
+    inflight--; r.On_Hand = prev; render(); say(errMsg(e), null, 5000); return false;
+  }
+  inflight--;
+  clearTimeout(reloadTimer); reloadTimer = setTimeout(load, 700);   // lets Short_By and Needs_Reorder catch up
+  if (undoable) say('Saved.', () => setOnHand(id, prev ?? 0, false));
+  return true;
+}
+app.addEventListener('click', e => {
+  const el = e.target.closest('[data-act]');
+  if (!el) return;
+  const id = Number(el.dataset.id), r = inventory.find(x => x.id === id);
+  switch (el.dataset.act) {
+    case 'retry': loadFailed = false; render(); load(); break;
+    case 'tab': tab = el.dataset.tab === 'buy' ? 'buy' : 'pack'; render(); break;
+    case 'dec': if (r) setOnHand(id, Math.max(0, (Number(r.On_Hand) || 0) - 1), false); break;
+    case 'inc': if (r) setOnHand(id, (Number(r.On_Hand) || 0) + 1, false); break;
+    case 'gotit': if (r) openGot(r); break;
+    case 'start-over': {
+      const b = bucket(wsId), prev = JSON.stringify(b);
+      putBucket(wsId, { ticks: [], also: b.also.map(a => ({ text: a.text, done: false })) });
+      render();
+      say('Cleared.', () => { putBucket(wsId, JSON.parse(prev)); render(); });
+      break;
+    }
+    case 'rm-also': { const b = bucket(wsId); b.also.splice(Number(el.dataset.i), 1); putBucket(wsId, b); render(); break; }
+  }
+});
+app.addEventListener('change', e => {
+  const t = e.target;
+  if (t.matches('[data-pick]')) { wsId = Number(t.value); render(); return; }
+  if (t.dataset.tick) {
+    const id = Number(t.dataset.tick), b = bucket(wsId);
+    b.ticks = t.checked ? [...new Set([...b.ticks, id])] : b.ticks.filter(x => x !== id);
+    putBucket(wsId, b); render();
+  } else if (t.dataset.also !== undefined) {
+    const b = bucket(wsId), a = b.also[Number(t.dataset.also)];
+    if (a) { a.done = t.checked; putBucket(wsId, b); render(); }
+  }
+});
+app.addEventListener('submit', e => {
+  if (e.target.dataset.form !== 'also') return;
+  e.preventDefault();
+  const inp = document.getElementById('also-text'), text = inp.value.trim();
+  if (!text || !wsId) return;
+  const b = bucket(wsId); b.also.push({ text: text.slice(0, 120), done: false }); putBucket(wsId, b); render();
+  const again = document.getElementById('also-text'); if (again) again.focus();
+});
+
+// ---- "Got it" sheet -------------------------------------------------------------------
+function openGot(r) {
+  sheet = { kind: 'got', id: r.id, init: { On_Hand: String(Number(r.On_Hand) || 0) } };
+  const short = Number(r.Short_By) || 0, hand = Number(r.On_Hand) || 0;
+  sheetEl.innerHTML = `<form class="inner">
+    <h1>${esc(itemName(r))}</h1>
+    <p class="hint">${hand} on hand now${short > 0 ? `, short by ${short}` : ''}.</p>
+    <label class="f"><span class="label">How many do you have now?</span><input id="f-On_Hand" type="number" min="0" step="1" inputmode="numeric" value="${hand + short}"></label>
+    <div class="bar"><button type="submit" class="btn" data-sheet="save">Save</button><button type="button" class="btn plain" data-sheet="cancel">Cancel</button></div>
+  </form>`;
+  showSheet();
+  const i = sheetEl.querySelector('#f-On_Hand'); if (i) { i.focus(); i.select(); }
+}
+sheetEl.addEventListener('submit', async e => {
+  e.preventDefault(); if (!sheet || sheet.kind !== 'got') return;
+  const n = Math.floor(Number(sheetEl.querySelector('#f-On_Hand').value));
+  if (!(n >= 0) || sheetEl.querySelector('#f-On_Hand').value === '') { say('Type a number, 0 or more.'); return; }
+  const id = sheet.id;
+  closeSheet();
+  await setOnHand(id, n, true);
+});
+sheetEl.addEventListener('click', e => { if (e.target.closest('[data-sheet=cancel]') && sheet) closeSheet(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && sheet) closeSheet(); });
+
+start();
+</script>
+</body>
+</html>
