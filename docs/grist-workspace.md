@@ -100,6 +100,26 @@ The check-in button is Grist's Action Button widget (gristlabs.github.io), readi
 - **Merge duplicates.** If someone is in Contacts twice with the same email, the **Duplicate?** button (on People and on the Contacts page) says which copy is kept. Select the other copy and press **Merge**: its registrations, trees, feedback, tasks and agreements move over, blanks are filled in, and the copy is deleted. Ctrl+Z undoes it.
 - **Trees.** A new tree's Date potted fills in from its workshop by itself (you can still change it). Shaping due is now nine months after potting, the same time the Grow app invites people back.
 
+## Gift cards (Nov 2026)
+
+Every gift card we sell on Square gets one row in **Gift cards** (page after Quick add; the raw table is under Tables as Gift_Cards). Square holds the full card numbers. Here we keep only the **last 4 digits**, never the whole number, and never paste a whole number into Notes either.
+
+**Log a sale.** Add a row and fill in:
+- **Card last 4** (exactly four digits), **Buyer** (pick from Contacts; add them there first if they're new), **Recipient name**, **Offer**, **Design**, **Delivery** and the **Square order #**.
+- **Amount** fills in from the Offer ($100 Date Night for Two, $65 One Seat). For Other, type it. **Sold date** fills in as today. **Status** starts as Active.
+- **Saucer owed** ticks itself for cards sold by Dec 31, 2026 (the free saucer). Untick it if a card shouldn't get one.
+- **Check** says what's missing or off in plain words; the row turns red until it's blank.
+
+**When someone books with a card.** On their registration, set **Payment method** to **Gift card** and pick the card in **Gift card** (it shows as last 4, who it's for and the amount). Put the amount taken off the card in **Amount paid**. One card can cover more than one booking. The card then shows which registrations used it, **Amount used** and **Balance** (by our records; Square's balance is the one that counts). When the balance hits zero, set the card's **Status** to **Used**. For a refunded or cancelled sale, set **Refunded** or **Void**; the registration's Check will complain if one is still linked.
+
+**Saucers.** The **Saucers to hand out** table on the Gift cards page lists cards that are owed a saucer and haven't had it. Tick **Saucer given** when you hand it over. In **Inventory**, the row "Saucer (gift card offer)" shows **Owed to gift cards** and counts them in **Short by**. Enter its On hand when you've counted.
+
+**Gift cards by design** (on the same page) counts how many of each of the five designs we've sold and the total.
+
+**Tentative dates.** We post the whole year but confirm one quarter at a time. The current quarter's workshops are **On sale**. Every later 2027 date is entered as **Tentative**: the site shows the date marked tentative, with no Register button, so gift card buyers can see what's coming. A Tentative row needs only a date. At the start of each quarter, check that quarter's dates against holidays and local events, then change those rows from Tentative to On sale. Tentative workshops get no prep tasks; they appear on your task pages once a workshop goes On sale.
+
+**Trees.** Shaping is due nine months after potting and the window closes twelve months after (**Shaping window ends**, calculated).
+
 ## Prep steps
 
 The **Prep_Steps** table is the checklist every workshop gets (Step, Days before or after the date, Owner, Formats, Active). Editing it changes what future workshops get; tasks already made for a workshop stay as they are.
