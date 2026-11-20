@@ -28,7 +28,7 @@ Zion Bonsai brand, not CUTF's: colors from the token table in `CLAUDE.md` (hex i
    - **Kit and supplies**: `list` on Inventory — title Item, subtitle Category, detail On_Hand and Short_By, checks In_Kit and Needs_Reorder (locked); "+ Add an item".
    - **Trees**: `list` on Trees — title Species, subtitle Owner and Workshop, date Shaping_Due, edit Growth_Stage, Return_Status, Notes; "+ Add a tree".
    - Every page gets a one-line "what to do here" (widget heading or option).
-   - Keep page order: Home, Start here, My work, Calendar, Workshop day, Plan a workshop, Boards, Phone book, Workshop checklist, Kit and supplies, Trees, Sign-in sheet, People, Season, Quick add, Tables (with children). Indented children under Tables stay.
+   - Keep page order (Start here first, so phones open on it — Landon OK'd 2026-11-20): Start here, Home, My work, Calendar, Workshop day, Plan a workshop, Boards, Phone book, Workshop checklist, Kit and supplies, Trees, Sign-in sheet, People, Season, Quick add, Tables (with children). Indented children under Tables stay.
    - Check with a colId diff that nothing was renamed; `npm run sync:grist -- --check` output unchanged against the copy (`GRIST_DOC_API=<copy url>`). **Stop and report** the practice link so Landon can try it on his phone.
 3. **For real** (only when told): backup to `~/zion-bonsai-backups/grist-before-53-<date>.grist`, apply the same build to the live doc, move the practice copy to trash, update `docs/grist-workspace.md` ("Phone pages" section for Cass), tick 53 in `STATUS.md`. Don't commit beyond step 1's commit plus a docs commit.
 
