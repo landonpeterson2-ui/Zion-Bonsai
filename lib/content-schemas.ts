@@ -19,6 +19,8 @@ export const siteSchema = z.object({
   giftCertificates: z.object({
     mode: z.enum(['inquiry', 'online']),
     url: nullableUrl,
+    /** The "Give a workshop" page, linked from tentative dates. Repoint here when it exists. */
+    giveUrl: z.string().min(1).default('/contact#gift'),
   }),
   shopEnabled: z.boolean(),
   season: seasonName,
@@ -41,18 +43,25 @@ export const seasonsSchema = z.object({
 
 const time = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, 'time must be HH:MM (24-hour)')
 
-export const workshopSchema = z.object({
-  id: z.string().min(1),
-  type: z.enum(['intro', 'shaping', 'popup']),
-  title: z.string().min(1),
-  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'date must be YYYY-MM-DD'),
-  start: time,
-  end: time,
-  venue: z.string().min(1),
-  price: z.string().min(1),
-  registrationUrl: nullableUrl,
-  status: z.enum(['open', 'full', 'waitlist']),
-})
+export const workshopSchema = z
+  .object({
+    id: z.string().min(1),
+    type: z.enum(['intro', 'shaping', 'popup']),
+    title: z.string().min(1),
+    date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'date must be YYYY-MM-DD'),
+    start: time.optional(),
+    end: time.optional(),
+    venue: z.string().min(1).optional(),
+    price: z.string().min(1).optional(),
+    registrationUrl: nullableUrl.default(null),
+    status: z.enum(['open', 'full', 'waitlist', 'tentative']),
+  })
+  .superRefine((w, ctx) => {
+    if (w.status === 'tentative') return
+    for (const key of ['start', 'end', 'venue', 'price'] as const) {
+      if (!w[key]) ctx.addIssue({ code: 'custom', path: [key], message: `${key} is required unless status is "tentative"` })
+    }
+  })
 export const workshopsSchema = z.object({
   workshops: z.array(workshopSchema),
 })

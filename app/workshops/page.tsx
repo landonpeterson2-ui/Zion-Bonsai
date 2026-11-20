@@ -30,7 +30,9 @@ export default function WorkshopsPage() {
   const photo = getPhoto('workshop-tables-set-for-class')
   const [topQuote] = getTestimonials('workshops-top')
   const site = getSite()
-  const events = getUpcomingWorkshops().map((w) => workshopEventJsonLd(w, getPartner(w.venue), site, photo.src))
+  const events = getUpcomingWorkshops()
+    .map((w) => workshopEventJsonLd(w, w.venue ? getPartner(w.venue) : undefined, site, photo.src))
+    .filter((e) => e !== null)
   return (
     <>
       {events.length ? (

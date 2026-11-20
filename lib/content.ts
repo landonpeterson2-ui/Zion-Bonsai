@@ -63,7 +63,12 @@ export function getUpcomingWorkshops(): Workshop[] {
   const today = todayInDenver()
   return workshopsFile.workshops
     .filter((w) => w.date >= today)
-    .sort((a, b) => (a.date + a.start).localeCompare(b.date + b.start))
+    .sort((a, b) => (a.date + (a.start ?? '')).localeCompare(b.date + (b.start ?? '')))
+}
+
+/** Dates people can register for now: everything upcoming except tentative ones. */
+export function getBookableWorkshops(): Workshop[] {
+  return getUpcomingWorkshops().filter((w) => w.status !== 'tentative')
 }
 
 export function getPartners(): Partner[] {

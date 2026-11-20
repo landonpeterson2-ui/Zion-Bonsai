@@ -10,7 +10,7 @@
   },
   "interestListUrl": null,
   "eventsInquiryUrl": null,
-  "giftCertificates": { "mode": "inquiry", "url": null },
+  "giftCertificates": { "mode": "inquiry", "url": null, "giveUrl": "/contact#gift" },
   "shopEnabled": false,
   "season": "fall"
 }

@@ -18,7 +18,7 @@ const plain = 'font-label text-[11px] font-semibold uppercase tracking-[0.16em] 
 
 /** full and waitlist behave the same: a waitlist link if there is a URL, otherwise "Full". */
 function statusNote(w: Workshop) {
-  if (w.status === 'open') return ''
+  if (w.status === 'open' || w.status === 'tentative') return ''
   return w.registrationUrl ? ' · Waitlist' : ' · Full'
 }
 
@@ -35,8 +35,40 @@ function Action({ w }: { w: Workshop }) {
   )
 }
 
+function TentativeDates({ items, giveUrl }: { items: Workshop[]; giveUrl: string }) {
+  return (
+    <div className="mt-12">
+      <Eyebrow tone="clay">Tentative dates</Eyebrow>
+      <ul className="mt-4 border-t border-forest/15">
+        {items.map((w) => {
+          const venue = w.venue ? getPartner(w.venue) : undefined
+          const details = [
+            w.start && w.end ? `${formatTime(w.start)}\u2013${formatTime(w.end)}` : '',
+            venue ? `${venue.name}${venue.location ? `, ${venue.location}` : ''}` : '',
+          ].filter(Boolean).join(' \u00b7 ')
+          return (
+            <li key={w.id} className="border-b border-forest/15 py-6">
+              <h3 className="text-[1.4rem] leading-snug md:text-[1.6rem]">{w.title}</h3>
+              <p className="mt-2 text-soil">{formatDate(w.date)}</p>
+              {details ? <p className="mt-1 text-soil">{details}</p> : null}
+              <p className={`${plain} mt-3`}>Tentative</p>
+            </li>
+          )
+        })}
+      </ul>
+      <p className="mt-6 text-soil">
+        <a href={giveUrl} className="text-clay underline underline-offset-4 hover:text-clay-dark">
+          Gift cards work for any public workshop except Sun River Gardens.
+        </a>
+      </p>
+    </div>
+  )
+}
+
 export default function Dates() {
-  const upcoming = getUpcomingWorkshops()
+  const all = getUpcomingWorkshops()
+  const upcoming = all.filter((w) => w.status !== 'tentative')
+  const tentative = all.filter((w) => w.status === 'tentative')
   const site = getSite()
   const interest = site.interestListUrl ?? `mailto:${site.email}?subject=Bonsai%20workshop%20interest%20list`
 
@@ -44,11 +76,12 @@ export default function Dates() {
     <Section id="dates">
       <div className="container-custom">
         <SectionHeading eyebrow="Upcoming dates">Pull up a chair.</SectionHeading>
-        {upcoming.length > 0 ? (
+        {all.length > 0 ? (
           <>
+            {upcoming.length > 0 ? (
             <ul className="mt-10 border-t border-forest/15">
               {upcoming.map((w) => {
-                const venue = getPartner(w.venue)
+                const venue = w.venue ? getPartner(w.venue) : undefined
                 return (
                   <li
                     key={w.id}
@@ -58,7 +91,7 @@ export default function Dates() {
                       <Eyebrow tone="clay">{typeLabel[w.type]}</Eyebrow>
                       <h3 className="mt-2 text-[1.6rem] leading-snug md:text-[1.9rem]">{w.title}</h3>
                       <p className="mt-2 text-soil">
-                        {formatDate(w.date)} &middot; {formatTime(w.start)}&ndash;{formatTime(w.end)}
+                        {formatDate(w.date)}{w.start && w.end ? <> &middot; {formatTime(w.start)}&ndash;{formatTime(w.end)}</> : null}
                       </p>
                       <p className="mt-1 text-soil">
                         {venue ? (
@@ -79,8 +112,11 @@ export default function Dates() {
                 )
               })}
             </ul>
+            ) : null}
+            {tentative.length > 0 ? <TentativeDates items={tentative} giveUrl={site.giftCertificates.giveUrl} /> : null}
           </>
-        ) : (
+        ) : null}
+        {all.length === 0 ? (
           <div className="mt-10 max-w-xl border-t border-forest/15 pt-8">
             <p className="font-display text-[1.9rem] leading-tight text-forest">New dates coming soon.</p>
             <p className="mt-3 leading-[1.7] text-soil">
@@ -88,7 +124,7 @@ export default function Dates() {
             </p>
             <a href={interest} className="btn-primary mt-6">Join the interest list</a>
           </div>
-        )}
+        ) : null}
       </div>
     </Section>
   )

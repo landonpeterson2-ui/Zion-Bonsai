@@ -61,7 +61,7 @@ function parsePrices(label: string): number[] {
   return [...label.matchAll(/\$\s?(\d+(?:\.\d{1,2})?)/g)].map((m) => Number(m[1]))
 }
 
-const availability: Record<Workshop['status'], string> = {
+const availability: Record<Exclude<Workshop['status'], 'tentative'>, string> = {
   open: 'https://schema.org/InStock',
   full: 'https://schema.org/SoldOut',
   waitlist: 'https://schema.org/LimitedAvailability',
@@ -73,7 +73,9 @@ export function workshopEventJsonLd(
   site: Site,
   imagePath: string,
 ) {
-  const prices = parsePrices(w.price)
+  // Tentative dates have no time, venue or price yet: never emit an Event for them.
+  if (w.status === 'tentative' || !w.start || !w.end) return null
+  const prices = parsePrices(w.price ?? '')
   const offerBase = {
     ...(w.registrationUrl ? { url: w.registrationUrl } : {}),
     availability: availability[w.status],
