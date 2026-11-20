@@ -103,7 +103,11 @@ if $Gift_Card and $Gift_Card.Status in ("Refunded", "Void"): todo.append("the li
 Amount_Paid on a gift card booking is the amount taken off the card. Payment_Buttons stays as it is; Gift card is picked by hand.
 
 ## 3. Workshops: a Tentative status
-Tentative 2027 dates show on zionbonsai.com marked tentative, with no Register button.
+Tentative 2027 dates show on zionbonsai.com marked tentative, with no Register button, so gift card buyers can see what's coming.
+
+How it's used (quarterly dates): post the whole year, but confirm one quarter at a time. The current quarter's workshops are set to On sale; every later 2027 date is entered as Tentative. At the start of each quarter, move that quarter's rows from Tentative to On sale once each date is checked against holidays and local events.
+
+The site shows one line above the tentative dates: "We confirm dates one quarter at a time so we can keep them clear of holidays and local events."
 1. Status: add **Tentative** right after Planning, keeping the others and their colors. Description: "Pick one. Tentative shows the date on zionbonsai.com marked tentative, with no Register button. On sale puts it on the site for booking (once Ready for site is blank). Sold out and Waitlist change what the site shows. Done and Cancelled take it off. New workshops start in Planning."
 2. Site_Status: read the formula, then insert right after the Format check (the first `return None`), before the Waitlist line:
 ```python
