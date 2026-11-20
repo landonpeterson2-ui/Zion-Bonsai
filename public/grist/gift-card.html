@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Zion Bonsai gift card (Grist widget)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Montserrat:wght@600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<!-- A Grist custom widget: look up a gift card by its last 4 digits and use it for a guest. Put it on the Gift_Cards table. No column mapping. Only works inside Grist. -->
+<script src="https://docs.getgrist.com/grist-plugin-api.js"></script>
+<style>
+  :root {
+    --paper: #F4EEE6; --paper-deep: #E9DFD2; --sandstone: #D9AE93; --linen: #FBF8F3;
+    --clay: #A84A2B; --clay-dark: #8F3E23; --moss: #4F6420; --forest: #2F3B22;
+    --rule: rgba(47, 59, 34, .15); --edge: rgba(47, 59, 34, .4);
+    --late-bg: rgba(168, 74, 43, .13); --soon-bg: rgba(217, 174, 147, .4);
+    --radius: 3px;
+    --sans: 'Open Sans', system-ui, sans-serif;
+    --label: 'Montserrat', 'Open Sans', system-ui, sans-serif;
+    --display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body { margin: 0; background: var(--paper); color: var(--forest); font: 400 16px/1.5 var(--sans); }
+  main { max-width: 640px; margin: 0 auto; padding: 16px 14px 80px; }
+  button, input, textarea, select { font: inherit; color: inherit; }
+  h1 { font: 500 34px/1.1 var(--display); margin: 4px 0 4px; }
+  h1 em { font-style: italic; }
+  h2 { font: 600 11px/1.2 var(--label); letter-spacing: .18em; text-transform: uppercase; color: var(--moss);
+       margin: 28px 0 10px; padding-top: 12px; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; }
+  .label { font: 600 11px/1.2 var(--label); letter-spacing: .16em; text-transform: uppercase; }
+  .hint { color: var(--moss); font-size: 14px; margin: 4px 0; }
+  .empty { color: var(--moss); padding: 6px 2px 10px; }
+  :focus-visible { outline: 2px solid var(--clay); outline-offset: 2px; }
+  .btn { font: 600 11px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; min-height: 44px; padding: 0 18px;
+         border: 1px solid var(--clay); border-radius: var(--radius); background: var(--clay); color: var(--linen); cursor: pointer; }
+  .btn:hover { background: var(--clay-dark); border-color: var(--clay-dark); }
+  .btn.plain { background: var(--linen); color: var(--forest); border-color: var(--edge); }
+  .btn.plain:hover { background: var(--paper-deep); }
+  .btn:disabled { opacity: .55; cursor: default; }
+  .link { background: none; border: 0; padding: 0; min-height: 44px; display: inline-flex; align-items: center;
+          color: var(--clay); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font-size: 15px; }
+  .people { display: grid; gap: 10px; margin-top: 14px; }
+  .people .btn { min-height: 56px; font-size: 13px; text-align: left; padding: 0 20px; }
+  .next { border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 10px 0; margin: 10px 0 4px; }
+  .next b { font-weight: 600; }
+  .card { background: var(--linen); border: 1px solid var(--rule); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 10px; }
+  .card.late { background: var(--late-bg); border-color: rgba(168, 74, 43, .35); }
+  .card.soon { background: var(--soon-bg); border-color: rgba(217, 174, 147, .9); }
+  .card.done { opacity: .6; }
+  .card.pending { opacity: .6; }
+  .card .title { font-weight: 600; overflow-wrap: anywhere; cursor: pointer; min-height: 44px; display: flex; align-items: center;
+                 background: none; border: 0; padding: 0; text-align: left; width: 100%; }
+  .card .meta { color: var(--forest); font-size: 14px; margin: 0 0 10px; opacity: .85; }
+  .card.late .meta { opacity: 1; font-weight: 600; }
+  .card .donebtn { width: 100%; min-height: 48px; }
+  .card .row { display: flex; gap: 10px; align-items: center; justify-content: space-between; }
+  details.fold { margin-top: 18px; }
+  details.fold summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; color: var(--clay);
+                         font: 600 11px/1.2 var(--label); letter-spacing: .16em; text-transform: uppercase; }
+  .addbtn { width: 100%; min-height: 48px; margin-bottom: 10px; }
+  form.add { display: grid; gap: 10px; margin-bottom: 12px; background: var(--linen); border: 1px solid var(--rule);
+             border-radius: var(--radius); padding: 14px; }
+  label.f { display: grid; gap: 4px; }
+  label.f .label { color: var(--moss); }
+  input, select, textarea { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid var(--edge); border-radius: var(--radius);
+                            background: var(--paper); color: var(--forest); }
+  textarea { min-height: 96px; resize: vertical; }
+  input[type=date] { -webkit-appearance: none; appearance: none; display: block; min-width: 0; max-width: 100%; }
+  input[type=date]::-webkit-date-and-time-value { text-align: left; }
+  .bar { display: flex; gap: 10px; }
+  .bar .btn { flex: 1; }
+  #sheet { position: fixed; inset: 0; z-index: 10; background: var(--paper); overflow-y: auto; }
+  #sheet .inner { max-width: 640px; margin: 0 auto; padding: 18px 14px 40px; display: grid; gap: 14px; }
+  #sheet h1 { font-size: 28px; }
+  #toast { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); background: var(--forest); color: var(--linen); z-index: 20;
+           padding: 8px 8px 8px 16px; border-radius: var(--radius); opacity: 0; transition: opacity .2s; pointer-events: none;
+           display: flex; gap: 10px; align-items: center; max-width: calc(100% - 24px); }
+  #toast.show { opacity: 1; pointer-events: auto; }
+  #toast button { background: none; border: 1px solid rgba(251, 248, 243, .5); color: var(--linen); border-radius: var(--radius);
+                  font: 600 11px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; min-height: 44px; padding: 0 14px; cursor: pointer; }
+  @media (prefers-reduced-motion: reduce) { #toast { transition: none; } }
+  .summary { margin: 8px 0 0; }
+  .summary b { font-weight: 600; }
+  .toggles { display: grid; gap: 10px; }
+  .toggle { width: 100%; min-height: 52px; display: flex; justify-content: space-between; align-items: center; text-align: left;
+            padding: 0 16px; background: var(--linen); color: var(--forest); border: 1px solid var(--edge); border-radius: var(--radius);
+            font: 600 12px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; cursor: pointer; }
+  .toggle[aria-pressed=true] { background: var(--moss); border-color: var(--moss); color: var(--linen); }
+  .toggle:disabled { opacity: .55; cursor: default; }
+  .acts { display: grid; gap: 8px; margin-top: 10px; }
+  .acts .btn { width: 100%; min-height: 48px; text-align: left; padding: 10px 16px; line-height: 1.3; }
+  .note { color: var(--moss); font-size: 14px; margin: 6px 0 0; }
+  .warn { margin: 0 0 10px; padding: 8px 10px; background: var(--late-bg); border: 1px solid rgba(168, 74, 43, .35);
+          border-radius: var(--radius); font-size: 14px; font-weight: 600; }
+  .chip { display: inline-block; font: 600 10px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; padding: 5px 8px;
+          border: 1px solid var(--edge); border-radius: var(--radius); background: var(--paper); }
+  .chip.paid { background: var(--moss); border-color: var(--moss); color: var(--linen); }
+  .chip.pending { background: var(--soon-bg); border-color: rgba(217, 174, 147, .9); }
+  .card.out { opacity: .6; }
+  .card .hereb { width: 100%; min-height: 52px; margin-top: 4px; }
+  .card .hereb[aria-pressed=true] { background: var(--moss); border-color: var(--moss); color: var(--linen); }
+  .pick { margin: 8px 0 0; }
+  .results { display: grid; gap: 6px; }
+  .results .btn { text-align: left; min-height: 44px; }
+  .results .btn[aria-pressed=true] { background: var(--moss); border-color: var(--moss); color: var(--linen); }
+  .contact { display: flex; flex-wrap: wrap; gap: 8px; }
+  .contact a { flex: 1; min-width: 90px; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+  .bar .btn[type=submit] { flex: 1; }
+  .digits { font: 600 44px/1 var(--label); letter-spacing: .35em; text-align: center; min-height: 72px; padding: 12px 0 12px .35em; }
+  .balance { font: 500 52px/1 var(--display); margin: 6px 0 2px; }
+  .card .name { font-weight: 600; font-size: 18px; overflow-wrap: anywhere; margin: 6px 0 0; }
+  .chip.used { background: var(--paper-deep); }
+  .used-list { margin: 8px 0 0; padding: 0; list-style: none; font-size: 14px; }
+  .used-list li { border-top: 1px solid var(--rule); padding: 8px 0; }
+  .bigact { width: 100%; min-height: 52px; margin-top: 12px; }
+  .covers { margin: 0; padding: 8px 10px; background: var(--soon-bg); border: 1px solid rgba(217, 174, 147, .9); border-radius: var(--radius); font-weight: 600; font-size: 15px; }
+  .results .btn small { font: 400 13px/1.3 var(--sans); letter-spacing: 0; text-transform: none; display: block; margin-top: 3px; }
+</style>
+</head>
+<body>
+<main id="app"><p class="hint">This is a Grist custom widget. Open it inside Grist.</p></main>
+<div id="sheet" hidden role="dialog" aria-modal="true" aria-label="Details"></div>
+<div id="toast" role="status"></div>
+<script>
+const SAVE_MS = 10000, LOAD_MS = 20000;
+const MSG_FAIL = "Couldn't load. Check your connection.";
+const MSG_SAVE = "Couldn't save. Check your connection and try again.";
+const MSG_ACCESS = "That can't be changed here. Ask Landon if you think it should be.";
+
+let loaded = false, loadFailed = false, loadSeq = 0, metaAt = 0;
+let sheet = null;
+const busy = new Set();
+
+const app = document.getElementById('app');
+const sheetEl = document.getElementById('sheet');
+const toast = document.getElementById('toast');
+
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+const withTimeout = (p, ms = SAVE_MS) => new Promise((res, rej) => {
+  const t = setTimeout(() => rej(new Error('timeout')), ms);
+  Promise.resolve(p).then(v => { clearTimeout(t); res(v); }, e => { clearTimeout(t); rej(e); });
+});
+const write = acts => withTimeout(grist.docApi.applyUserActions(acts));
+function errMsg(e) {
+  if (!navigator.onLine) return MSG_SAVE;
+  return /access|permission|blocked|denied/i.test(String(e?.message ?? e)) ? MSG_ACCESS : MSG_SAVE;
+}
+function rowsOf(t) { return t.id.map((id, i) => Object.fromEntries(Object.keys(t).map(k => [k, t[k][i]]))); }
+
+// ---- Grist's encoded cell values --------------------------------------------------------
+// Formula columns holding a list or dict can arrive as ["L", ...] and ["O", {...}] (nested).
+function decode(v) {
+  if (Array.isArray(v)) {
+    if (v[0] === 'L') return v.slice(1).map(decode);
+    if (v[0] === 'O' && v.length === 2 && v[1] && typeof v[1] === 'object') return Object.fromEntries(Object.entries(v[1]).map(([k, x]) => [k, decode(x)]));
+    if (v[0] === 'E' || v[0] === 'P' || v[0] === 'C') return null;
+    return v.map(decode);
+  }
+  if (v && typeof v === 'object') return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, decode(x)]));
+  return v;
+}
+const listOf = raw => { const d = decode(raw); return Array.isArray(d) ? d : d ? [d] : []; };
+
+// ---- Dates: Grist Date cells are seconds at UTC midnight -------------------------------
+function todayIso() {
+  const p = Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone: 'America/Denver', year: 'numeric', month: '2-digit', day: '2-digit' })
+    .formatToParts(new Date()).map(x => [x.type, x.value]));
+  return `${p.year}-${p.month}-${p.day}`;
+}
+function isoDay(v) {
+  if (v == null || v === '') return null;
+  const secs = v instanceof Date ? v.getTime() / 1000 : Number(v);
+  if (!Number.isFinite(secs) || secs <= 0) return null;
+  if (secs % 86400 === 0) return new Date(secs * 1000).toISOString().slice(0, 10);
+  const p = Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone: 'America/Denver', year: 'numeric', month: '2-digit', day: '2-digit' })
+    .formatToParts(new Date(secs * 1000)).map(x => [x.type, x.value]));
+  return `${p.year}-${p.month}-${p.day}`;
+}
+const fmt = (iso, o) => new Date(iso + 'T00:00:00Z').toLocaleDateString('en-US', { timeZone: 'UTC', ...o });
+const shortDay = iso => fmt(iso, { weekday: 'short', month: 'short', day: 'numeric' });
+const longDay = iso => fmt(iso, { weekday: 'long', month: 'long', day: 'numeric' });
+const money = n => { const v = Math.round((Number(n) || 0) * 100) / 100; return '$' + (v % 1 ? v.toFixed(2) : String(v)); };
+
+// ---- Redraw guard: never while typing, with a sheet open, or just after a tap ----------
+let lastDown = 0, pending = false;
+document.addEventListener('pointerdown', () => { lastDown = Date.now(); }, true);
+const typing = () => /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName || '');
+const blocked = () => typing() || !!sheet || Date.now() - lastDown < 400;
+function requestRender() { if (!pending) { pending = true; setTimeout(tryRender, 300); } }
+function tryRender() { if (!pending) return; if (blocked()) { setTimeout(tryRender, 450); return; } render(); }
+app.addEventListener('focusout', () => setTimeout(tryRender, 450));
+
+function say(text, onUndo, ms) {
+  toast.innerHTML = esc(text) + (onUndo ? ' <button type="button">Undo</button>' : '');
+  if (onUndo) toast.querySelector('button').onclick = () => { toast.classList.remove('show'); onUndo(); };
+  toast.classList.add('show');
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(() => toast.classList.remove('show'), ms || (onUndo ? 6000 : 2600));
+}
+function showSheet() { sheetEl.hidden = false; sheetEl.scrollTop = 0; document.body.style.overflow = 'hidden'; }
+function closeSheet() { sheet = null; sheetEl.hidden = true; sheetEl.innerHTML = ''; document.body.style.overflow = ''; render(); }
+
+// ---- Workshops ------------------------------------------------------------------------
+const pickable = () => workshops.filter(w => w.Status !== 'Cancelled' && isoDay(w.Date));
+function defaultWorkshop() {
+  const today = todayIso(), list = pickable().map(w => ({ id: w.id, iso: isoDay(w.Date) }));
+  const hit = list.find(x => x.iso === today)
+    || list.filter(x => x.iso > today).sort((a, b) => a.iso < b.iso ? -1 : 1)[0]
+    || list.sort((a, b) => a.iso < b.iso ? 1 : -1)[0];
+  return hit ? hit.id : null;
+}
+function wsOptions(selected) {
+  const today = todayIso();
+  const list = pickable().map(w => ({ w, iso: isoDay(w.Date) }));
+  const up = list.filter(x => x.iso >= today).sort((a, b) => a.iso < b.iso ? -1 : 1);
+  const past = list.filter(x => x.iso < today).sort((a, b) => a.iso < b.iso ? 1 : -1);
+  return [...up, ...past].map(x => `<option value="${x.w.id}"${x.w.id === selected ? ' selected' : ''}>${esc(`${x.w.Title || 'Workshop'}, ${fmt(x.iso, { month: 'short', day: 'numeric' })}`)}</option>`).join('');
+}
+
+// ---- Start (each page defines load, render, onReady) ----------------------------------
+function start() {
+  if (typeof grist === 'undefined') { loadFailed = true; render(); return; }
+  grist.ready({ requiredAccess: 'full' });
+  grist.onRecords(() => load());
+  setInterval(() => { if (!document.hidden) load(); }, 30000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) load(); });
+  setTimeout(() => { if (!loaded) { loadFailed = true; render(); } }, LOAD_MS);
+  load();
+  render();
+}
+// Reads Gift_Cards, Registrations, Workshops and Contacts by name (full access).
+// Only the last 4 digits of a card are ever typed here. Nothing typed is stored on this phone.
+let giftCards = [], regs = [], workshops = [], contacts = [];
+let q = '', selId = null, note = '';
+let useS = null;   // { cardId, wsId, regId, amt }
+
+const ELIGIBLE = ['Pending', 'Waitlist'];
+
+async function load() {
+  const seq = ++loadSeq;
+  try {
+    const names = ['Gift_Cards', 'Registrations', 'Workshops', 'Contacts'];
+    const res = await Promise.allSettled(names.map(n => grist.docApi.fetchTable(n)));
+    if (res[0].status === 'rejected' || res[1].status === 'rejected') throw new Error('load');
+    const [g, r, w, c] = res.map(x => x.status === 'fulfilled' ? rowsOf(x.value) : []);
+    if (seq !== loadSeq) return;
+    giftCards = g; regs = r; workshops = w; contacts = c;
+    loaded = true; loadFailed = false;
+  } catch (e) {
+    if (seq !== loadSeq) return;
+    if (!loaded) { loadFailed = true; render(); }
+    return;
+  }
+  requestRender();
+}
+
+const contactOf = r => contacts.find(c => c.id === Number(r.Contact)) || null;
+const nameOf = r => String(r.Attendee_Name || contactOf(r)?.Name || '').trim() || '(no name)';
+const cardLabel = c => String(c.Card_Label || '').trim() || ('Card ' + String(c.Card_Last4 || '').trim());
+const matches = () => q.length === 4 ? giftCards.filter(c => String(c.Card_Last4 ?? '').trim() === q) : [];
+const cardById = id => giftCards.find(c => c.id === id) || null;
+const canUse = c => c.Status === 'Active' && (Number(c.Balance) || 0) > 0;
+
+function usedLine(c) {
+  return listOf(c.Used_On).map(id => regs.find(r => r.id === Number(id))).filter(Boolean).map(r => {
+    const w = workshops.find(x => x.id === Number(r.Workshop)), d = w ? isoDay(w.Date) : null;
+    const t = w ? `${w.Title || 'Workshop'}${d ? ' — ' + fmt(d, { month: 'short', day: 'numeric', year: 'numeric' }) : ''}` : 'A workshop';
+    return t + (r.Status === 'Paid' ? ` (${money(r.Amount_Paid)})` : ` (${String(r.Status || 'not paid').toLowerCase()}, not counted)`);
+  });
+}
+function cardView(c) {
+  const used = usedLine(c), p = busy.has('card' + c.id);
+  const chip = `<span class="chip${c.Status === 'Active' ? ' paid' : c.Status === 'Used' ? ' used' : ' pending'}">${esc(c.Status || 'No status')}</span>`;
+  const meta = [c.Offer, c.Amount ? money(c.Amount) : ''].filter(Boolean).join(' · ');
+  return `<div class="card${p ? ' pending' : ''}">
+    <div class="row"><span class="label">Gift card</span>${chip}</div>
+    <p class="name">${esc(String(c.Recipient_Name || '').trim() || 'No recipient name')}</p>
+    <p class="meta" style="margin-bottom:0">${esc(meta || 'No offer or amount yet')}</p>
+    <div class="balance" aria-label="Balance">${esc(money(c.Balance))}</div>
+    <p class="note" style="margin-top:0">Our records. Square's balance is the one that counts.</p>
+    ${c.Check ? `<p class="warn" style="margin-top:10px">${esc(c.Check)}</p>` : ''}
+    ${used.length ? `<ul class="used-list">${used.map(u => `<li>${esc(u)}</li>`).join('')}</ul>` : '<p class="note">Not used yet.</p>'}
+    ${c.Saucer_Owed ? `<button type="button" class="toggle bigact" data-act="saucer" data-id="${c.id}" aria-pressed="${c.Saucer_Given ? 'true' : 'false'}"${p ? ' disabled' : ''}><span>Saucer handed over</span><span>${c.Saucer_Given ? 'Yes' : 'Not yet'}</span></button>` : ''}
+    ${canUse(c) ? `<button type="button" class="btn bigact" data-act="use" data-id="${c.id}"${p ? ' disabled' : ''}>Use it for a guest</button>`
+      : `<p class="note">${c.Status === 'Active' ? 'Nothing left on this card.' : 'This card is not Active, so it can not be used.'}</p>`}
+  </div>`;
+}
+function outHtml() {
+  if (q.length < 4) return `<p class="empty">${q.length ? 'Keep going, 4 digits.' : 'Nothing typed yet.'}</p>`;
+  const m = matches();
+  if (!m.length) return '<p class="empty">No card ends in those digits. Check the numbers, or the card may not be in the sheet yet.</p>';
+  const sel = m.length === 1 ? m[0] : m.find(c => c.id === selId);
+  const list = m.length > 1 ? `<p class="hint">${m.length} cards end in ${esc(q)}. Pick one.</p>
+    <div class="results">${m.map(c => `<button type="button" class="btn plain" data-act="pick" data-id="${c.id}" aria-pressed="${sel && sel.id === c.id}">${esc(cardLabel(c))}<small>${esc(money(c.Balance))} left · ${esc(c.Status || '')}</small></button>`).join('')}</div>` : '';
+  return list + (sel ? cardView(sel) : '');
+}
+function render() {
+  pending = false;
+  if (!loaded) {
+    app.innerHTML = loadFailed
+      ? `<p>${esc(MSG_FAIL)}</p><button type="button" class="btn" data-act="retry">Try again</button>`
+      : '<p class="hint">Loading…</p>';
+    return;
+  }
+  app.innerHTML = `
+    <h1>Gift <em>card</em></h1>
+    <p class="hint">Type the last 4 digits on the card.</p>
+    <label class="f pick"><span class="label">Last 4 digits</span>
+      <input id="last4" class="digits" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(q)}" aria-describedby="last4-note"></label>
+    <p class="note" id="last4-note">${esc(note)}</p>
+    <div id="out">${outHtml()}</div>`;
+}
+function redrawOut() { const o = document.getElementById('out'); if (o) o.innerHTML = outHtml(); }
+
+app.addEventListener('input', e => {
+  if (e.target.id !== 'last4') return;
+  const raw = e.target.value, digits = raw.replace(/\D/g, '');
+  if (digits.length > 4) { q = ''; e.target.value = ''; note = 'Only the last 4 digits, please. Nothing longer is accepted.'; }
+  else { q = digits; if (raw !== digits) e.target.value = digits; note = ''; }
+  document.getElementById('last4-note').textContent = note;
+  selId = null; redrawOut();
+});
+app.addEventListener('paste', e => {
+  if (e.target.id !== 'last4') return;
+  const t = (e.clipboardData?.getData('text') || '').replace(/\D/g, '');
+  if (t.length > 4) {
+    e.preventDefault(); q = ''; e.target.value = ''; note = 'Only the last 4 digits, please. Nothing longer is accepted.';
+    document.getElementById('last4-note').textContent = note; redrawOut();
+  }
+});
+
+async function saveCard(id, fields) {
+  const key = 'card' + id;
+  if (busy.has(key)) { say('Still saving. One moment.'); return false; }
+  busy.add(key); render();
+  try {
+    await write([['UpdateRecord', 'Gift_Cards', id, fields]]);
+    const row = cardById(id); if (row) Object.assign(row, fields);
+    busy.delete(key); render(); return true;
+  } catch (e) { busy.delete(key); render(); say(errMsg(e), null, 5000); return false; }
+}
+app.addEventListener('click', async e => {
+  const el = e.target.closest('[data-act]');
+  if (!el) return;
+  const id = Number(el.dataset.id);
+  switch (el.dataset.act) {
+    case 'retry': loadFailed = false; render(); load(); break;
+    case 'pick': selId = id; redrawOut(); break;
+    case 'saucer': {
+      const c = cardById(id); if (!c) break;
+      const now = !c.Saucer_Given;
+      if (await saveCard(id, { Saucer_Given: now })) say(now ? 'Saucer handed over.' : 'Saucer not handed over.', () => saveCard(id, { Saucer_Given: !now }));
+      break;
+    }
+    case 'use': openUse(id); break;
+  }
+});
+
+// ---- Use it for a guest ---------------------------------------------------------------
+function openUse(cardId) {
+  const c = cardById(cardId); if (!c || !canUse(c)) return;
+  useS = { cardId, wsId: defaultWorkshop(), regId: null, amt: '' };
+  sheet = { kind: 'use', init: {} };
+  drawUse(); showSheet();
+}
+const eligible = () => regs.filter(r => Number(r.Workshop) === useS.wsId && ELIGIBLE.includes(r.Status))
+  .sort((a, b) => nameOf(a).localeCompare(nameOf(b)));
+// What the card will take for the chosen registration.
+function plan() {
+  const c = cardById(useS.cardId), r = regs.find(x => x.id === useS.regId);
+  if (!c || !r) return null;
+  const bal = Math.round((Number(c.Balance) || 0) * 100) / 100;
+  const exp = r.Expected == null || r.Expected === '' ? NaN : Number(r.Expected);
+  if (Number.isFinite(exp) && exp > 0) {
+    const take = Math.min(bal, Math.round(exp * 100) / 100);
+    return { c, r, bal, take, owed: Math.round((exp - take) * 100) / 100, ask: false, ok: take > 0 };
+  }
+  const n = Math.round(Number(useS.amt) * 100) / 100;
+  const ok = Number.isFinite(n) && n > 0 && n <= bal;
+  return { c, r, bal, take: ok ? n : 0, owed: 0, ask: true, ok, tooMuch: Number.isFinite(n) && n > bal };
+}
+function useSummary() {
+  const p = plan();
+  if (!p) return '<p class="hint">Pick a guest above.</p>';
+  const left = Math.round((p.bal - p.take) * 100) / 100;
+  if (p.ask) {
+    return `<p class="note">No price is set for this workshop, so type the amount to take.</p>
+      <label class="f"><span class="label">Amount to take from the card</span><input id="u-amt" type="text" inputmode="decimal" autocomplete="off" value="${esc(useS.amt)}"></label>
+      ${p.tooMuch ? `<p class="warn">The card only has ${esc(money(p.bal))}.</p>` : ''}
+      ${p.ok ? `<p class="summary"><b>${esc(money(p.take))}</b> comes off the card. ${esc(money(left))} left after.</p>` : ''}`;
+  }
+  return `<p class="summary"><b>${esc(money(p.take))}</b> comes off the card. ${esc(money(left))} left after.</p>
+    ${p.owed > 0 ? `<p class="covers">The card covers ${esc(money(p.take))}. They owe ${esc(money(p.owed))} more.</p>
+      <p class="note">That extra isn't recorded here. Use the Payment buttons on Workshop day.</p>` : ''}`;
+}
+function drawUse() {
+  const c = cardById(useS.cardId), regsOk = eligible(), p = plan();
+  sheetEl.innerHTML = `<form class="inner">
+    <h1>Use for a <em>guest</em></h1>
+    <p class="summary"><b>${esc(cardLabel(c))}</b><br>${esc(money(c.Balance))} left on our records</p>
+    <label class="f"><span class="label">Workshop</span><select id="u-ws">${wsOptions(useS.wsId)}</select></label>
+    <div><span class="label" style="color:var(--moss)">Who is paying</span>
+      <div class="results" style="margin-top:6px">${regsOk.map(r => `<button type="button" class="btn plain" data-use="reg" data-id="${r.id}" aria-pressed="${useS.regId === r.id}">${esc(nameOf(r))}<small>${Number(r.Seats) || 1} ${(Number(r.Seats) || 1) === 1 ? 'seat' : 'seats'} · ${esc(r.Status)}${Number(r.Expected) > 0 ? ' · ' + esc(money(r.Expected)) : ''}</small></button>`).join('')
+        || '<p class="empty">Nobody Pending or on the Waitlist for this workshop.</p>'}</div></div>
+    <div id="u-sum">${useSummary()}</div>
+    <div class="bar"><button type="submit" class="btn" id="u-go"${p && p.ok ? '' : ' disabled'}>Take it off the card</button><button type="button" class="btn plain" data-use="close">Cancel</button></div>
+  </form>`;
+}
+function refreshUse() {
+  const p = plan();
+  document.getElementById('u-sum').innerHTML = useSummary();
+  document.getElementById('u-go').disabled = !(p && p.ok);
+}
+sheetEl.addEventListener('change', e => {
+  if (e.target.id === 'u-ws' && useS) { useS.wsId = Number(e.target.value); useS.regId = null; useS.amt = ''; drawUse(); }
+});
+sheetEl.addEventListener('input', e => {
+  if (e.target.id === 'u-amt' && useS) {
+    useS.amt = e.target.value.replace(/[^\d.]/g, '');
+    const p = plan(), s = document.getElementById('u-sum'), go = document.getElementById('u-go');
+    go.disabled = !(p && p.ok);
+    // keep the amount field alive while typing; only the message lines below it change
+    s.querySelectorAll('.warn, .summary').forEach(n => n.remove());
+    const left = p ? Math.round((p.bal - p.take) * 100) / 100 : 0;
+    if (p && p.tooMuch) s.insertAdjacentHTML('beforeend', `<p class="warn">The card only has ${esc(money(p.bal))}.</p>`);
+    else if (p && p.ok) s.insertAdjacentHTML('beforeend', `<p class="summary"><b>${esc(money(p.take))}</b> comes off the card. ${esc(money(left))} left after.</p>`);
+  }
+});
+sheetEl.addEventListener('click', e => {
+  const a = e.target.closest('[data-use]'); if (!a || !useS) return;
+  if (a.dataset.use === 'reg') { useS.regId = Number(a.dataset.id); useS.amt = ''; drawUse(); }
+  else if (a.dataset.use === 'close') closeUse();
+});
+function closeUse() { useS = null; closeSheet(); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && useS) closeUse(); });
+sheetEl.addEventListener('submit', e => { e.preventDefault(); if (useS) confirmUse(); });
+
+async function confirmUse() {
+  const p = plan(); if (!p || !p.ok) return;
+  const { c, r, take } = p;
+  const newBal = Math.round((p.bal - take) * 100) / 100;
+  const markUsed = newBal <= 0 && c.Status !== 'Used';
+  const regFields = { Gift_Card: c.id, Payment_Method: 'Gift card', Amount_Paid: take, Status: 'Paid' };
+  const acts = [['UpdateRecord', 'Registrations', r.id, regFields]];
+  const undo = [['UpdateRecord', 'Registrations', r.id, { Gift_Card: Number(r.Gift_Card) || 0, Payment_Method: r.Payment_Method ?? null, Amount_Paid: r.Amount_Paid ?? null, Status: r.Status }]];
+  if (markUsed) { acts.push(['UpdateRecord', 'Gift_Cards', c.id, { Status: 'Used' }]); undo.push(['UpdateRecord', 'Gift_Cards', c.id, { Status: c.Status }]); }
+  const btn = document.getElementById('u-go'); btn.disabled = true;
+  try {
+    await write(acts);   // one call, so Undo is one step
+  } catch (err) { if (btn.isConnected) btn.disabled = false; say(errMsg(err), null, 5000); return; }
+  const who = nameOf(r);
+  closeUse();
+  say(`${money(take)} taken for ${who}.`, async () => {
+    try { await write(undo); await load(); say('Undone.'); } catch (err) { say(errMsg(err), null, 5000); }
+  });
+  await load();
+}
+
+start();
+</script>
+</body>
+</html>

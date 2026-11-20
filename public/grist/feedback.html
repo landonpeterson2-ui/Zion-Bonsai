@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Zion Bonsai feedback (Grist widget)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Montserrat:wght@600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<!-- A Grist custom widget: pick feedback to quote on the site
+     Put it on the Feedback table. No column mapping. Only works inside Grist. -->
+<script src="https://docs.getgrist.com/grist-plugin-api.js"></script>
+<style>
+  :root {
+    --paper: #F4EEE6; --paper-deep: #E9DFD2; --sandstone: #D9AE93; --linen: #FBF8F3;
+    --clay: #A84A2B; --clay-dark: #8F3E23; --moss: #4F6420; --forest: #2F3B22;
+    --rule: rgba(47, 59, 34, .15); --edge: rgba(47, 59, 34, .4);
+    --late-bg: rgba(168, 74, 43, .13); --soon-bg: rgba(217, 174, 147, .4);
+    --radius: 3px;
+    --sans: 'Open Sans', system-ui, sans-serif;
+    --label: 'Montserrat', 'Open Sans', system-ui, sans-serif;
+    --display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body { margin: 0; background: var(--paper); color: var(--forest); font: 400 16px/1.5 var(--sans); }
+  main { max-width: 640px; margin: 0 auto; padding: 16px 14px 80px; }
+  button, input, textarea, select { font: inherit; color: inherit; }
+  h1 { font: 500 34px/1.1 var(--display); margin: 4px 0 4px; }
+  h1 em { font-style: italic; }
+  h2 { font: 600 11px/1.2 var(--label); letter-spacing: .18em; text-transform: uppercase; color: var(--moss);
+       margin: 28px 0 10px; padding-top: 12px; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; }
+  .label { font: 600 11px/1.2 var(--label); letter-spacing: .16em; text-transform: uppercase; }
+  .hint { color: var(--moss); font-size: 14px; margin: 4px 0; }
+  .empty { color: var(--moss); padding: 6px 2px 10px; }
+  :focus-visible { outline: 2px solid var(--clay); outline-offset: 2px; }
+  .btn { font: 600 11px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; min-height: 44px; padding: 0 18px;
+         border: 1px solid var(--clay); border-radius: var(--radius); background: var(--clay); color: var(--linen); cursor: pointer; }
+  .btn:hover { background: var(--clay-dark); border-color: var(--clay-dark); }
+  .btn.plain { background: var(--linen); color: var(--forest); border-color: var(--edge); }
+  .btn.plain:hover { background: var(--paper-deep); }
+  .btn:disabled { opacity: .55; cursor: default; }
+  .link { background: none; border: 0; padding: 0; min-height: 44px; display: inline-flex; align-items: center;
+          color: var(--clay); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font-size: 15px; }
+  .people { display: grid; gap: 10px; margin-top: 14px; }
+  .people .btn { min-height: 56px; font-size: 13px; text-align: left; padding: 0 20px; }
+  .next { border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 10px 0; margin: 10px 0 4px; }
+  .next b { font-weight: 600; }
+  .card { background: var(--linen); border: 1px solid var(--rule); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 10px; }
+  .card.late { background: var(--late-bg); border-color: rgba(168, 74, 43, .35); }
+  .card.soon { background: var(--soon-bg); border-color: rgba(217, 174, 147, .9); }
+  .card.done { opacity: .6; }
+  .card.pending { opacity: .6; }
+  .card .title { font-weight: 600; overflow-wrap: anywhere; cursor: pointer; min-height: 44px; display: flex; align-items: center;
+                 background: none; border: 0; padding: 0; text-align: left; width: 100%; }
+  .card .meta { color: var(--forest); font-size: 14px; margin: 0 0 10px; opacity: .85; }
+  .card.late .meta { opacity: 1; font-weight: 600; }
+  .card .donebtn { width: 100%; min-height: 48px; }
+  .card .row { display: flex; gap: 10px; align-items: center; justify-content: space-between; }
+  details.fold { margin-top: 18px; }
+  details.fold summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; color: var(--clay);
+                         font: 600 11px/1.2 var(--label); letter-spacing: .16em; text-transform: uppercase; }
+  .addbtn { width: 100%; min-height: 48px; margin-bottom: 10px; }
+  form.add { display: grid; gap: 10px; margin-bottom: 12px; background: var(--linen); border: 1px solid var(--rule);
+             border-radius: var(--radius); padding: 14px; }
+  label.f { display: grid; gap: 4px; }
+  label.f .label { color: var(--moss); }
+  input, select, textarea { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid var(--edge); border-radius: var(--radius);
+                            background: var(--paper); color: var(--forest); }
+  textarea { min-height: 96px; resize: vertical; }
+  input[type=date] { -webkit-appearance: none; appearance: none; display: block; min-width: 0; max-width: 100%; }
+  input[type=date]::-webkit-date-and-time-value { text-align: left; }
+  .bar { display: flex; gap: 10px; }
+  .bar .btn { flex: 1; }
+  #sheet { position: fixed; inset: 0; z-index: 10; background: var(--paper); overflow-y: auto; }
+  #sheet .inner { max-width: 640px; margin: 0 auto; padding: 18px 14px 40px; display: grid; gap: 14px; }
+  #sheet h1 { font-size: 28px; }
+  #toast { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); background: var(--forest); color: var(--linen); z-index: 20;
+           padding: 8px 8px 8px 16px; border-radius: var(--radius); opacity: 0; transition: opacity .2s; pointer-events: none;
+           display: flex; gap: 10px; align-items: center; max-width: calc(100% - 24px); }
+  #toast.show { opacity: 1; pointer-events: auto; }
+  #toast button { background: none; border: 1px solid rgba(251, 248, 243, .5); color: var(--linen); border-radius: var(--radius);
+                  font: 600 11px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; min-height: 44px; padding: 0 14px; cursor: pointer; }
+  @media (prefers-reduced-motion: reduce) { #toast { transition: none; } }
+  .summary { margin: 8px 0 0; }
+  .summary b { font-weight: 600; }
+  .toggles { display: grid; gap: 10px; }
+  .toggle { width: 100%; min-height: 52px; display: flex; justify-content: space-between; align-items: center; text-align: left;
+            padding: 0 16px; background: var(--linen); color: var(--forest); border: 1px solid var(--edge); border-radius: var(--radius);
+            font: 600 12px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; cursor: pointer; }
+  .toggle[aria-pressed=true] { background: var(--moss); border-color: var(--moss); color: var(--linen); }
+  .toggle:disabled { opacity: .55; cursor: default; }
+  .acts { display: grid; gap: 8px; margin-top: 10px; }
+  .acts .btn { width: 100%; min-height: 48px; text-align: left; padding: 10px 16px; line-height: 1.3; }
+  .note { color: var(--moss); font-size: 14px; margin: 6px 0 0; }
+  .warn { margin: 0 0 10px; padding: 8px 10px; background: var(--late-bg); border: 1px solid rgba(168, 74, 43, .35);
+          border-radius: var(--radius); font-size: 14px; font-weight: 600; }
+  .chip { display: inline-block; font: 600 10px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; padding: 5px 8px;
+          border: 1px solid var(--edge); border-radius: var(--radius); background: var(--paper); }
+  .chip.paid { background: var(--moss); border-color: var(--moss); color: var(--linen); }
+  .chip.pending { background: var(--soon-bg); border-color: rgba(217, 174, 147, .9); }
+  .card.out { opacity: .6; }
+  .card .hereb { width: 100%; min-height: 52px; margin-top: 4px; }
+  .card .hereb[aria-pressed=true] { background: var(--moss); border-color: var(--moss); color: var(--linen); }
+  .pick { margin: 8px 0 0; }
+  .results { display: grid; gap: 6px; }
+  .results .btn { text-align: left; min-height: 44px; }
+  .results .btn[aria-pressed=true] { background: var(--moss); border-color: var(--moss); color: var(--linen); }
+  .contact { display: flex; flex-wrap: wrap; gap: 8px; }
+  .contact a { flex: 1; min-width: 90px; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+  .bar .btn[type=submit] { flex: 1; }
+</style>
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 4px; }
+  .chipbtn { min-height: 44px; padding: 0 14px; background: var(--linen); color: var(--forest); border: 1px solid var(--edge); border-radius: var(--radius);
+             font: 600 11px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; }
+  .chipbtn[aria-pressed=true] { background: var(--moss); border-color: var(--moss); color: var(--linen); }
+  .chip.late { background: var(--late-bg); border-color: rgba(168, 74, 43, .35); }
+  .chips-inline { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
+  .card .contact { margin-top: 10px; }
+  .card .stat { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .card .stat .btn { min-height: 48px; padding: 0 8px; }
+  .card .stat .btn[aria-pressed=true] { background: var(--moss); border-color: var(--moss); color: var(--linen); }
+  .card .onsite { margin: 0 0 8px; }
+  .card .acts-row { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 10px; }
+  .quote { margin: 0 0 10px; overflow-wrap: anywhere; }
+  .top { font-weight: 600; }
+</style>
+</head>
+<body>
+<main id="app"><p class="hint">This is a Grist custom widget. Open it inside Grist.</p></main>
+<div id="sheet" hidden role="dialog" aria-modal="true" aria-label="Details"></div>
+<div id="toast" role="status"></div>
+<script>
+const SAVE_MS = 10000, LOAD_MS = 20000;
+const MSG_FAIL = "Couldn't load. Check your connection.";
+const MSG_SAVE = "Couldn't save. Check your connection and try again.";
+const MSG_ACCESS = "That can't be changed here. Ask Landon if you think it should be.";
+
+let loaded = false, loadFailed = false, loadSeq = 0, sheet = null;
+const busy = new Set();
+
+const app = document.getElementById('app');
+const sheetEl = document.getElementById('sheet');
+const toast = document.getElementById('toast');
+
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const withTimeout = (p, ms = SAVE_MS) => new Promise((res, rej) => {
+  const t = setTimeout(() => rej(new Error('timeout')), ms);
+  Promise.resolve(p).then(v => { clearTimeout(t); res(v); }, e => { clearTimeout(t); rej(e); });
+});
+const write = acts => withTimeout(grist.docApi.applyUserActions(acts));
+function errMsg(e) {
+  if (!navigator.onLine) return MSG_SAVE;
+  return /access|permission|blocked|denied/i.test(String(e?.message ?? e)) ? MSG_ACCESS : MSG_SAVE;
+}
+function rowsOf(t) { return t.id.map((id, i) => Object.fromEntries(Object.keys(t).map(k => [k, t[k][i]]))); }
+
+// ---- Grist's encoded cell values --------------------------------------------------------
+function decode(v) {
+  if (Array.isArray(v)) {
+    if (v[0] === 'L') return v.slice(1).map(decode);
+    if (v[0] === 'O' && v.length === 2 && v[1] && typeof v[1] === 'object') return Object.fromEntries(Object.entries(v[1]).map(([k, x]) => [k, decode(x)]));
+    if (v[0] === 'E' || v[0] === 'P' || v[0] === 'C') return null;
+    return v.map(decode);
+  }
+  if (v && typeof v === 'object') return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, decode(x)]));
+  return v;
+}
+function listOf(v) { const d = decode(v); return Array.isArray(d) ? d.map(String) : d ? [String(d)] : []; }
+const refId = v => { const n = Number(Array.isArray(v) ? v[1] : v); return Number.isFinite(n) && n > 0 ? n : null; };
+
+// ---- Dates: Grist Date cells are seconds at UTC midnight -------------------------------
+function todayIso() {
+  const p = Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone: 'America/Denver', year: 'numeric', month: '2-digit', day: '2-digit' })
+    .formatToParts(new Date()).map(x => [x.type, x.value]));
+  return `${p.year}-${p.month}-${p.day}`;
+}
+function isoDay(v) {
+  if (v == null || v === '') return null;
+  const secs = v instanceof Date ? v.getTime() / 1000 : Number(v);
+  if (!Number.isFinite(secs) || secs <= 0) return null;
+  if (secs % 86400 === 0) return new Date(secs * 1000).toISOString().slice(0, 10);
+  const p = Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone: 'America/Denver', year: 'numeric', month: '2-digit', day: '2-digit' })
+    .formatToParts(new Date(secs * 1000)).map(x => [x.type, x.value]));
+  return `${p.year}-${p.month}-${p.day}`;
+}
+const toSecs = iso => iso ? Date.parse(iso + 'T00:00:00Z') / 1000 : null;
+const dayDiff = (a, b) => Math.round((Date.parse(b + 'T00:00:00Z') - Date.parse(a + 'T00:00:00Z')) / 864e5);
+const fmt = (iso, o) => new Date(iso + 'T00:00:00Z').toLocaleDateString('en-US', { timeZone: 'UTC', ...o });
+const shortDay = iso => fmt(iso, { weekday: 'short', month: 'short', day: 'numeric' }).replace(',', '');
+const monthDay = iso => fmt(iso, { month: 'short', day: 'numeric' });
+// "Oct 3", with the year when it isn't this year
+const niceDay = iso => iso.slice(0, 4) === todayIso().slice(0, 4) ? monthDay(iso) : fmt(iso, { month: 'short', day: 'numeric', year: 'numeric' });
+
+// ---- Redraw guard: never while typing, with a sheet open, or just after a tap ----------
+let lastDown = 0, pending = false;
+document.addEventListener('pointerdown', () => { lastDown = Date.now(); }, true);
+const typing = () => /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName || '');
+const blocked = () => typing() || !!sheet || Date.now() - lastDown < 400;
+function requestRender() { if (!pending) { pending = true; setTimeout(tryRender, 300); } }
+function tryRender() { if (!pending) return; if (blocked()) { setTimeout(tryRender, 450); return; } render(); }
+app.addEventListener('focusout', () => setTimeout(tryRender, 450));
+
+function say(text, onUndo, ms) {
+  toast.innerHTML = esc(text) + (onUndo ? ' <button type="button">Undo</button>' : '');
+  if (onUndo) toast.querySelector('button').onclick = () => { toast.classList.remove('show'); onUndo(); };
+  toast.classList.add('show');
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(() => toast.classList.remove('show'), ms || (onUndo ? 6000 : 2600));
+}
+
+// ---- Saving ---------------------------------------------------------------------------
+async function save(table, id, fields, key) {
+  if (busy.has(key)) { say('Still saving. One moment.'); return false; }
+  busy.add(key); render();
+  try {
+    await write([['UpdateRecord', table, id, fields]]);
+    const row = tables()[table]?.find(r => r.id === id);
+    if (row) Object.assign(row, fields);
+    busy.delete(key); render();
+    return true;
+  } catch (e) {
+    busy.delete(key); render();
+    say(errMsg(e), null, 5000);
+    return false;
+  }
+}
+// Save, then offer Undo that puts the old values back.
+async function changeWithUndo(table, id, fields, key, msg) {
+  const row = tables()[table]?.find(r => r.id === id); if (!row) return;
+  const before = Object.fromEntries(Object.keys(fields).map(k => [k, row[k] ?? null]));
+  if (await save(table, id, fields, key)) say(msg, () => save(table, id, before, key));
+}
+
+// ---- Contact buttons --------------------------------------------------------------------
+function contactBtns(c, optedOutOfEmail) {
+  if (!c) return '';
+  const digits = String(c.Phone || '').trim().replace(/[^\d+]/g, ''), email = String(c.Email || '').trim();
+  const parts = [];
+  if (digits) parts.push(`<a class="btn plain" href="tel:${esc(digits)}">Call</a><a class="btn plain" href="sms:${esc(digits)}">Text</a>`);
+  if (email && !optedOutOfEmail) parts.push(`<a class="btn plain" href="mailto:${esc(encodeURIComponent(email))}">Email</a>`);
+  return (parts.length ? `<div class="contact">${parts.join('')}</div>` : '')
+    + (email && optedOutOfEmail ? '<p class="note">No email (opted out)</p>' : '');
+}
+
+// ---- Sheets ---------------------------------------------------------------------------
+// sheet = { init: {k: string}, save(), vals()? , sheetClick(e)? }
+function showSheet() { sheetEl.hidden = false; sheetEl.scrollTop = 0; document.body.style.overflow = 'hidden'; }
+function closeSheet() { sheet = null; sheetEl.hidden = true; sheetEl.innerHTML = ''; document.body.style.overflow = ''; render(); }
+const sheetVals = () => sheet.vals ? sheet.vals() : Object.fromEntries(Object.keys(sheet.init).map(k => [k, sheetEl.querySelector('#f-' + k)?.value ?? sheet.init[k]]));
+const sheetDirty = () => { const v = sheetVals(); return Object.keys(sheet.init).some(k => v[k] !== sheet.init[k]); };
+const sheetBars = `<div class="bar"><button type="submit" class="btn" data-sheet="save">Save</button><button type="button" class="btn plain" data-sheet="cancel">Cancel</button></div>
+    <div class="bar" id="discard" hidden><button type="button" class="btn plain" data-sheet="keep">Keep editing</button><button type="button" class="btn" data-sheet="discard">Discard</button></div>`;
+sheetEl.addEventListener('submit', e => { e.preventDefault(); if (sheet?.save) sheet.save(); });
+sheetEl.addEventListener('click', e => {
+  if (!sheet) return;
+  if (sheet.sheetClick && sheet.sheetClick(e)) return;
+  const act = e.target.closest('[data-sheet]')?.dataset.sheet;
+  if (!act) return;
+  if (act === 'cancel') { if (sheetDirty()) sheetEl.querySelector('#discard').hidden = false; else closeSheet(); }
+  else if (act === 'keep') sheetEl.querySelector('#discard').hidden = true;
+  else if (act === 'discard') closeSheet();
+});
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape' || !sheet) return;
+  const c = sheetEl.querySelector('[data-sheet=cancel]'); if (c) c.click(); else closeSheet();
+});
+// Save the sheet's changed fields to one record.
+async function saveSheetRecord(table, id, fields, key) {
+  if (!Object.keys(fields).length) { closeSheet(); return; }
+  const mine = sheet, btn = sheetEl.querySelector('[data-sheet=save]'); btn.disabled = true;
+  const ok = await save(table, id, fields, key);
+  if (!ok) { if (sheet === mine) btn.disabled = false; return; }
+  if (sheet === mine) closeSheet();
+  say('Saved.');
+}
+
+// ---- Start ----------------------------------------------------------------------------
+function start() {
+  if (typeof grist === 'undefined') { loadFailed = true; render(); return; }
+  grist.ready({ requiredAccess: 'full' });
+  grist.onRecords(() => load());
+  setInterval(() => { if (!document.hidden) load(); }, 30000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) load(); });
+  setTimeout(() => { if (!loaded) { loadFailed = true; render(); } }, LOAD_MS);
+  load();
+  render();
+}
+const loadingHtml = () => loadFailed
+  ? `<p>${esc(MSG_FAIL)}</p><button type="button" class="btn" data-act="retry">Try again</button>`
+  : '<p class="hint">Loading…</p>';
+
+// Reads Feedback, Workshops and Contacts by name (full access).
+let fb = [], workshops = [], contacts = [], filter = 'all';
+let showChoices = ['home', 'workshops', 'workshops-top', 'events'], metaAt = 0;
+const tables = () => ({ Feedback: fb });
+const FILTERS = [['all', 'All'], ['new', 'Not reviewed'], ['site', 'On the site']];
+const onSite = f => !!f.OK_To_Quote && !!String(f.Quote || '').trim() && !String(f.Ready_For_Site || '').trim();
+const notReviewed = f => !f.OK_To_Quote && !String(f.Quote || '').trim();
+
+async function loadMeta() {
+  if (Date.now() - metaAt < 60000) return;
+  const [tb, col] = await Promise.all(['_grist_Tables', '_grist_Tables_column'].map(n => grist.docApi.fetchTable(n)));
+  const ref = tb.id[tb.tableId.indexOf('Feedback')];
+  const c = rowsOf(col).find(x => x.parentId === ref && x.colId === 'Show_On');
+  try { const ch = JSON.parse(c?.widgetOptions || '{}').choices; if (Array.isArray(ch) && ch.length) showChoices = ch.map(String); } catch (e) {}
+  metaAt = Date.now();
+}
+async function load() {
+  const seq = ++loadSeq;
+  try {
+    const res = await Promise.allSettled(['Feedback', 'Workshops', 'Contacts'].map(n => grist.docApi.fetchTable(n)));
+    if (res[0].status === 'rejected') throw new Error('load');
+    const [f, w, c] = res.map(x => x.status === 'fulfilled' ? rowsOf(x.value) : []);
+    await loadMeta().catch(() => {});
+    if (seq !== loadSeq) return;
+    fb = f; workshops = w; contacts = c; loaded = true; loadFailed = false;
+  } catch (e) {
+    if (seq !== loadSeq) return;
+    if (!loaded) { loadFailed = true; render(); }
+    return;
+  }
+  requestRender();
+}
+function card(f) {
+  const who = contacts.find(c => c.id === refId(f.Contact)), p = busy.has('fb' + f.id);
+  const rating = Number(f.Rating) > 0 ? `${Number(f.Rating)} out of 5` : 'No rating';
+  return `<div class="card${p ? ' pending' : ''}">
+    <div class="row"><b>${esc(rating)}</b>${onSite(f) ? '<span class="chip paid">On the site</span>' : ''}</div>
+    ${f.Comment ? `<p class="quote">${esc(f.Comment)}</p>` : '<p class="meta">No comment.</p>'}
+    <p class="meta">${esc(who?.Name || 'Someone')}${p ? ' · Saving…' : ''}</p>
+    ${f.Ready_For_Site ? `<p class="warn">${esc(f.Ready_For_Site)}</p>` : ''}
+    <button type="button" class="btn plain" data-act="open" data-id="${f.id}" style="width:100%">Review for the site</button>
+  </div>`;
+}
+function render() {
+  pending = false;
+  if (!loaded) { app.innerHTML = loadingHtml(); return; }
+  const list = fb.filter(f => filter === 'all' || (filter === 'new' ? notReviewed(f) : onSite(f)));
+  const groups = new Map();
+  for (const f of list) {
+    const w = workshops.find(x => x.id === refId(f.Workshop)), iso = w ? isoDay(w.Date) : null;
+    const key = w ? w.id : 0;
+    if (!groups.has(key)) groups.set(key, { w, iso: iso || '', list: [] });
+    groups.get(key).list.push(f);
+  }
+  const gs = [...groups.values()].sort((a, b) => a.iso < b.iso ? 1 : a.iso > b.iso ? -1 : 0);
+  app.innerHTML = `
+    <h1><em>Feedback</em></h1>
+    <p class="hint">What people said. Pick the good ones to quote on the site.</p>
+    <div class="chips">${FILTERS.map(([k, l]) => `<button type="button" class="chipbtn" data-act="filter" data-val="${k}" aria-pressed="${filter === k}">${l}</button>`).join('')}</div>
+    ${gs.map(g => {
+      const rated = g.list.map(f => Number(f.Rating)).filter(n => n > 0);
+      const avg = rated.length ? (rated.reduce((a, b) => a + b, 0) / rated.length).toFixed(1) : '';
+      const head = g.w ? `${g.w.Title || 'Workshop'}${g.iso ? ', ' + monthDay(g.iso) : ''}` : 'No workshop';
+      return `<h2><span>${esc(head)}</span><span>${g.list.length}${avg ? ' · avg ' + avg : ''}</span></h2>${g.list.sort((a, b) => b.id - a.id).map(card).join('')}`;
+    }).join('') || `<p class="empty">${fb.length ? 'Nothing matches that filter.' : 'No feedback yet. It shows up here after people answer the survey.'}</p>`}`;
+}
+function openEdit(id) {
+  const f = fb.find(x => x.id === id); if (!f) return;
+  const st = { ok: !!f.OK_To_Quote, show: new Set(listOf(f.Show_On)) };
+  const init = { ok: String(st.ok), Quote: String(f.Quote || '').trim() ? String(f.Quote) : String(f.Comment ?? ''), show: [...st.show].sort().join('|') };
+  const choices = [...showChoices, ...[...st.show].filter(x => !showChoices.includes(x))];
+  const draw = () => {
+    const q = sheetEl.querySelector('#f-Quote'), keep = q ? q.value : init.Quote;
+    sheetEl.innerHTML = `<form class="inner"><h1>Review <em>quote</em></h1>
+      ${f.Ready_For_Site ? `<p class="warn">${esc(f.Ready_For_Site)}</p>` : ''}
+      <p class="quote"><span class="label">They said</span><br>${esc(f.Comment || '(no comment)')}</p>
+      <button type="button" class="toggle" data-t="ok" aria-pressed="${st.ok}"><span>OK to quote</span><span>${st.ok ? 'Yes' : 'No'}</span></button>
+      <label class="f"><span class="label">Quote (edit and shorten it)</span><textarea id="f-Quote" rows="5">${esc(keep)}</textarea></label>
+      <div><span class="label">Show on</span><div class="chips">${choices.map(c => `<button type="button" class="chipbtn" data-t="show" data-v="${esc(c)}" aria-pressed="${st.show.has(c)}">${esc(c)}</button>`).join('')}</div></div>
+      ${sheetBars}</form>`;
+  };
+  sheet = {
+    init,
+    vals: () => ({ ok: String(st.ok), Quote: sheetEl.querySelector('#f-Quote')?.value ?? init.Quote, show: [...st.show].sort().join('|') }),
+    sheetClick: e => {
+      const t = e.target.closest('[data-t]'); if (!t) return false;
+      if (t.dataset.t === 'ok') st.ok = !st.ok;
+      else if (st.show.has(t.dataset.v)) st.show.delete(t.dataset.v); else st.show.add(t.dataset.v);
+      draw(); return true;
+    },
+    save: () => {
+      const v = sheet.vals(), fields = {};
+      if (st.ok !== !!f.OK_To_Quote) fields.OK_To_Quote = st.ok;
+      if (v.Quote !== String(f.Quote ?? '')) fields.Quote = v.Quote;
+      if (v.show !== [...listOf(f.Show_On)].sort().join('|')) fields.Show_On = ['L', ...st.show];
+      return saveSheetRecord('Feedback', id, fields, 'fb' + id);
+    },
+  };
+  draw(); showSheet();
+}
+app.addEventListener('click', e => {
+  const el = e.target.closest('[data-act]'); if (!el) return;
+  if (el.dataset.act === 'retry') { loadFailed = false; render(); load(); }
+  else if (el.dataset.act === 'filter') { filter = el.dataset.val; render(); }
+  else if (el.dataset.act === 'open') openEdit(Number(el.dataset.id));
+});
+start();
+</script>
+</body>
+</html>
