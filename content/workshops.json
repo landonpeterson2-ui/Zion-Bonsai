@@ -1,3 +1,172 @@
 {
-  "workshops": []
+  "workshops": [
+    {
+      "id": "2027-02-12-sweet-roots-6",
+      "type": "intro",
+      "title": "Valentine's Date Night",
+      "date": "2027-02-12",
+      "start": "18:00",
+      "end": "20:00",
+      "venue": "sweet-roots",
+      "price": "$65 solo · $100 pair",
+      "registrationUrl": null,
+      "status": "tentative"
+    },
+    {
+      "id": "2027-02-26-sweet-roots-7",
+      "type": "shaping",
+      "title": "Level 2 shaping",
+      "date": "2027-02-26",
+      "start": "18:00",
+      "end": "20:00",
+      "venue": "sweet-roots",
+      "price": "$50",
+      "registrationUrl": null,
+      "status": "tentative"
+    },
+    {
+      "id": "2027-03-12-sweet-roots-8",
+      "type": "intro",
+      "title": "Spring Date Night",
+      "date": "2027-03-12",
+      "start": "18:00",
+      "end": "20:00",
+      "venue": "sweet-roots",
+      "price": "$65 solo · $100 pair",
+      "registrationUrl": null,
+      "status": "tentative"
+    },
+    {
+      "id": "2027-04-16-sweet-roots-9",
+      "type": "intro",
+      "title": "Date Night",
+      "date": "2027-04-16",
+      "start": "18:00",
+      "end": "20:00",
+      "venue": "sweet-roots",
+      "price": "$65 solo · $100 pair",
+      "registrationUrl": null,
+      "status": "tentative"
+    },
+    {
+      "id": "2027-04-30-sweet-roots-10",
+      "type": "shaping",
+      "title": "Level 2 shaping",
+      "date": "2027-04-30",
+      "start": "18:00",
+      "end": "20:00",
+      "venue": "sweet-roots",
+      "price": "$50",
+      "registrationUrl": null,
+      "status": "tentative"
+    },
+    {
+      "id": "2027-05-08-springhaven-farm-11",
+      "type": "intro",
+      "title": "Mother's Day and one-year anniversary",
+      "date": "2027-05-08",
+      "start": "12:00",
+      "end": "14:00",
+      "venue": "springhaven-farm",
+      "price": "$65 solo · $100 pair",
+      "registrationUrl": null,
+      "status": "tentative"
+    },
+    {
+      "id": "2027-06-25-sweet-roots-12",
+      "type": "intro",
+      "title": "Summer Date Night",
+      "date": "2027-06-25",
+      "start": "18:00",
+      "end": "20:00",
+      "venue": "sweet-roots",
+      "price": "$65 solo · $100 pair",
+      "registrationUrl": null,
+      "status": "tentative"
+    },
+    {
+      "id": "2027-07-30-sweet-roots-13",
+      "type": "intro",
+      "title": "Summer Date Night",
+      "date": "2027-07-30",
+      "start": "18:00",
+      "end": "20:00",
+      "venue": "sweet-roots",
+      "price": "$65 solo · $100 pair",
+      "registrationUrl": null,
+      "status": "tentative"
+    },
+    {
+      "id": "2027-08-13-sweet-roots-14",
+      "type": "shaping",
+      "title": "Level 2 shaping",
+      "date": "2027-08-13",
+      "start": "18:00",
+      "end": "20:00",
+      "venue": "sweet-roots",
+      "price": "$50",
+      "registrationUrl": null,
+      "status": "tentative"
+    },
+    {
+      "id": "2027-09-24-sweet-roots-15",
+      "type": "intro",
+      "title": "Fall Date Night",
+      "date": "2027-09-24",
+      "start": "18:00",
+      "end": "20:00",
+      "venue": "sweet-roots",
+      "price": "$65 solo · $100 pair",
+      "registrationUrl": null,
+      "status": "tentative"
+    },
+    {
+      "id": "2027-10-15-sweet-roots-16",
+      "type": "intro",
+      "title": "Date Night",
+      "date": "2027-10-15",
+      "start": "18:00",
+      "end": "20:00",
+      "venue": "sweet-roots",
+      "price": "$65 solo · $100 pair",
+      "registrationUrl": null,
+      "status": "tentative"
+    },
+    {
+      "id": "2027-11-12-sweet-roots-17",
+      "type": "intro",
+      "title": "Holiday Gift Date Night",
+      "date": "2027-11-12",
+      "start": "18:00",
+      "end": "20:00",
+      "venue": "sweet-roots",
+      "price": "$65 solo · $100 pair",
+      "registrationUrl": null,
+      "status": "tentative"
+    },
+    {
+      "id": "2027-11-19-sweet-roots-18",
+      "type": "shaping",
+      "title": "Level 2 shaping",
+      "date": "2027-11-19",
+      "start": "18:00",
+      "end": "20:00",
+      "venue": "sweet-roots",
+      "price": "$50",
+      "registrationUrl": null,
+      "status": "tentative"
+    },
+    {
+      "id": "2027-12-10-sweet-roots-19",
+      "type": "intro",
+      "title": "Holiday Date Night",
+      "date": "2027-12-10",
+      "start": "18:00",
+      "end": "20:00",
+      "venue": "sweet-roots",
+      "price": "$65 solo · $100 pair",
+      "registrationUrl": null,
+      "status": "tentative"
+    }
+  ]
 }
