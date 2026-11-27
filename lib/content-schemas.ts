@@ -24,6 +24,8 @@ export const siteSchema = z.object({
     /** What the /give page sells. Prices in whole dollars; keep them the same as Square. */
     offers: z.array(z.object({ name: z.string().min(1), price: z.number().positive(), blurb: z.string().min(1) })).default([]),
     /** Last day (YYYY-MM-DD) a card comes with a free saucer; the line hides itself after. null = no offer. */
+    /** Shown on /give only while no date is bookable (all upcoming dates tentative). null = never. */
+    bookingNote: z.string().min(1).nullable().default(null),
     saucerOfferEnds: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'saucerOfferEnds must be YYYY-MM-DD').nullable().default(null),
   }),
   shopEnabled: z.boolean(),

@@ -12,7 +12,7 @@ These files drive dates, links and contact info. Edit the JSON, then run `npm ru
 
 Past dates hide themselves; no need to delete them. Keep commas between entries.
 
-**Gift cards:** in `site.json` under `giftCertificates`, set `mode` to `online` and `url` to the Square gift card link to turn on the Buy buttons (until then they offer an email). `offers` sets the names and prices on /give (match Square); `saucerOfferEnds` is the last day of the free saucer offer.
+**Gift cards:** in `site.json` under `giftCertificates`, set `mode` to `online` and `url` to the Square gift card link to turn on the Buy buttons (until then they offer an email). `offers` sets the names and prices on /give (match Square); `saucerOfferEnds` is the last day of the free saucer offer. `bookingNote` shows on /give only while no date is on sale.
 
 Other files: `site.json` (contact info, `season`, `shopEnabled`), `seasons.json` (home hero copy), `partners.json`, `faq.json`, `gallery.json`.
 

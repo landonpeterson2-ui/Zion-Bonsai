@@ -6,7 +6,7 @@ import Reveal from '@/components/ui/Reveal'
 import Section from '@/components/ui/Section'
 import SectionHeading from '@/components/ui/SectionHeading'
 import TextLink from '@/components/ui/TextLink'
-import { getGiftCardBuyUrl, getSite, todayInDenver } from '@/lib/content'
+import { getBookableWorkshops, getGiftCardBuyUrl, getSite, todayInDenver } from '@/lib/content'
 import { getPhoto } from '@/lib/photos'
 
 export const metadata: Metadata = pageMetadata({
@@ -47,6 +47,8 @@ export default function GivePage() {
   const gift = site.giftCertificates
   const buyUrl = getGiftCardBuyUrl()
   const photo = getPhoto('workshop-finished-jade-thank-you-card')
+  // Hides itself as soon as any date goes on sale.
+  const bookingNote = getBookableWorkshops().length === 0 ? gift.bookingNote : null
   const saucerEnds = gift.saucerOfferEnds && todayInDenver() <= gift.saucerOfferEnds ? gift.saucerOfferEnds : null
 
   const goodToKnow = [
@@ -88,6 +90,7 @@ export default function GivePage() {
             <BuyButton url={buyUrl} email={site.email} />
             <TextLink href="/workshops#dates">See the dates</TextLink>
           </div>
+          {bookingNote ? <p className="mt-6 max-w-[58ch] leading-[1.65] text-soil">{bookingNote}</p> : null}
         </div>
         <div className="md:col-span-5">
           <Photo src={photo.src} alt={photo.alt} sizes="(min-width: 768px) 38vw, 100vw" aspect="aspect-[4/5]" priority />
