@@ -24,7 +24,7 @@
   "shopEnabled": false,
   "season": "fall",
   "registration": {
-    "mode": "form",
+    "mode": "site",
     "prices": { "single": 75, "pair": 125 },
     "payLinks": {
       "single": "https://square.link/u/xNF7TWab",
