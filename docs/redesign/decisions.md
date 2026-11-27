@@ -115,10 +115,16 @@ The home hero now uses the same soil-washed photo treatment as the private event
 - Workshop trees are **always dwarf jade** (*Portulacaria afra*), never *Crassula*. Say "dwarf jade" in captions, alt text and copy about our trees. Other common name: elephant bush. Around the house: "ports".
 - *Crassula* is not mentioned anywhere on the site. The Care Guide's light section says only "Dwarf jade (*Portulacaria*) thrives indoors…" (Landon, 2026-10-23).
 
+## 2026-11-26 — 2027 prices and gift cards (Landon)
+
+- **2027 public workshops and date nights: $75 single, $125 couple.** Set on every 2027 Public/Evening row in Grist; Level 2 shaping stays $50. New Grist rows copy the last workshop's price, so they start at 75/125.
+- **Gift cards match:** One Seat $75, Date Night for Two $125 (Grist Gift_Cards Amount formula updated; the gift-cards handoff's $65/$100 is superseded). Square's card amounts must match.
+- **Gift cards get their own page, `/give`** (`/gift` and `/gift-cards` redirect there). Offers, prices and the saucer offer's end date live in `site.json` `giftCertificates`; the Buy buttons turn on when `mode` is `online` and `url` is the Square link. Until then they offer an email.
+
 ## Open items (from Landon & Cass)
 - [ ] Google Form URL(s) for registration
 - [ ] Upcoming workshop dates and prices
-- [ ] Gift certificates: online purchase or by inquiry?
+- [x] Gift certificates: online through Square (2026-11-26, see above)
 - [ ] Sweet Roots site URL when live
 - [ ] Cass's workshop photos → drop into `photos-inbox/workshop/` (any format; full-size is fine). Featured on the Workshops page.
 - [ ] Real photos still needed: Cheesecake, hands in soil, Taya's pots, workshop tables

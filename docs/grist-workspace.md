@@ -106,7 +106,7 @@ Every gift card we sell on Square gets one row in **Gift cards** (page after Qui
 
 **Log a sale.** Add a row and fill in:
 - **Card last 4** (exactly four digits), **Buyer** (pick from Contacts; add them there first if they're new), **Recipient name**, **Offer**, **Design**, **Delivery** and the **Square order #**.
-- **Amount** fills in from the Offer ($100 Date Night for Two, $65 One Seat). For Other, type it. **Sold date** fills in as today. **Status** starts as Active.
+- **Amount** fills in from the Offer ($125 Date Night for Two, $75 One Seat). For Other, type it. **Sold date** fills in as today. **Status** starts as Active.
 - **Saucer owed** ticks itself for cards sold by Dec 31, 2026 (the free saucer). Untick it if a card shouldn't get one.
 - **Check** says what's missing or off in plain words; the row turns red until it's blank.
 

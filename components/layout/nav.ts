@@ -28,6 +28,7 @@ export const footerGroups: { title: string; links: { label: string; href: string
       { label: 'Events', href: '/events' },
       { label: 'Gallery', href: '/gallery' },
       { label: 'Care Guide', href: '/care-guide' },
+      { label: 'Gift cards', href: '/give' },
     ],
   },
   {

@@ -2,16 +2,17 @@ import Quote from '@/components/ui/Quote'
 import Section from '@/components/ui/Section'
 import SectionHeading from '@/components/ui/SectionHeading'
 import TextLink from '@/components/ui/TextLink'
-import { getFaq, getTestimonials } from '@/lib/content'
+import { getFaq, getSite, getTestimonials } from '@/lib/content'
 
 const whoFor = [
   { title: 'Complete beginners.', body: 'Never touched a bonsai? Perfect. That’s who this is for.' },
   { title: 'Couples and friends.', body: 'A good excuse to spend two hours together without a screen between you.' },
-  { title: 'Gift-givers.', body: 'Give someone an afternoon and a tree. Ask us about gift certificates.' },
+  { title: 'Gift-givers.', body: 'Give someone an afternoon and a tree. Gift cards are online.' },
 ]
 
 export function WhoFor() {
   const quotes = getTestimonials('workshops')
+  const giveUrl = getSite().giftCertificates.giveUrl
   return (
     <Section>
       <div className="container-custom grid gap-10 md:grid-cols-12 md:gap-16">
@@ -35,7 +36,7 @@ export function WhoFor() {
             ))}
           </ul>
           <div className="mt-8">
-            <TextLink href="/contact#gift">Gift certificates</TextLink>
+            <TextLink href={giveUrl}>Gift cards</TextLink>
           </div>
           {/* Phones: quotes follow the list instead of sitting beside it. */}
           {quotes.length > 0 ? (

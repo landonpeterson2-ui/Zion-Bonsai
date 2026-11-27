@@ -10,7 +10,16 @@
   },
   "interestListUrl": null,
   "eventsInquiryUrl": null,
-  "giftCertificates": { "mode": "inquiry", "url": null, "giveUrl": "/contact#gift" },
+  "giftCertificates": {
+    "mode": "inquiry",
+    "url": null,
+    "giveUrl": "/give",
+    "offers": [
+      { "name": "One seat", "price": 75, "blurb": "One person, one workshop, one tree of their own to take home." },
+      { "name": "Date night for two", "price": 125, "blurb": "Two seats side by side. Two trees, one evening, no phones." }
+    ],
+    "saucerOfferEnds": "2026-12-31"
+  },
   "shopEnabled": false,
   "season": "fall"
 }

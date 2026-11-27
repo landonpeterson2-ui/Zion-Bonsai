@@ -49,7 +49,7 @@ export function getSeason(): Season {
 }
 
 /** Today's date (YYYY-MM-DD) in America/Denver. */
-function todayInDenver(): string {
+export function todayInDenver(): string {
   return new Intl.DateTimeFormat('en-CA', {
     timeZone: 'America/Denver',
     year: 'numeric',
@@ -69,6 +69,12 @@ export function getUpcomingWorkshops(): Workshop[] {
 /** Dates people can register for now: everything upcoming except tentative ones. */
 export function getBookableWorkshops(): Workshop[] {
   return getUpcomingWorkshops().filter((w) => w.status !== 'tentative')
+}
+
+/** The gift card checkout link, or null while gift cards are by inquiry. */
+export function getGiftCardBuyUrl(): string | null {
+  const g = site.giftCertificates
+  return g.mode === 'online' && g.url ? g.url : null
 }
 
 export function getPartners(): Partner[] {

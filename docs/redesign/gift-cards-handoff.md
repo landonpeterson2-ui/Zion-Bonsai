@@ -40,7 +40,7 @@ Data and trigger columns:
 | Status | | Choice | trigger | Active, Used, Refunded, Void; default "Active", new records only | Where the card stands. New cards start Active. Set Used once it's spent, Refunded or Void if the sale was undone. |
 | Notes | | Text | data | | Anything worth remembering. Type this. Never a card number. |
 
-Formula A (Amount):
+Formula A (Amount) — **updated 2026-11-26 to 125 / 75**, see decisions.md:
 ```python
 {"Date Night for Two": 100, "One Seat": 65}.get($Offer, value)
 ```

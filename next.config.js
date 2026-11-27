@@ -13,7 +13,8 @@ const nextConfig = {
       { source: '/about', destination: '/our-story', permanent: true },
       // :slug+ (not *) so /workshops itself never redirects to itself
       { source: '/workshops/:slug+', destination: '/workshops', permanent: true },
-      { source: '/gift', destination: '/contact#gift', permanent: true },
+      { source: '/gift', destination: '/give', permanent: true },
+      { source: '/gift-cards', destination: '/give', permanent: true },
     ]
   },
 }
