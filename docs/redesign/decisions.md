@@ -131,3 +131,10 @@ The home hero now uses the same soil-washed photo treatment as the private event
 - [ ] 2–3 real testimonials (with permission)
 - [x] Attendee photo permission (confirmed 2026-10-21)
 - [ ] Interest list: Google Form, or something else?
+
+## 2026-11-26 — Sign up on our own site (Landon)
+
+- **Registration moves from the Google Form to our site** (task 61): `/register` collects details, then the thank-you page shows the Square payment link for one seat or two. Still details first, payment second; the site still never shows payment links anywhere else. This replaces the "Booking flow (do not change)" rule in CLAUDE.md once task 61 ships; until `registration.mode` is `"site"`, the Google Form stays.
+- Opt-ins are separate and unticked: email dates, text dates (only with a phone number), photos OK.
+- We send our own confirmation email through Brevo. Every sign-up also emails plants@zionbonsai.com.
+- **Later (v2):** pay on our page with Square's Web Payments SDK; live seats left.

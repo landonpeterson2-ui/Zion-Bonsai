@@ -46,6 +46,7 @@ Tick a task in the same commit that finishes it. Tasks within a phase can run in
 - [x] 56 Tentative workshops on the site — with 55
 - [ ] 57 Grist widgets round 3: gift card, packing, season, trees coming back, follow-ups, feedback, partners
 - [ ] 58 Grist on a phone: Bookings, Gift cards sold, Agreements, Prep checklist, phone-only page menu
+- [ ] 61 Sign up on our own site (61a back end, 61b form, 61c n8n + plants@ email; v2: Square Web Payments SDK)
   - Milestone: `tentative` accepted by schema and sync; workshops page lists tentative dates with the gift card line (link in `site.json` `giftCertificates.giveUrl`); NextWorkshop prefers bookable dates; no Event JSON-LD for tentative rows (no calendar feed or event sitemap entries exist).
 
 ## Found while working

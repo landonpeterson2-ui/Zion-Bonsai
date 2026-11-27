@@ -22,5 +22,14 @@
     "bookingNote": "2027 booking opens in January. Cards never expire, so there’s no rush."
   },
   "shopEnabled": false,
-  "season": "fall"
+  "season": "fall",
+  "registration": {
+    "mode": "form",
+    "prices": { "single": 75, "pair": 125 },
+    "payLinks": {
+      "single": "https://square.link/u/xNF7TWab",
+      "pair": "https://square.link/u/tatWd8pe"
+    },
+    "turnstileSiteKey": "1x00000000000000000000AA"
+  }
 }

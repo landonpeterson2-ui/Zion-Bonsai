@@ -28,6 +28,20 @@ export const siteSchema = z.object({
     bookingNote: z.string().min(1).nullable().default(null),
     saucerOfferEnds: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'saucerOfferEnds must be YYYY-MM-DD').nullable().default(null),
   }),
+  /**
+   * Sign-ups. mode "form" = Register buttons go to each workshop's Google Form (registrationUrl).
+   * mode "site" = Register buttons go to /register on our site (task 61); payment is the Square link after.
+   */
+  registration: z
+    .object({
+      mode: z.enum(['form', 'site']).default('form'),
+      prices: z.object({ single: z.number().positive(), pair: z.number().positive() }),
+      /** Square payment links, shown on /register/thanks only (never elsewhere on the site). */
+      payLinks: z.object({ single: nullableUrl, pair: nullableUrl }),
+      /** Cloudflare Turnstile site key (public). The secret lives in the Worker secret TURNSTILE_SECRET. */
+      turnstileSiteKey: z.string().min(1),
+    })
+    .default({ mode: 'form', prices: { single: 75, pair: 125 }, payLinks: { single: null, pair: null }, turnstileSiteKey: '1x00000000000000000000AA' }),
   shopEnabled: z.boolean(),
   season: seasonName,
 })
