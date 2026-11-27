@@ -111,6 +111,7 @@ for (const o of orgRows.filter((o) => o.Show_On_Site)) {
     url: orNull(o.Website),
     instagram: orNull(o.Instagram),
     location: orNull(o.Town),
+    mapUrl: orNull(o.Map_Url),
     logo: logos.get(o.Slug) ?? null,
   })
 }

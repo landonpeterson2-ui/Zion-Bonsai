@@ -109,7 +109,19 @@ export default async function ThanksPage({ searchParams }: { searchParams: Promi
         </li>
         <li className="border-b border-forest/15 py-6">
           <h2 className="text-[1.55rem] leading-snug">Getting there.</h2>
-          <p className="mt-1.5 max-w-xl leading-[1.7] text-soil">[PARKING AND DIRECTIONS — {venue?.name ?? 'venue'}]</p>
+          <p className="mt-1.5 max-w-xl leading-[1.7] text-soil">
+            {venue ? `${venue.name}${venue.location ? `, ${venue.location}` : ''}.` : 'We’ll send directions.'}
+          </p>
+          {venue?.mapUrl ? (
+            <a
+              href={venue.mapUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 inline-block border-b border-forest/60 pb-1 font-label text-[11px] font-semibold uppercase tracking-[0.16em] text-forest hover:border-forest"
+            >
+              Open in Google Maps<span className="sr-only"> (opens in a new tab)</span>
+            </a>
+          ) : null}
         </li>
       </ul>
 

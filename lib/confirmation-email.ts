@@ -8,6 +8,7 @@ export type EmailWorkshop = {
   start: string | null // HH:MM
   end: string | null
   venueName: string | null
+  venueMapUrl: string | null
   prices: { single: number; pair: number }
   payLinks: { single: string | null; pair: string | null }
 }
@@ -83,7 +84,9 @@ export function buildConfirmationEmail(signup: Signup, w: EmailWorkshop): BrevoP
   }
 
   add('[WHAT TO BRING]')
-  add('[PARKING]')
+  if (w.venueMapUrl) {
+    add(`Directions: ${w.venueMapUrl}`, `<a href="${esc(w.venueMapUrl)}" style="color:#A84A2B">Directions to ${esc(w.venueName ?? 'the venue')}</a>`)
+  }
   add(`Questions? Just reply to this email.`)
   add('Come grow with us.\nLandon and Cass', 'Come grow with us.<br>Landon and Cass')
 
