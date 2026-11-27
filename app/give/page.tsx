@@ -52,7 +52,7 @@ export default function GivePage() {
   const goodToKnow = [
     {
       title: 'Sent the way you like.',
-      body: 'As an eGift by email, a printable certificate, or both. Pick one of five designs when you buy.',
+      body: 'As an eGift by email, a printable certificate, or both. Pick a design when you buy.',
     },
     {
       title: 'Good for any public workshop.',
