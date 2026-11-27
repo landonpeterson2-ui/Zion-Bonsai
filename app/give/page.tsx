@@ -58,11 +58,11 @@ export default function GivePage() {
     },
     {
       title: 'Never expires. No fees.',
-      body: 'It’s good for its dollar value toward any public workshop. Use a date night card on your own and the rest stays on the card for next time.',
+      body: 'It’s good for its dollar value. Use a date night card on your own and the rest stays on the card for next time.',
     },
     {
-      title: 'Good for any public workshop.',
-      body: 'Every public date except Sun River Gardens, which sells its own seats.',
+      title: 'Good for any workshop, and more.',
+      body: 'Any public date except Sun River Gardens, which sells its own seats. Also anything we sell in person: trees, pots, shirts and hats. Online merch orders can’t take it.',
     },
     {
       title: 'Using one.',
