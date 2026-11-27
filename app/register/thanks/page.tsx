@@ -105,7 +105,7 @@ export default async function ThanksPage({ searchParams }: { searchParams: Promi
         ) : null}
         <li className="border-b border-forest/15 py-6">
           <h2 className="text-[1.55rem] leading-snug">What to bring.</h2>
-          <p className="mt-1.5 max-w-xl leading-[1.7] text-soil">[WHAT TO BRING — Landon and Cass to confirm]</p>
+          <p className="mt-1.5 max-w-xl leading-[1.7] text-soil">{site.registration.whatToBring ?? 'Just yourself.'}</p>
         </li>
         <li className="border-b border-forest/15 py-6">
           <h2 className="text-[1.55rem] leading-snug">Getting there.</h2>

@@ -86,6 +86,7 @@ export function workshopForEmail(workshop: Workshop) {
     start: workshop.start ?? null,
     end: workshop.end ?? null,
     venueName: (workshop.venue && getPartner(workshop.venue)?.name) || null,
+    whatToBring: site.registration.whatToBring,
     venueMapUrl: (workshop.venue && getPartner(workshop.venue)?.mapUrl) || null,
     prices: site.registration.prices,
     payLinks: site.registration.payLinks,

@@ -8,6 +8,7 @@ export type EmailWorkshop = {
   start: string | null // HH:MM
   end: string | null
   venueName: string | null
+  whatToBring: string | null
   venueMapUrl: string | null
   prices: { single: number; pair: number }
   payLinks: { single: string | null; pair: string | null }
@@ -83,7 +84,7 @@ export function buildConfirmationEmail(signup: Signup, w: EmailWorkshop): BrevoP
     if (signup.gift_card === 1) add('You ticked gift card, so use your gift card at checkout.')
   }
 
-  add('[WHAT TO BRING]')
+  if (w.whatToBring) add(`What to bring: ${w.whatToBring}`)
   if (w.venueMapUrl) {
     add(`Directions: ${w.venueMapUrl}`, `<a href="${esc(w.venueMapUrl)}" style="color:#A84A2B">Directions to ${esc(w.venueName ?? 'the venue')}</a>`)
   }

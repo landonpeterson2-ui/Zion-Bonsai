@@ -40,6 +40,8 @@ export const siteSchema = z.object({
       payLinks: z.object({ single: nullableUrl, pair: nullableUrl }),
       /** Cloudflare Turnstile site key (public). The secret lives in the Worker secret TURNSTILE_SECRET. */
       turnstileSiteKey: z.string().min(1),
+      /** "What to bring" line on the thank-you page and in the confirmation email. */
+      whatToBring: z.string().min(1).nullable().default(null),
     })
     .default({ mode: 'form', prices: { single: 75, pair: 125 }, payLinks: { single: null, pair: null }, turnstileSiteKey: '1x00000000000000000000AA' }),
   shopEnabled: z.boolean(),

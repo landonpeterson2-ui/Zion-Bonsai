@@ -9,6 +9,7 @@ const w = {
   start: '18:00',
   end: '20:00',
   venueName: 'Test Venue',
+  whatToBring: 'A drink.',
   venueMapUrl: 'https://maps.example.com/venue',
   prices: { single: 75, pair: 125 },
   payLinks: { single: 'https://example.com/single', pair: 'https://example.com/pair' },
@@ -30,7 +31,7 @@ assert.match(seat.textContent, /Pay \$75 to confirm: https:\/\/example.com\/sing
 assert.match(seat.textContent, /held as Pending/)
 assert.match(seat.textContent, /6:00 PM to 8:00 PM/)
 assert.match(seat.textContent, /Friday, February 12/)
-assert.match(seat.textContent, /\[WHAT TO BRING\]/)
+assert.match(seat.textContent, /What to bring: A drink\./)
 assert.match(seat.textContent, /Directions: https:\/\/maps\.example\.com\/venue/)
 assert.match(seat.textContent, /Come grow with us\./)
 assert.doesNotMatch(seat.textContent, /gift card/i)
