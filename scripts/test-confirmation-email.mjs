@@ -1,7 +1,7 @@
 // Run: node scripts/test-confirmation-email.mjs
 // Checks the Brevo payload builder and the no-key skip. Never calls Brevo. Made-up data only.
 import assert from 'node:assert/strict'
-import { buildConfirmationEmail, sendConfirmationEmail } from '../lib/confirmation-email.ts'
+import { buildConfirmationEmail, buildPaidEmail, sendConfirmationEmail } from '../lib/confirmation-email.ts'
 
 const w = {
   title: 'Test Workshop',
@@ -49,6 +49,15 @@ assert.doesNotMatch(wait.textContent, /Pay \$/)
 
 const evil = buildConfirmationEmail({ ...base, name: '<b>x</b>' }, w)
 assert.doesNotMatch(evil.htmlContent, /<b>x<\/b>/)
+
+const paid = buildPaidEmail({ ...base, seats: 2, guest: 'Guest Person' }, w)
+assert.match(paid.subject, /You're confirmed: Test Workshop, Friday, February 12/)
+assert.match(paid.textContent, /your seat is confirmed/)
+assert.match(paid.textContent, /you and Guest/)
+assert.match(paid.textContent, /What to bring: A drink\./)
+assert.match(paid.textContent, /Directions: https:\/\/maps\.example\.com\/venue/)
+assert.doesNotMatch(paid.textContent, /Pay \$/)
+assert.doesNotMatch(buildPaidEmail({ ...base, name: '<b>x</b>' }, w).htmlContent, /<b>x<\/b>/)
 
 // Redacted shape, for the record.
 const redact = (p) => ({

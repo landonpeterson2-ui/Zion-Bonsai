@@ -43,6 +43,14 @@ function clock(hhmm: string): string {
   return `${h % 12 || 12}:${String(m).padStart(2, '0')} ${suffix}`
 }
 
+function wrap(paras: { html: string }[]): string {
+  return (
+    `<div style="font-family:Georgia,'Times New Roman',serif;font-size:16px;line-height:1.65;color:#2F3B22;max-width:560px">` +
+    paras.map((p) => `<p style="margin:0 0 16px">${p.html.replace(/\n/g, '<br>')}</p>`).join('') +
+    '</div>'
+  )
+}
+
 export function buildConfirmationEmail(signup: Signup, w: EmailWorkshop): BrevoPayload {
   const first = firstName(signup.name)
   const date = longDate(w.date)
@@ -92,10 +100,7 @@ export function buildConfirmationEmail(signup: Signup, w: EmailWorkshop): BrevoP
   add('Come grow with us.\nLandon and Cass', 'Come grow with us.<br>Landon and Cass')
 
   const text = paras.map((p) => p.text).join('\n\n')
-  const html =
-    `<div style="font-family:Georgia,'Times New Roman',serif;font-size:16px;line-height:1.65;color:#2F3B22;max-width:560px">` +
-    paras.map((p) => `<p style="margin:0 0 16px">${p.html.replace(/\n/g, '<br>')}</p>`).join('') +
-    '</div>'
+  const html = wrap(paras)
 
   return {
     sender: FROM,
@@ -107,18 +112,58 @@ export function buildConfirmationEmail(signup: Signup, w: EmailWorkshop): BrevoP
   }
 }
 
+/** "You're confirmed": sent once, after the booking is marked Paid in Grist. */
+export function buildPaidEmail(signup: Signup, w: EmailWorkshop): BrevoPayload {
+  const first = firstName(signup.name)
+  const date = longDate(w.date)
+  const time = w.start && w.end ? `${clock(w.start)} to ${clock(w.end)}` : w.start ? clock(w.start) : null
+  const pair = signup.seats === 2
+  const guestFirst = signup.guest ? firstName(signup.guest) : null
+
+  const details: string[] = [w.title, date]
+  if (time) details.push(time)
+  if (w.venueName) details.push(w.venueName)
+  const seatsLine = pair ? `Two seats${guestFirst ? `: you and ${guestFirst}` : ''}` : 'One seat'
+
+  const paras: { text: string; html: string }[] = []
+  const add = (text: string, html?: string) => paras.push({ text, html: html ?? esc(text) })
+
+  add(`Hi ${first},`)
+  add(`You're paid up and your seat is confirmed. Your tree is waiting.`)
+  add(`${details.join(' · ')}\n${seatsLine}`, `${details.map(esc).join(' &middot; ')}<br>${esc(seatsLine)}`)
+  if (w.whatToBring) add(`What to bring: ${w.whatToBring}`)
+  if (w.venueMapUrl) {
+    add(`Directions: ${w.venueMapUrl}`, `<a href="${esc(w.venueMapUrl)}" style="color:#A84A2B">Directions to ${esc(w.venueName ?? 'the venue')}</a>`)
+  }
+  add(`Plans change? Just reply to this email.`)
+  add('See you there.\nLandon and Cass', 'See you there.<br>Landon and Cass')
+
+  return {
+    sender: FROM,
+    replyTo: FROM,
+    to: [{ email: signup.email, name: signup.name }],
+    subject: `You're confirmed: ${w.title}, ${date}`,
+    htmlContent: wrap(paras),
+    textContent: paras.map((p) => p.text).join('\n\n'),
+  }
+}
+
 /** Best effort. Never throws; logs a status only (no personal data). Skipped when no key. */
 export async function sendConfirmationEmail(
   apiKey: string | undefined,
   signup: Signup,
   w: EmailWorkshop,
 ): Promise<'skipped' | 'sent' | 'failed'> {
+  return sendBrevo(apiKey, buildConfirmationEmail(signup, w))
+}
+
+export async function sendBrevo(apiKey: string | undefined, payload: BrevoPayload): Promise<'skipped' | 'sent' | 'failed'> {
   if (!apiKey) return 'skipped'
   try {
     const res = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'POST',
       headers: { 'api-key': apiKey, 'content-type': 'application/json', accept: 'application/json' },
-      body: JSON.stringify(buildConfirmationEmail(signup, w)),
+      body: JSON.stringify(payload),
       signal: AbortSignal.timeout(8000),
     })
     if (!res.ok) {
