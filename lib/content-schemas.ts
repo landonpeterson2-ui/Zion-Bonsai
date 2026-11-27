@@ -45,7 +45,7 @@ export const siteSchema = z.object({
       /** Level 2 (type "shaping") version, since they bring their own tree. Falls back to whatToBring. */
       whatToBringShaping: z.string().min(1).nullable().default(null),
     })
-    .default({ mode: 'form', prices: { single: 75, pair: 125 }, payLinks: { single: null, pair: null }, turnstileSiteKey: '1x00000000000000000000AA' }),
+    .default({ mode: 'form', prices: { single: 75, pair: 125 }, payLinks: { single: null, pair: null }, turnstileSiteKey: '1x00000000000000000000AA', whatToBring: null, whatToBringShaping: null }),
   shopEnabled: z.boolean(),
   season: seasonName,
 })

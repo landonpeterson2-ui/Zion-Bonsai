@@ -36,15 +36,15 @@ const optionalText = (max: number, tooLong: string) =>
 /** The JSON body of POST /api/register. The front end reuses this. */
 export const signupInputSchema = z
   .object({
-    workshopId: z.string({ required_error: 'Pick a date.' }).min(1, 'Pick a date.'),
-    seats: z.union([z.literal(1), z.literal(2)], { errorMap: () => ({ message: 'Choose one seat or two.' }) }),
+    workshopId: z.string({ error: 'Pick a date.' }).min(1, 'Pick a date.'),
+    seats: z.union([z.literal(1), z.literal(2)], { error: 'Choose one seat or two.' }),
     name: z
-      .string({ required_error: 'Please tell us your name.' })
+      .string({ error: 'Please tell us your name.' })
       .trim()
       .min(1, 'Please tell us your name.')
       .max(100, 'That name is a bit long. Could you shorten it?'),
     email: z
-      .string({ required_error: 'We need an email to send your confirmation.' })
+      .string({ error: 'We need an email to send your confirmation.' })
       .trim()
       .toLowerCase()
       .min(1, 'We need an email to send your confirmation.')
