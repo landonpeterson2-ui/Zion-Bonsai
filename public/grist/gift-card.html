@@ -269,7 +269,8 @@ function usedLine(c) {
   return listOf(c.Used_On).map(id => regs.find(r => r.id === Number(id))).filter(Boolean).map(r => {
     const w = workshops.find(x => x.id === Number(r.Workshop)), d = w ? isoDay(w.Date) : null;
     const t = w ? `${w.Title || 'Workshop'}${d ? ' — ' + fmt(d, { month: 'short', day: 'numeric', year: 'numeric' }) : ''}` : 'A workshop';
-    return t + (r.Status === 'Paid' ? ` (${money(r.Amount_Paid)})` : ` (${String(r.Status || 'not paid').toLowerCase()}, not counted)`);
+    const took = Number(r.Gift_Card_Amount) || 0;
+    return t + (r.Status === 'Refunded' ? ' (refunded, not counted)' : took > 0 ? ` (${money(took)})` : ` (${String(r.Status || 'not paid').toLowerCase()}, nothing taken)`);
   });
 }
 function cardView(c) {
@@ -367,7 +368,7 @@ function openUse(cardId) {
   sheet = { kind: 'use', init: {} };
   drawUse(); showSheet();
 }
-const eligible = () => regs.filter(r => Number(r.Workshop) === useS.wsId && ELIGIBLE.includes(r.Status))
+const eligible = () => regs.filter(r => Number(r.Workshop) === useS.wsId && ELIGIBLE.includes(r.Status) && !(Number(r.Gift_Card_Amount) > 0))
   .sort((a, b) => nameOf(a).localeCompare(nameOf(b)));
 // What the card will take for the chosen registration.
 function plan() {
@@ -395,7 +396,7 @@ function useSummary() {
   }
   return `<p class="summary"><b>${esc(money(p.take))}</b> comes off the card. ${esc(money(left))} left after.</p>
     ${p.owed > 0 ? `<p class="covers">The card covers ${esc(money(p.take))}. They owe ${esc(money(p.owed))} more.</p>
-      <p class="note">That extra isn't recorded here. Use the Payment buttons on Workshop day.</p>` : ''}`;
+      <p class="note">Their booking stays ${esc(String(p.r.Status || 'Pending'))} until they pay the rest. Then use the Payment buttons on Workshop day.</p>` : ''}`;
 }
 function drawUse() {
   const c = cardById(useS.cardId), regsOk = eligible(), p = plan();
@@ -444,9 +445,12 @@ async function confirmUse() {
   const { c, r, take } = p;
   const newBal = Math.round((p.bal - take) * 100) / 100;
   const markUsed = newBal <= 0 && c.Status !== 'Used';
-  const regFields = { Gift_Card: c.id, Payment_Method: 'Gift card', Amount_Paid: take, Status: 'Paid' };
+  // Amount paid is the full price once it's covered; Gift card amount is what came off the card (the balance counts that).
+  const regFields = p.owed > 0
+    ? { Gift_Card: c.id, Gift_Card_Amount: take, Payment_Method: 'Gift card', Amount_Paid: take }
+    : { Gift_Card: c.id, Gift_Card_Amount: take, Payment_Method: 'Gift card', Amount_Paid: p.ask ? take : Math.round(Number(r.Expected) * 100) / 100, Status: 'Paid' };
   const acts = [['UpdateRecord', 'Registrations', r.id, regFields]];
-  const undo = [['UpdateRecord', 'Registrations', r.id, { Gift_Card: Number(r.Gift_Card) || 0, Payment_Method: r.Payment_Method ?? null, Amount_Paid: r.Amount_Paid ?? null, Status: r.Status }]];
+  const undo = [['UpdateRecord', 'Registrations', r.id, { Gift_Card: Number(r.Gift_Card) || 0, Gift_Card_Amount: r.Gift_Card_Amount ?? null, Payment_Method: r.Payment_Method ?? null, Amount_Paid: r.Amount_Paid ?? null, Status: r.Status }]];
   if (markUsed) { acts.push(['UpdateRecord', 'Gift_Cards', c.id, { Status: 'Used' }]); undo.push(['UpdateRecord', 'Gift_Cards', c.id, { Status: c.Status }]); }
   const btn = document.getElementById('u-go'); btn.disabled = true;
   try {
