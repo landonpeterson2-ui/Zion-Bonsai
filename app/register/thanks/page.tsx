@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Eyebrow from '@/components/ui/Eyebrow'
 import { formatDate, formatTime } from '@/components/ui/NextWorkshop'
 import { getPartner, getSite, getUpcomingWorkshops } from '@/lib/content'
-import { getSignup } from '@/lib/register-stub'
+import { getSignup } from '@/lib/signups'
 
 export const metadata: Metadata = { title: 'You’re in', robots: { index: false, follow: false } }
 export const dynamic = 'force-dynamic'

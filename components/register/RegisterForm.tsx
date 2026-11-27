@@ -2,14 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import type { SignupInput } from '@/lib/register-stub'
-
-/**
- * DEV ONLY: the API route lives in another branch, so in `next dev` a 404 from /api/register
- * is treated as a successful sign-up with id "demo" (and Turnstile is not waited on).
- * Delete this const and the two places it is used once lib/signups.ts and app/api are merged.
- */
-const DEV_STUB_MISSING_API = process.env.NODE_ENV === 'development'
+import type { SignupInput } from '@/lib/signups'
 
 type Fields = 'seats' | 'name' | 'email' | 'phone' | 'guest' | 'notes' | 'heard' | 'form'
 type Errors = Partial<Record<Fields, string>>
@@ -119,8 +112,8 @@ export default function RegisterForm({
 
     setSending(true)
     try {
-      const t = DEV_STUB_MISSING_API ? token.current : await waitForToken()
-      if (!t && !DEV_STUB_MISSING_API) {
+      const t = await waitForToken()
+      if (!t) {
         setErrors({ form: 'We couldn’t check that you’re a person. Please reload the page and try again.' })
         setSending(false)
         requestAnimationFrame(() => focusField(form, 'form'))
@@ -147,9 +140,7 @@ export default function RegisterForm({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       })
-      let data: { ok?: boolean; id?: string; errors?: Errors } | null = null
-      if (DEV_STUB_MISSING_API && res.status === 404) data = { ok: true, id: 'demo' }
-      else data = await res.json().catch(() => null)
+      const data = (await res.json().catch(() => null)) as { ok?: boolean; id?: string; errors?: Errors } | null
 
       if (data?.ok && data.id) {
         router.push(`/register/thanks?id=${encodeURIComponent(data.id)}`)
