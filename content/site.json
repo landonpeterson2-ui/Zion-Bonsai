@@ -11,8 +11,8 @@
   "interestListUrl": null,
   "eventsInquiryUrl": null,
   "giftCertificates": {
-    "mode": "inquiry",
-    "url": null,
+    "mode": "online",
+    "url": "https://app.squareup.com/gift/35BZHFATNJAP1/order",
     "giveUrl": "/give",
     "offers": [
       { "name": "One seat", "price": 75, "blurb": "One person, two hours, hands in the soil." },
