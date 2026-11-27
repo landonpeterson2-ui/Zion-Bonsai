@@ -51,4 +51,4 @@ photos-inbox/
 .open-next/
 .wrangler/
 .dev.vars
-cloudflare-env.d.ts
+# cloudflare-env.d.ts is committed so a clean checkout typechecks (regenerate with npm run cf-typegen)

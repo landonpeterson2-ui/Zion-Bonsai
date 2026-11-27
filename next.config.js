@@ -1,3 +1,9 @@
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { initOpenNextCloudflareForDev } = require('@opennextjs/cloudflare')
+
+// Lets `next dev` see Cloudflare bindings (D1) and .dev.vars.
+initOpenNextCloudflareForDev()
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
