@@ -1,9 +1,11 @@
+import Link from 'next/link'
 import Eyebrow from '@/components/ui/Eyebrow'
 import Section from '@/components/ui/Section'
 import SectionHeading from '@/components/ui/SectionHeading'
 import { formatDate, formatTime } from '@/components/ui/NextWorkshop'
 import { getPartner, getSite, getUpcomingWorkshops } from '@/lib/content'
 import type { Workshop } from '@/lib/content'
+import { registerHref, signupKind, siteSignupsOn } from '@/lib/registration'
 
 const typeLabel: Record<Workshop['type'], string> = {
   intro: 'Intro workshop',
@@ -19,11 +21,18 @@ const plain = 'font-label text-[11px] font-semibold uppercase tracking-[0.16em] 
 /** full and waitlist behave the same: a waitlist link if there is a URL, otherwise "Full". */
 function statusNote(w: Workshop) {
   if (w.status === 'open' || w.status === 'tentative') return ''
-  return w.registrationUrl ? ' · Waitlist' : ' · Full'
+  return w.registrationUrl || (siteSignupsOn() && signupKind(w)) ? ' · Waitlist' : ' · Full'
 }
 
 function Action({ w }: { w: Workshop }) {
   const closed = w.status !== 'open'
+  if (siteSignupsOn() && signupKind(w)) {
+    return (
+      <Link href={registerHref(w)} className={closed ? btn : 'btn-primary'}>
+        {closed ? 'Join the waitlist' : 'Register'}
+      </Link>
+    )
+  }
   if (!w.registrationUrl) {
     return <p className={plain}>{closed ? 'Full' : 'Registration opens soon'}</p>
   }
