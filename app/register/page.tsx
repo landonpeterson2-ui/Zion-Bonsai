@@ -77,7 +77,7 @@ export default async function RegisterPage({ searchParams }: { searchParams: Pro
           <p className="max-w-[40ch] leading-[1.65] text-forest">
             {waitlist
               ? 'Every seat is taken. Leave your name and we’ll reach out the moment one opens.'
-              : 'Two hours. Phone face-down. Just you, some soil, and a tree that’s going home with you.'}
+              : 'Two hours with your hands in the soil. You go home with a dwarf jade in a custom, hand-thrown pot.'}
           </p>
         </div>
         <p className="mt-8 text-sm text-soil">
