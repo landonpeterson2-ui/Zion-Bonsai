@@ -117,7 +117,7 @@ The home hero now uses the same soil-washed photo treatment as the private event
 
 ## 2026-11-26 — 2027 prices and gift cards (Landon)
 
-- **2027 public workshops and date nights: $75 single, $125 couple.** Set on every 2027 Public/Evening row in Grist; Level 2 shaping stays $50. New Grist rows copy the last workshop's price, so they start at 75/125.
+- **2027 public workshops and date nights: $75 single, $125 couple.** Set on every 2027 row in Grist, Level 2 shaping included (was $50). New Grist rows copy the last workshop's price, so they start at 75/125.
 - **Gift cards match:** One Seat $75, Date Night for Two $125 (Grist Gift_Cards Amount formula updated; the gift-cards handoff's $65/$100 is superseded). Square's card amounts must match.
 - **Gift cards get their own page, `/give`** (`/gift` and `/gift-cards` redirect there). Offers, prices and the saucer offer's end date live in `site.json` `giftCertificates`; the Buy buttons turn on when `mode` is `online` and `url` is the Square link. Until then they offer an email.
 
