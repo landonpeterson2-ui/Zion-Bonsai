@@ -1,0 +1,7 @@
+# Copy to .dev.vars (gitignored) for local `next dev` / `npm run preview`.
+# Turnstile's published always-pass test secret:
+TURNSTILE_SECRET=1x0000000000000000000000000000000AA
+# Any made-up string locally; production uses a long random one (also in n8n).
+SIGNUPS_TOKEN=local-dev-token-change-me
+# Leave empty locally: the confirmation email is skipped.
+BREVO_API_KEY=
