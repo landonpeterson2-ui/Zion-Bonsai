@@ -77,6 +77,12 @@ export function findSignupWorkshop(workshopId: string): { workshop: Workshop; wa
   return { workshop, waitlist: workshop.status !== 'open' }
 }
 
+/** The "what to bring" line for a workshop: Level 2 (shaping) has its own. */
+export function whatToBringFor(workshop: Pick<Workshop, 'type'> | undefined): string | null {
+  const r = getSite().registration
+  return (workshop?.type === 'shaping' ? r.whatToBringShaping : null) ?? r.whatToBring
+}
+
 /** What the confirmation email needs to know about a workshop, from content. */
 export function workshopForEmail(workshop: Workshop) {
   const site = getSite()
@@ -86,7 +92,7 @@ export function workshopForEmail(workshop: Workshop) {
     start: workshop.start ?? null,
     end: workshop.end ?? null,
     venueName: (workshop.venue && getPartner(workshop.venue)?.name) || null,
-    whatToBring: site.registration.whatToBring,
+    whatToBring: whatToBringFor(workshop),
     venueMapUrl: (workshop.venue && getPartner(workshop.venue)?.mapUrl) || null,
     prices: site.registration.prices,
     payLinks: site.registration.payLinks,

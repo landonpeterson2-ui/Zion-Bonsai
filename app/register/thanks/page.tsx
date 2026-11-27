@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Eyebrow from '@/components/ui/Eyebrow'
 import { formatDate, formatTime } from '@/components/ui/NextWorkshop'
 import { getPartner, getSite, getUpcomingWorkshops } from '@/lib/content'
-import { getSignup } from '@/lib/signups'
+import { getSignup, whatToBringFor } from '@/lib/signups'
 
 export const metadata: Metadata = { title: 'You’re in', robots: { index: false, follow: false } }
 export const dynamic = 'force-dynamic'
@@ -105,7 +105,7 @@ export default async function ThanksPage({ searchParams }: { searchParams: Promi
         ) : null}
         <li className="border-b border-forest/15 py-6">
           <h2 className="text-[1.55rem] leading-snug">What to bring.</h2>
-          <p className="mt-1.5 max-w-xl leading-[1.7] text-soil">{site.registration.whatToBring ?? 'Just yourself.'}</p>
+          <p className="mt-1.5 max-w-xl leading-[1.7] text-soil">{whatToBringFor(w) ?? 'Just yourself.'}</p>
         </li>
         <li className="border-b border-forest/15 py-6">
           <h2 className="text-[1.55rem] leading-snug">Getting there.</h2>
