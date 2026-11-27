@@ -60,7 +60,7 @@ export default function GivePage() {
     },
     {
       title: 'Using one.',
-      body: 'Pick a date and register like anyone else. When we follow up about payment, tell us you have a gift card.',
+      body: 'Register for a date like anyone else and tell us on the form you have a gift card. Then use the card at checkout when you pay.',
     },
     {
       title: 'Dates for the year.',
