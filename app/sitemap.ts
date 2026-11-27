@@ -3,7 +3,7 @@ import { getSite } from '@/lib/content'
 import { SITE_URL } from '@/lib/site-url'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const routes = ['', '/workshops', '/events', '/our-story', '/care-guide', '/gallery', '/partners', '/contact']
+  const routes = ['', '/workshops', '/events', '/our-story', '/care-guide', '/gallery', '/give', '/partners', '/contact']
   if (getSite().shopEnabled) routes.push('/shop')
 
   return routes.map((route) => ({ url: `${SITE_URL}${route}` }))

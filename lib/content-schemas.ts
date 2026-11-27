@@ -19,8 +19,14 @@ export const siteSchema = z.object({
   giftCertificates: z.object({
     mode: z.enum(['inquiry', 'online']),
     url: nullableUrl,
-    /** The "Give a workshop" page, linked from tentative dates. Repoint here when it exists. */
-    giveUrl: z.string().min(1).default('/contact#gift'),
+    /** The "Give a workshop" page, linked from tentative dates, Contact and Workshops. */
+    giveUrl: z.string().min(1).default('/give'),
+    /** What the /give page sells. Prices in whole dollars; keep them the same as Square. */
+    offers: z.array(z.object({ name: z.string().min(1), price: z.number().positive(), blurb: z.string().min(1) })).default([]),
+    /** Last day (YYYY-MM-DD) a card comes with a free saucer; the line hides itself after. null = no offer. */
+    /** Shown on /give only while no date is bookable (all upcoming dates tentative). null = never. */
+    bookingNote: z.string().min(1).nullable().default(null),
+    saucerOfferEnds: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'saucerOfferEnds must be YYYY-MM-DD').nullable().default(null),
   }),
   shopEnabled: z.boolean(),
   season: seasonName,

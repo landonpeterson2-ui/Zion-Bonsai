@@ -2,16 +2,22 @@ import Quote from '@/components/ui/Quote'
 import Section from '@/components/ui/Section'
 import SectionHeading from '@/components/ui/SectionHeading'
 import TextLink from '@/components/ui/TextLink'
-import { getFaq, getTestimonials } from '@/lib/content'
+import { getFaq, getGiftCardBuyUrl, getSite, getTestimonials } from '@/lib/content'
 
 const whoFor = [
   { title: 'Complete beginners.', body: 'Never touched a bonsai? Perfect. That’s who this is for.' },
   { title: 'Couples and friends.', body: 'A good excuse to spend two hours together without a screen between you.' },
-  { title: 'Gift-givers.', body: 'Give someone an afternoon and a tree. Ask us about gift certificates.' },
 ]
+const giftGivers = {
+  title: 'Gift-givers.',
+  body: getGiftCardBuyUrl()
+    ? 'Give someone an afternoon and a tree. Gift cards are online.'
+    : 'Give someone an afternoon and a tree. Ask us about gift cards.',
+}
 
 export function WhoFor() {
   const quotes = getTestimonials('workshops')
+  const giveUrl = getSite().giftCertificates.giveUrl
   return (
     <Section>
       <div className="container-custom grid gap-10 md:grid-cols-12 md:gap-16">
@@ -27,7 +33,7 @@ export function WhoFor() {
         </div>
         <div className="md:col-span-7 md:pt-12">
           <ul className="border-t border-forest/15">
-            {whoFor.map((w) => (
+            {[...whoFor, giftGivers].map((w) => (
               <li key={w.title} className="border-b border-forest/15 py-6">
                 <h3 className="text-[1.45rem] leading-snug md:text-[1.65rem]">{w.title}</h3>
                 <p className="mt-1.5 max-w-xl leading-[1.7] text-soil">{w.body}</p>
@@ -35,7 +41,7 @@ export function WhoFor() {
             ))}
           </ul>
           <div className="mt-8">
-            <TextLink href="/contact#gift">Gift certificates</TextLink>
+            <TextLink href={giveUrl}>Gift cards</TextLink>
           </div>
           {/* Phones: quotes follow the list instead of sitting beside it. */}
           {quotes.length > 0 ? (

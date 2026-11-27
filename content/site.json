@@ -10,7 +10,17 @@
   },
   "interestListUrl": null,
   "eventsInquiryUrl": null,
-  "giftCertificates": { "mode": "inquiry", "url": null, "giveUrl": "/contact#gift" },
+  "giftCertificates": {
+    "mode": "online",
+    "url": "https://app.squareup.com/gift/35BZHFATNJAP1/order",
+    "giveUrl": "/give",
+    "offers": [
+      { "name": "One seat", "price": 75, "blurb": "One person, two hours, hands in the soil." },
+      { "name": "Date night for two", "price": 125, "blurb": "Two seats side by side. Bring someone you like." }
+    ],
+    "saucerOfferEnds": "2026-12-31",
+    "bookingNote": "2027 booking opens in January. Cards never expire, so there’s no rush."
+  },
   "shopEnabled": false,
   "season": "fall"
 }

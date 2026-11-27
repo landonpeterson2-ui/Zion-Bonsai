@@ -56,7 +56,7 @@ export function denverIso(date: string, time: string): string {
   return `${date}T${time}:00${denverOffset(date, time)}`
 }
 
-/** Pull dollar amounts out of a label like "$65 solo · $100 pair". */
+/** Pull dollar amounts out of a label like "$75 solo · $125 pair". */
 function parsePrices(label: string): number[] {
   return [...label.matchAll(/\$\s?(\d+(?:\.\d{1,2})?)/g)].map((m) => Number(m[1]))
 }

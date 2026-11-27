@@ -4,13 +4,14 @@ import Eyebrow from '@/components/ui/Eyebrow'
 import Reveal from '@/components/ui/Reveal'
 import Section from '@/components/ui/Section'
 import SectionHeading from '@/components/ui/SectionHeading'
-import { getSite } from '@/lib/content'
+import TextLink from '@/components/ui/TextLink'
+import { getGiftCardBuyUrl, getSite } from '@/lib/content'
 
 export const metadata: Metadata = pageMetadata({
   path: '/contact',
   title: 'Contact',
   description:
-    'Get in touch with Zion Bonsai: email, phone, gift certificates, and how to hear about the next workshop.',
+    'Get in touch with Zion Bonsai: email, phone, gift cards, and how to hear about the next workshop.',
 })
 
 const buttonClass =
@@ -21,6 +22,7 @@ const mailto = (email: string, subject: string) => `mailto:${email}?subject=${en
 export default function ContactPage() {
   const site = getSite()
   const gift = site.giftCertificates
+  const buyUrl = getGiftCardBuyUrl()
   const tel = `tel:+1${site.phone.replace(/\D/g, '')}`
   const handle = (url: string) => {
     const last = url.replace(/\/$/, '').split('/').pop()
@@ -84,28 +86,27 @@ export default function ContactPage() {
       <Section id="gift" tone="paper-deep">
         <div className="container-custom grid gap-8 md:grid-cols-12 md:gap-16">
           <Reveal className="md:col-span-5">
-            <SectionHeading eyebrow="Gift certificates">
+            <SectionHeading eyebrow="Gift cards">
               Give someone <em>two hours off.</em>
             </SectionHeading>
           </Reveal>
           <Reveal className="md:col-span-7">
             <p className="max-w-xl leading-[1.7] text-forest/90">
-              A workshop makes a good gift for the person who has everything except a free afternoon. Gift certificates
-              are available.
-              {gift.mode === 'inquiry'
-                ? ' Send us a note and we will sort out the details with you.'
-                : ' You can buy one online.'}
+              A workshop makes a good gift for the person who has everything except a free afternoon.
+              {buyUrl ? ' You can buy a gift card online.' : ' Send us a note and we will sort out the details with you.'}
             </p>
-            <div className="mt-8">
-              {gift.mode === 'online' && gift.url ? (
-                <a href={gift.url} target="_blank" rel="noopener noreferrer" className={buttonClass}>
-                  Buy a gift certificate
+            <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
+              {buyUrl ? (
+                <a href={buyUrl} target="_blank" rel="noopener noreferrer" className={buttonClass}>
+                  Buy a gift card
+                  <span className="sr-only"> (opens in a new tab)</span>
                 </a>
               ) : (
-                <a href={mailto(site.email, 'Gift certificate inquiry')} className={buttonClass}>
-                  Ask about a gift certificate
+                <a href={mailto(site.email, 'Gift card')} className={buttonClass}>
+                  Ask about a gift card
                 </a>
               )}
+              <TextLink href={gift.giveUrl}>How gift cards work</TextLink>
             </div>
           </Reveal>
         </div>
