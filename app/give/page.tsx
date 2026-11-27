@@ -51,8 +51,12 @@ export default function GivePage() {
 
   const goodToKnow = [
     {
-      title: 'Sent the way you like.',
-      body: 'As an eGift by email, a printable certificate, or both. Pick a design when you buy.',
+      title: 'Arrives by email.',
+      body: 'Pick a design and it lands in an inbox, theirs or yours. Want something to wrap? Print it out.',
+    },
+    {
+      title: 'Never expires. No fees.',
+      body: 'It’s good for its dollar value toward any public workshop. Use a date night card on your own and the rest stays on the card for next time.',
     },
     {
       title: 'Good for any public workshop.',
@@ -74,7 +78,7 @@ export default function GivePage() {
         <div className="md:col-span-7">
           <Eyebrow tone="clay">Gift cards</Eyebrow>
           <h1 className="mt-5 max-w-3xl text-[2.8rem] leading-[1.02] md:text-[4.25rem]">
-            Give someone <em>two hours off.</em>
+            Give them a <em>reason to unplug.</em>
           </h1>
           <p className="mt-6 max-w-[58ch] text-lg leading-[1.65] text-forest">
             A seat at the table, hands in the soil, the phone face-down for a while, and a tree that goes home with
@@ -115,7 +119,7 @@ export default function GivePage() {
               </ol>
               {saucerEnds ? (
                 <p className="mt-6 max-w-xl leading-[1.7] text-soil">
-                  Buy by {monthDay(saucerEnds)} and it comes with a free saucer.
+                  Buy by {monthDay(saucerEnds)} and it comes with a free saucer, handed over at the workshop.
                 </p>
               ) : null}
               <div className="mt-8">
@@ -137,7 +141,7 @@ export default function GivePage() {
             <ul className="border-t border-forest/15">
               {goodToKnow.map((g) => (
                 <li key={g.title} className="border-b border-forest/15 py-6">
-                  <h3 className="text-[1.45rem] leading-snug md:text-[1.65rem]">{g.title}</h3>
+                  <h3 className="text-[1.55rem] leading-snug md:text-[1.65rem]">{g.title}</h3>
                   <p className="mt-1.5 max-w-xl leading-[1.7] text-soil">{g.body}</p>
                 </li>
               ))}

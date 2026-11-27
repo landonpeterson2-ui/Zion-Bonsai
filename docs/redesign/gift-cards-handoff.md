@@ -30,7 +30,7 @@ Data and trigger columns:
 | Buyer | | Ref:Contacts | data | | Who bought it. Pick from Contacts; add them there first if they're new. |
 | Recipient_Name | Recipient name | Text | data | | Who it's for, as the buyer wrote it. Type this. |
 | Offer | | Choice | data | Date Night for Two, One Seat, Other | What they bought. Pick one. Amount fills in from it. |
-| Amount | Amount ($) | Numeric | trigger | formula A, on Offer changes | What the card is worth, in dollars. Fills in from the Offer ($100 or $65); type it for Other. |
+| Amount | Amount ($) | Numeric | trigger | formula A, on Offer changes | What the card is worth, in dollars. Fills in from the Offer ($125 or $75; was $100 or $65 before 2026-11-26); type it for Other. |
 | Design | | Choice | data | 1 Prune What No Longer Serves You, 2 Utah Grown, 3 Step Away From the Watering Can, 4 Breathe Snip Repeat, 5 Humble Beginnings | Which of the five designs they picked. Pick one. |
 | Delivery | | Choice | data | eGift, Printable, Both | How it went to them. Pick one. |
 | Sold_Date | Sold date | Date | trigger | `value or TODAY()`, new records only | The day it was sold. Fills in today's date; type or pick another. |
@@ -42,7 +42,7 @@ Data and trigger columns:
 
 Formula A (Amount) — **updated 2026-11-26 to 125 / 75**, see decisions.md:
 ```python
-{"Date Night for Two": 100, "One Seat": 65}.get($Offer, value)
+{"Date Night for Two": 125, "One Seat": 75}.get($Offer, value)
 ```
 Formula B (Saucer_Owed):
 ```python
@@ -169,8 +169,8 @@ Keep Shaping_Due as it is (months=9) and fix the descriptions:
 ## Acceptance checks
 Note first how many Registrations rows have a non-blank Check. Test rows: a test workshop with Status Planning and a past date; never tick Attended or Email OK; test card last 4 = 0000. Delete every test row afterwards.
 
-- [ ] A new Gift_Cards row with Offer Date Night for Two fills Amount 100, Sold date today and Saucer owed ticked; Status is Active.
-- [ ] Changing Offer to One Seat changes Amount to 65; Other keeps whatever is typed.
+- [ ] A new Gift_Cards row with Offer Date Night for Two fills Amount 125, Sold date today and Saucer owed ticked; Status is Active.
+- [ ] Changing Offer to One Seat changes Amount to 75; Other keeps whatever is typed.
 - [ ] Card last 4 of 12345 or 12a4 makes Check say it should be exactly 4 digits and the row turns red. With every field filled, Check is blank.
 - [ ] Card label reads like `0000 · Test Recipient · $100`.
 - [ ] A test registration with Payment method Gift card and no card: its Check says no card is linked. Linking the test card clears it.
